@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo"
+    android:id="@+id/layoutPrincipalPrimerNivelWelcomeTareoArRRHH_TAREO_AR"
+    tools:context=".RRHH_TAREO_AR.PrimerNivelWelcomeTareo">
+
+    <Spinner
+        android:id="@+id/spZonaRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="30dp"
+        android:paddingRight="30dp"
+        android:background="@drawable/spinner_style_rrhhtareoar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_spinner_zonas_rrhhtareoar" />
+
+    <Spinner
+        android:id="@+id/spFundoRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="30dp"
+        android:paddingRight="30dp"
+        android:background="@drawable/spinner_style_rrhhtareoar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spZonaRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
+        tools:listitem="@layout/item_spinner_fundos_rrhhtareoar" />
+
+    <Spinner
+        android:id="@+id/spCultivoRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="30dp"
+        android:paddingRight="30dp"
+        android:background="@drawable/spinner_style_rrhhtareoar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spFundoRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
+        tools:listitem="@layout/item_spinner_cultivos_rrhhtareoar" />
+
+    <EditText
+        android:id="@+id/etDNIRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="60dp"
+        android:digits="1234567890"
+        android:hint="Ingresa tu DNI"
+        android:maxLines="1"
+        android:gravity="center"
+        android:ellipsize="end"
+        android:textAlignment="center"
+        android:singleLine="true"
+        android:textStyle="italic"
+        android:inputType="phone"
+        android:maxLength="11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spCultivoRRHH_TAREO_ARANDANO_PRIMER_NIVEL" />
+
+    <Button
+        android:id="@+id/btnIngresasrRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="60dp"
+        android:text="INGRESAR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDNIRRHH_TAREO_ARANDANO_PRIMER_NIVEL" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

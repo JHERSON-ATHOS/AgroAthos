@@ -1,0 +1,73 @@
+package com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.agroathos.ENTIDADES.E_Grupos;
+import com.example.agroathos.R;
+import com.example.agroathos.RRHH_TAREO_AR.TercerNivelAgregarPersonal;
+
+import java.util.ArrayList;
+
+public class AdaptadorListarGrupoTrabajo extends BaseAdapter {
+
+    private static LayoutInflater inflater = null;
+    Context context;
+    ArrayList<E_Grupos> datos;
+
+    public AdaptadorListarGrupoTrabajo(Context context, ArrayList<E_Grupos> datos) {
+        this.context = context;
+        this.datos = datos;
+        inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public int getCount() {
+        return datos.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        E_Grupos e_grupos = datos.get(position);
+
+        final View vista = inflater.inflate(R.layout.content_rrhh_tareo_arandano_listar_grupo_trabajo, null);
+        TextView tvid = vista.findViewById(R.id.tvIdCONTENT_RRHH_TAREO_ARANDANO);
+        TextView tvidgrupo = vista.findViewById(R.id.tvIdGrupoCONTENT_RRHH_TAREO_ARANDANO);
+        TextView tvdni = vista.findViewById(R.id.tvDniCONTENT_RRHH_TAREO_ARANDANO);
+        Button btnAsignar = vista.findViewById(R.id.btnEditarGrupoCONTENT_RRHH_TAREO_ARANDANO);
+
+        tvid.setText("GRUPO ".concat(e_grupos.getContadorGrupo()));
+        tvidgrupo.setText(e_grupos.getId_grupo());
+        tvdni.setText("SUPERVISOR: ".concat(e_grupos.getAnexo_supervisor()));
+
+        btnAsignar.setOnClickListener(view->{
+            Intent intent = new Intent(vista.getContext(), TercerNivelAgregarPersonal.class);
+            Bundle bundle= new Bundle();
+            bundle.putString("idGrupo", e_grupos.getId_grupo());
+            bundle.putString("dni", e_grupos.getAnexo_supervisor());
+            intent.putExtras(bundle);
+            vista.getContext().startActivity(intent);
+        });
+
+        return vista;
+    }
+}
