@@ -41,6 +41,7 @@
         <activity
             android:name=".RRHH_TAREO_AR.PrimerNivelWelcomeTareo"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
