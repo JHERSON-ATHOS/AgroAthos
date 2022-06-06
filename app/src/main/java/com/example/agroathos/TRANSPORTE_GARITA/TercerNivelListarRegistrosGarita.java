@@ -1,8 +1,10 @@
 package com.example.agroathos.TRANSPORTE_GARITA;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,14 +27,11 @@ import java.util.TimeZone;
 
 public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
 
-    TextView tvPlaca;
-    ListView lvData;
+    ListView lvData, lvDataBus;
     Button btnBus, btnPersonal, btnUnidad;
 
     ConexionSQLiteHelper conn;
     ArrayList<String> arrayListData = new ArrayList<>();
-
-    int valor = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +40,8 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
 
         conn = new ConexionSQLiteHelper(getApplicationContext(), "athos0", null, 1);
 
-        tvPlaca = findViewById(R.id.tvPlacaRegistradaGARITA);
         lvData = findViewById(R.id.lvDataRegistradaGARITA);
+        lvDataBus = findViewById(R.id.lvDataBusRegistradaGARITA);
         btnBus = findViewById(R.id.btnListarBusGARITA);
         btnPersonal = findViewById(R.id.btnListarPersonalGARITA);
         btnUnidad = findViewById(R.id.btnListarUnidadGARITA);
@@ -53,19 +52,18 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
 
         listarRegistroBus();
 
-        if (valor==1){
-            lvData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(TercerNivelListarRegistrosGarita.this, "funciona", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+        lvDataBus.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listarRegistroBusPersonal(lvDataBus.getItemAtPosition(position).toString());
+            }
+        });
 
     }
 
     private void listarRegistroBus(){
-        valor = 1;
+        lvData.setVisibility(View.GONE);
+        lvDataBus.setVisibility(View.VISIBLE);
         Toast.makeText(this, "Listando el Registro de Bus", Toast.LENGTH_SHORT).show();
         arrayListData.clear();
 
@@ -74,45 +72,69 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
         if (cursor != null){
             if (cursor.moveToFirst()){
                 do{
-                    tvPlaca.setVisibility(View.VISIBLE);
-                    tvPlaca.setText(cursor.getString(0));
                     arrayListData.add(cursor.getString(0));
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayListData);
-                    lvData.setAdapter(adapter);
+                    lvDataBus.setAdapter(adapter);
                 }while (cursor.moveToNext());
             }
         }
         cursor.close();
     }
 
-    private void listarRegistroBusPersonal(){
-        Toast.makeText(this, "Listando el Personal del Bus", Toast.LENGTH_SHORT).show();
-        arrayListData.clear();
-
+    private void listarRegistroBusPersonal(String placa){
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL1+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1+" WHERE "+Utilidades.CAMPO_GARITA_ANEXO_PLACA_NIVEL1+"="+"'"+placa+"'", null);
         if (cursor != null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final View view = getLayoutInflater().inflate(R.layout.content_transporte_garita_listar_personal_bus, null, false);
+            ListView lvDataPersonal = view.findViewById(R.id.lvDataPersonalBusTRANSPORTE_GARITA);
+            ArrayList<String> arrayList = new ArrayList<>();
             if (cursor.moveToFirst()){
                 do{
-                    tvPlaca.setVisibility(View.VISIBLE);
-                    tvPlaca.setText(cursor.getString(3));
-                    arrayListData.add(cursor.getString(4));
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayListData);
-                    lvData.setAdapter(adapter);
+                    arrayList.add(cursor.getString(4));
                 }while (cursor.moveToNext());
             }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
+            lvDataPersonal.setAdapter(adapter);
+            adapter.notifyDataSetInvalidated();
+
+            builder.setView(view);
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         cursor.close();
     }
 
     private void listarRegistroPersonal(){
-        valor = 2;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("SELECCIONA LA HORA DE REGISTRO");
+        builder.setCancelable(false);
+        builder.setPositiveButton("INGRESO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                listarRegistroPersonalHoras("INGRESO");
+            }
+        });
+        builder.setNegativeButton("SALIDA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                listarRegistroPersonalHoras("SALIDA");
+            }
+        });
+        builder.create().show();
+    }
+
+    private void listarRegistroPersonalHoras(String tipo){
+        lvDataBus.setVisibility(View.GONE);
+        lvData.setVisibility(View.VISIBLE);
         Toast.makeText(this, "Listando el Registro de Personal", Toast.LENGTH_SHORT).show();
         arrayListData.clear();
-        tvPlaca.setVisibility(View.GONE);
 
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL2+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL2+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL2+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL2+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"' AND "+Utilidades.CAMPO_GARITA_TIPO_HORA_NIVEL2+"="+"'"+tipo+"'", null);
         if (cursor != null){
             if (cursor.moveToFirst()){
                 do{
@@ -126,9 +148,10 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
     }
 
     private void listarRegistroUnidad(){
+        lvDataBus.setVisibility(View.GONE);
+        lvData.setVisibility(View.VISIBLE);
         Toast.makeText(this, "Listando el Registro de Unidad", Toast.LENGTH_SHORT).show();
         arrayListData.clear();
-        tvPlaca.setVisibility(View.GONE);
 
         SQLiteDatabase database = conn.getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL3+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL3+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);

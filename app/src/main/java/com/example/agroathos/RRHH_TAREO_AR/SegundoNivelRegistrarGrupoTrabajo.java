@@ -587,7 +587,6 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                 lvPersonal.setAdapter(adapter);
 
             }else{
-
                 if (valorPersonal.isEmpty()){
                     if (valorPersonal.contains(intentResult.getContents())){
                         Toast.makeText(this, "Personal Duplicado", Toast.LENGTH_SHORT).show();
@@ -599,23 +598,23 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                         iniciarScanJarra();
                     }
                 }else{
-                    contadorJarras += 1;
-
                     if (valorJarra1.isEmpty()){
-                        if (valorJarra1.contains(intentResult.getContents())){
+                        if (valorJarra1.contains(intentResult.getContents()) || valorJarra2.contains(intentResult.getContents())){
                             Toast.makeText(this, "Jarra Duplicada", Toast.LENGTH_SHORT).show();
                             iniciarScanJarra();
                         }else{
+                            contadorJarras += 1;
                             Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
                             arrayJarras1.add(intentResult.getContents());
                             valorJarra1 = intentResult.getContents();
                             iniciarScanJarra();
                         }
                     }else{
-                        if (valorJarra2.contains(intentResult.getContents())){
+                        if (valorJarra1.contains(intentResult.getContents()) || valorJarra2.contains(intentResult.getContents())){
                             Toast.makeText(this, "Jarra Duplicada", Toast.LENGTH_SHORT).show();
                             iniciarScanJarra();
                         }else{
+                            contadorJarras += 1;
                             Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
                             arrayJarras2.add(intentResult.getContents());
                             valorJarra2 = intentResult.getContents();
