@@ -51,6 +51,18 @@
         app:layout_constraintTop_toBottomOf="@+id/spLaborACTRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO" />
 
     <Button
+        android:visibility="gone"
+        android:id="@+id/btnEditarPersonalNuevoRRHH_TAREO_AR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="REGISTRAR GRUPO DE TRABAJO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fbAgregarPersonalNuevoRRHH_TAREO_AR"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:visibility="gone"
         android:id="@+id/btnRegistrarPersonalNuevoRRHH_TAREO_AR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

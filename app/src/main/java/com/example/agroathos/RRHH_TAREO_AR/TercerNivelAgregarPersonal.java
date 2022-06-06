@@ -35,7 +35,7 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
 
     ListView lvListadoPersonal;
     FloatingActionButton fbAgregarPersonal;
-    Button btnAgregarPersonal;
+    Button btnEditarPersona, btnAgregarPersonal;
     Spinner spModulo, spLote, spLabor;
 
     ArrayList<String> arrayPersonalList;
@@ -45,7 +45,6 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
     ArrayList<String> arrayInformacion = new ArrayList<>();
 
     ConexionSQLiteHelper conn;
-
 
     ArrayList<String> arrayModulo = new ArrayList<>();
     ArrayList<String> arrayLote = new ArrayList<>();
@@ -57,6 +56,7 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
     String labor = "";
     String idGrupo = "";
     String dni = "";
+    int valor = 0;
 
     int contadorJarras = 0;
     String valorPersonal = "";
@@ -64,6 +64,7 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
     String valorJarra2 = "";
 
     /*VALORES OBTENIDOS BD*/
+    String BDid_nivel2 = "";
     String BDgrupo = "";
     String BDfundo = "";
     String BDmodulo = "";
@@ -86,11 +87,20 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
         spLabor = findViewById(R.id.spLaborACTRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         lvListadoPersonal = findViewById(R.id.lvListadoPersonalACTTercerlNivelRRHH_TAREO_ARANDANO);
         fbAgregarPersonal = findViewById(R.id.fbAgregarPersonalNuevoRRHH_TAREO_AR);
+        btnEditarPersona = findViewById(R.id.btnEditarPersonalNuevoRRHH_TAREO_AR);
         btnAgregarPersonal = findViewById(R.id.btnRegistrarPersonalNuevoRRHH_TAREO_AR);
 
         Bundle bundle = getIntent().getExtras();
         idGrupo = bundle.getString("idGrupo");
         dni = bundle.getString("dni");
+        valor = bundle.getInt("valor");
+
+        if (valor == 1){
+            btnEditarPersona.setVisibility(View.VISIBLE);
+        }
+        if (valor == 2){
+            btnAgregarPersonal.setVisibility(View.VISIBLE);
+        }
 
         consultarGruposTrabajo();
 
@@ -102,6 +112,7 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
         lvListadoPersonal.setAdapter(adapter);
 
         fbAgregarPersonal.setOnClickListener(view->iniciarScanPersonal());
+        btnEditarPersona.setOnClickListener(view->actualizarPersonal());
         btnAgregarPersonal.setOnClickListener(view->registrarNuevoPersonal());
 
         spModulo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -485,6 +496,7 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
         if (cursor != null){
             while (cursor.moveToNext()) {
                 arrayPersonalList.add(cursor.getString(6));
+                BDid_nivel2 = cursor.getString(0);
                 BDgrupo = cursor.getString(1);
                 BDfundo = cursor.getString(2);
                 BDmodulo = cursor.getString(3);
@@ -492,6 +504,51 @@ public class TercerNivelAgregarPersonal extends AppCompatActivity {
                 BDlabor = cursor.getString(5);
                 BDdniSupervisor = cursor.getString(7);
             }
+        }
+    }
+
+    private void actualizarPersonal(){
+        if (arrayInformacion.size()==0){
+            Toast.makeText(this, "No hay personal", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SQLiteDatabase database = conn.getWritableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1_5 + " WHERE " + Utilidades.CAMPO_DNI_NIVEL1_5 + "=" + "'"+dni+"'", null);
+
+        String new_idGrupo = UUID.randomUUID().toString();
+
+        if (cursor.getCount()<0){
+            valuesGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, new_idGrupo);
+            valuesGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, 1);
+            valuesGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
+        }else{
+            valuesGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, new_idGrupo);
+            valuesGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, cursor.getCount()+1);
+            valuesGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
+        }
+
+        database.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_DNI_NIVEL1_5, valuesGrupo);
+
+        String[] parametros = {BDid_nivel2};
+
+        for (int i=0; i<arrayPersonalNuevoList.size(); i++){
+            valuesPersonal.put(Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2, new_idGrupo);
+            valuesPersonal.put(Utilidades.CAMPO_FUNDO_NIVEL2, BDfundo);
+            valuesPersonal.put(Utilidades.CAMPO_MODULO_NIVEL2, BDmodulo);
+            valuesPersonal.put(Utilidades.CAMPO_LOTE_NIVEL2, BDlote);
+            valuesPersonal.put(Utilidades.CAMPO_LABOR_NIVEL2, BDlabor);
+            valuesPersonal.put(Utilidades.CAMPO_PERSONAL_NIVEL2, arrayPersonalNuevoList.get(i));
+            valuesPersonal.put(Utilidades.CAMPO_DNI_NIVEL2, BDdniSupervisor);
+            valuesPersonal.put(Utilidades.CAMPO_JARRA1_NIVEL2, arrayJarra1NuevoList.get(i));
+            valuesPersonal.put(Utilidades.CAMPO_JARRA2_NIVEL2, arrayJarra2NuevoList.get(i));
+            valuesPersonal.put(Utilidades.CAMPO_FECHA_NIVEL2, obtenerFechaActual("AMERICA/Lima"));
+            valuesPersonal.put(Utilidades.CAMPO_HORA_NIVEL2, obtenerHoraActual("AMERICA/Lima"));
+
+            database.update(Utilidades.TABLA_NIVEL2, valuesPersonal, Utilidades.CAMPO_ID_NIVEL2+"=?",parametros);
+            Toast.makeText(this, "Datos Actualizados!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(TercerNivelAgregarPersonal.this, SegundoNivelWelcome.class);
+            startActivity(intent);
         }
     }
 

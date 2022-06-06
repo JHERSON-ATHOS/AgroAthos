@@ -587,23 +587,40 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                 lvPersonal.setAdapter(adapter);
 
             }else{
-                Toast.makeText(this, "Registrado", Toast.LENGTH_SHORT).show();
 
                 if (valorPersonal.isEmpty()){
-                    arrayPersonal.add(intentResult.getContents());
-                    valorPersonal = intentResult.getContents();
-                    iniciarScanJarra();
+                    if (valorPersonal.contains(intentResult.getContents())){
+                        Toast.makeText(this, "Personal Duplicado", Toast.LENGTH_SHORT).show();
+                        iniciarScanJarra();
+                    }else{
+                        Toast.makeText(this, "Personal Registrado", Toast.LENGTH_SHORT).show();
+                        arrayPersonal.add(intentResult.getContents());
+                        valorPersonal = intentResult.getContents();
+                        iniciarScanJarra();
+                    }
                 }else{
                     contadorJarras += 1;
 
                     if (valorJarra1.isEmpty()){
-                        arrayJarras1.add(intentResult.getContents());
-                        valorJarra1 = intentResult.getContents();
-                        iniciarScanJarra();
+                        if (valorJarra1.contains(intentResult.getContents())){
+                            Toast.makeText(this, "Jarra Duplicada", Toast.LENGTH_SHORT).show();
+                            iniciarScanJarra();
+                        }else{
+                            Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
+                            arrayJarras1.add(intentResult.getContents());
+                            valorJarra1 = intentResult.getContents();
+                            iniciarScanJarra();
+                        }
                     }else{
-                        arrayJarras2.add(intentResult.getContents());
-                        valorJarra2 = intentResult.getContents();
-                        iniciarScanJarra();
+                        if (valorJarra2.contains(intentResult.getContents())){
+                            Toast.makeText(this, "Jarra Duplicada", Toast.LENGTH_SHORT).show();
+                            iniciarScanJarra();
+                        }else{
+                            Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
+                            arrayJarras2.add(intentResult.getContents());
+                            valorJarra2 = intentResult.getContents();
+                            iniciarScanJarra();
+                        }
                     }
                 }
             }

@@ -53,15 +53,27 @@ public class AdaptadorListarGrupoTrabajo extends BaseAdapter {
         TextView tvid = vista.findViewById(R.id.tvIdCONTENT_RRHH_TAREO_ARANDANO);
         TextView tvidgrupo = vista.findViewById(R.id.tvIdGrupoCONTENT_RRHH_TAREO_ARANDANO);
         TextView tvdni = vista.findViewById(R.id.tvDniCONTENT_RRHH_TAREO_ARANDANO);
-        Button btnAsignar = vista.findViewById(R.id.btnEditarGrupoCONTENT_RRHH_TAREO_ARANDANO);
+        Button btnEditar = vista.findViewById(R.id.btnEditarGrupoCONTENT_RRHH_TAREO_ARANDANO);
+        Button btnDuplicar = vista.findViewById(R.id.btnDuplicarGrupoCONTENT_RRHH_TAREO_ARANDANO);
 
         tvid.setText("GRUPO ".concat(e_grupos.getContadorGrupo()));
         tvidgrupo.setText(e_grupos.getId_grupo());
         tvdni.setText("SUPERVISOR: ".concat(e_grupos.getAnexo_supervisor()));
 
-        btnAsignar.setOnClickListener(view->{
+        btnEditar.setOnClickListener(view->{
             Intent intent = new Intent(vista.getContext(), TercerNivelAgregarPersonal.class);
             Bundle bundle= new Bundle();
+            bundle.putInt("valor", 1);
+            bundle.putString("idGrupo", e_grupos.getId_grupo());
+            bundle.putString("dni", e_grupos.getAnexo_supervisor());
+            intent.putExtras(bundle);
+            vista.getContext().startActivity(intent);
+        });
+
+        btnDuplicar.setOnClickListener(view -> {
+            Intent intent = new Intent(vista.getContext(), TercerNivelAgregarPersonal.class);
+            Bundle bundle= new Bundle();
+            bundle.putInt("valor", 2);
             bundle.putString("idGrupo", e_grupos.getId_grupo());
             bundle.putString("dni", e_grupos.getAnexo_supervisor());
             intent.putExtras(bundle);
