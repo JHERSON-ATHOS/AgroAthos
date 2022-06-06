@@ -554,7 +554,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                 iniciarScanPersonal();
                 valorPersonal = "";
                 valorJarra1 = "";
-                valorJarra2 = "";
+                valorJarra2 = "";//
                 contadorJarras = 0;
             }else{
                 IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarGrupoTrabajo.this);
