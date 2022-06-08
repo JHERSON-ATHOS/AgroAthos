@@ -2,6 +2,8 @@ package com.example.agroathos.BD_SQLITE.UTILIDADES;
 
 public class Utilidades {
 
+    public static final int VERSION_APP = 2;
+
     //DATOS NIVEL1
     public static final String TABLA_NIVEL1 = "RRHH_NIVEL1";
     public static final String CAMPO_ID_NIVEL1 = "id";
@@ -39,12 +41,15 @@ public class Utilidades {
     public static final String CAMPO_JARRA1_NIVEL2 = "jarra_uno";
     public static final String CAMPO_JARRA2_NIVEL2 = "jarra_dos";
     public static final String CAMPO_FECHA_NIVEL2 = "fecha";
-    public static final String CAMPO_HORA_NIVEL2 = "hora";
+    public static final String CAMPO_HORA_INICIO_NIVEL2 = "hora_inicio";
+    public static final String CAMPO_HORA_FIN_NIVEL2 = "hora_fin";
+    public static final String CAMPO_ESTADO_NIVEL2 = "estado";
     public static final String CREAR_TABLA_NIVEL2 = "CREATE TABLE "+TABLA_NIVEL2+" " +
             "("+CAMPO_ID_NIVEL2+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CAMPO_ANEXO_GRUPO_NIVEL2+" TEXT,"
             +CAMPO_FUNDO_NIVEL2+" TEXT, "+CAMPO_MODULO_NIVEL2 +" TEXT, "+CAMPO_LOTE_NIVEL2+" TEXT, "
-            +CAMPO_LABOR_NIVEL2+" TEXT,"+CAMPO_PERSONAL_NIVEL2+ " TEXT, "+CAMPO_DNI_NIVEL2+" TEXT, "
-            + CAMPO_JARRA1_NIVEL2+" TEXT, "+CAMPO_JARRA2_NIVEL2+ " TEXT, "+CAMPO_FECHA_NIVEL2+" TEXT, " +CAMPO_HORA_NIVEL2+" TEXT)";
+            +CAMPO_LABOR_NIVEL2+" TEXT,"+CAMPO_PERSONAL_NIVEL2+" TEXT, "+CAMPO_DNI_NIVEL2+" TEXT, "
+            + CAMPO_JARRA1_NIVEL2+" TEXT, "+CAMPO_JARRA2_NIVEL2+" TEXT, "+CAMPO_FECHA_NIVEL2+" TEXT, "
+            +CAMPO_HORA_INICIO_NIVEL2+" TEXT, "+CAMPO_HORA_FIN_NIVEL2+" TEXT, "+CAMPO_ESTADO_NIVEL2+" TEXT)";
 
     //DATOS DE DESTAJO
     public static final String TABLA_DESTAJO_NIVEL1 = "RRHH_DESTAJO";

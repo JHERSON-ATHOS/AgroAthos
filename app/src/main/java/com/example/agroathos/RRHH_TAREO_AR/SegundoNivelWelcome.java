@@ -60,7 +60,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.white));
 
-        conn = new ConexionSQLiteHelper(getApplicationContext(), "athos0", null, 1);
+        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
         fabRegistrar = findViewById(R.id.fbAgregarTrabajoRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL);
         listView = findViewById(R.id.lvGruposTrabajoRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL);

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,14 +18,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
+import com.example.agroathos.ENTIDADES.E_PersonalTrabajo;
 import com.example.agroathos.MainActivity;
 import com.example.agroathos.R;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
+import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListarPersonalTrabajo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -41,13 +48,17 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     FloatingActionButton fbRegistrarPersonal;
     ListView lvPersonal;
     Button btnRegistrarPersonal;
+    EditText etHoraInicio, etHoraFinal;
 
     ArrayList<String> arrayPersonal = new ArrayList<>();
     ArrayList<String> arrayJarras1 = new ArrayList<>();
     ArrayList<String> arrayJarras2 = new ArrayList<>();
-    ArrayList<String> arrayInformacion = new ArrayList<>();
     ArrayList<String> arrayModulo = new ArrayList<>();
     ArrayList<String> arrayLote = new ArrayList<>();
+
+    ArrayList<E_PersonalTrabajo> personalTrabajoArrayList = new ArrayList<>();
+    AdaptadorListarPersonalTrabajo adaptadorListarPersonalTrabajo;
+    int contador = 1;
 
     String zona = "";
     String fundo = "";
@@ -66,16 +77,20 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     ContentValues valuesGrupo = new ContentValues();
     ContentValues valuesPersonal = new ContentValues();
 
+    private int hora, minutos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segundo_nivel_registrar_grupo_trabajo);
 
-        conn = new ConexionSQLiteHelper(this,"athos0",null,1);
+        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
         spModulo = findViewById(R.id.spModuloRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         spLote = findViewById(R.id.spLoteRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         spLabor = findViewById(R.id.spLaborRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
+        etHoraInicio = findViewById(R.id.etHoraInicioRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
+        etHoraFinal = findViewById(R.id.etHoraFinalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         lvPersonal = findViewById(R.id.lvPersonalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         btnRegistrarPersonal = findViewById(R.id.btnRegistrarPersonalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         fbRegistrarPersonal = findViewById(R.id.fbRegistrarPersonalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
@@ -89,9 +104,41 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
         cargarModulo();
         cargarLabores();
 
-        fbRegistrarPersonal.setOnClickListener(view -> iniciarScanPersonal() );
-
+        fbRegistrarPersonal.setOnClickListener(view -> {
+            if (etHoraInicio.getText().toString().isEmpty() || etHoraFinal.getText().toString().isEmpty()){
+                Toast.makeText(this, "Selecciona un rango de horas", Toast.LENGTH_SHORT).show();
+            }else{
+                iniciarScanPersonal();
+            }
+        } );
         btnRegistrarPersonal.setOnClickListener(view -> registrarPersonal() );
+
+        etHoraInicio.setOnClickListener(view ->{
+            final Calendar c = Calendar.getInstance();
+            hora = c.get(Calendar.HOUR_OF_DAY);
+            minutos = c.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    etHoraInicio.setText(hourOfDay+":"+minute);
+                }
+            }, hora, minutos, false);
+            timePickerDialog.show();
+        });
+        etHoraFinal.setOnClickListener(view ->{
+            final Calendar c = Calendar.getInstance();
+            hora = c.get(Calendar.HOUR_OF_DAY);
+            minutos = c.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    etHoraFinal.setText(hourOfDay+":"+minute);
+                }
+            }, hora, minutos, false);
+            timePickerDialog.show();
+        });
 
         spModulo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -498,7 +545,9 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             valuesPersonal.put(Utilidades.CAMPO_JARRA1_NIVEL2, arrayJarras1.get(i));
             valuesPersonal.put(Utilidades.CAMPO_JARRA2_NIVEL2, arrayJarras2.get(i));
             valuesPersonal.put(Utilidades.CAMPO_FECHA_NIVEL2, obtenerFechaActual("AMERICA/Lima"));
-            valuesPersonal.put(Utilidades.CAMPO_HORA_NIVEL2, obtenerHoraActual("AMERICA/Lima"));
+            valuesPersonal.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, etHoraInicio.getText().toString());
+            valuesPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, etHoraFinal.getText().toString());
+            valuesPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
 
             Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
 
@@ -506,20 +555,9 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                 Toast.makeText(this, "Datos Registrados!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(SegundoNivelRegistrarGrupoTrabajo.this, SegundoNivelWelcome.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("zona", zona);
-                bundle.putString("fundo", fundo);
-                bundle.putString("dni", dni);
-                intent.putExtras(bundle);
-
                 startActivity(intent);
             }
         }
-    }
-
-    public static String obtenerHoraActual(String zonaHoraria) {
-        String formato = "HH:mm:ss";
-        return obtenerFechaConFormato(formato, zonaHoraria);
     }
 
     public static String obtenerFechaActual(String zonaHoraria) {
@@ -550,7 +588,8 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     private void iniciarScanJarra(){
         if (!valorPersonal.isEmpty()){
             if (contadorJarras == 2){
-                arrayInformacion.add(valorPersonal.concat(" - ").concat(valorJarra1).concat(" - ").concat(valorJarra2));
+                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal, valorJarra1.concat(" - ").concat(valorJarra2), etHoraInicio.getText().toString(), etHoraFinal.getText().toString()));
+                //arrayInformacion.add(valorPersonal.concat(" - ").concat(valorJarra1).concat(" - ").concat(valorJarra2));
                 iniciarScanPersonal();
                 valorPersonal = "";
                 valorJarra1 = "";
@@ -577,15 +616,19 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
 
         if (intentResult != null){
             if (intentResult.getContents() == null){
-                Toast.makeText(this, "Lectura Cancelada", Toast.LENGTH_SHORT).show();
-                contadorJarras = 0;
-                valorPersonal = "";
-                valorJarra1 = "";
-                valorJarra2 = "";
 
-                ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayInformacion);
-                lvPersonal.setAdapter(adapter);
-
+                if (valorPersonal.isEmpty() && valorJarra1.isEmpty() && valorJarra2.isEmpty()){
+                    Toast.makeText(this, "saliendo", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "Te faltaron llenar datos.", Toast.LENGTH_SHORT).show();
+                    contadorJarras = 0;
+                    valorPersonal = "";
+                    valorJarra1 = "";
+                    valorJarra2 = "";
+                    iniciarScanPersonal();
+                }
+                adaptadorListarPersonalTrabajo = new AdaptadorListarPersonalTrabajo(this, personalTrabajoArrayList);
+                lvPersonal.setAdapter(adaptadorListarPersonalTrabajo);
             }else{
                 if (valorPersonal.isEmpty()){
                     if (valorPersonal.contains(intentResult.getContents())){
@@ -595,6 +638,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                         Toast.makeText(this, "Personal Registrado", Toast.LENGTH_SHORT).show();
                         arrayPersonal.add(intentResult.getContents());
                         valorPersonal = intentResult.getContents();
+
                         iniciarScanJarra();
                     }
                 }else{

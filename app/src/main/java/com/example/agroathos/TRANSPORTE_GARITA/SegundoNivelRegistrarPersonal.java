@@ -62,7 +62,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segundo_nivel_registrar_personal);
 
-        conn = new ConexionSQLiteHelper(getApplicationContext(), "athos0", null, 1);
+        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
         tvFecha = findViewById(R.id.tvFechaBusGARITA);
         etPlaca = findViewById(R.id.etPlacaBusGARITA);

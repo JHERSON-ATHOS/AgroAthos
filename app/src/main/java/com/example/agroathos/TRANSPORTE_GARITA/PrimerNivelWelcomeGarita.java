@@ -218,6 +218,13 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        builder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(PrimerNivelWelcomeGarita.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         builder.create().show();
     }
 

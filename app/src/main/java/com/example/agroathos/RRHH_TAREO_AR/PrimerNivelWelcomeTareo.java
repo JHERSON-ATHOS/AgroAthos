@@ -67,7 +67,7 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primer_nivel_welcome);
 
-        conn = new ConexionSQLiteHelper(this,"athos0",null,1);
+        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
         preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
 
         spZona = findViewById(R.id.spZonaRRHH_TAREO_ARANDANO_PRIMER_NIVEL);

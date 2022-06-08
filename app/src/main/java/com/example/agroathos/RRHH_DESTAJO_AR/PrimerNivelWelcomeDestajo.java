@@ -48,7 +48,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primer_nivel_welcome_destajo);
 
-        conn = new ConexionSQLiteHelper(getApplicationContext(), "athos0", null, 1);
+        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
         tvFecha = findViewById(R.id.tvFechaRRHH_DESTAJO_AR);
         lvJarras = findViewById(R.id.lvJarrasRRHH_DESTAJO_AR);

@@ -38,7 +38,7 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tercer_nivel_listar_registros_garita);
 
-        conn = new ConexionSQLiteHelper(getApplicationContext(), "athos0", null, 1);
+        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
         lvData = findViewById(R.id.lvDataRegistradaGARITA);
         lvDataBus = findViewById(R.id.lvDataBusRegistradaGARITA);
@@ -128,10 +128,11 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
     }
 
     private void listarRegistroPersonalHoras(String tipo){
+        arrayListData.clear();
+        lvData.setAdapter(null);
         lvDataBus.setVisibility(View.GONE);
         lvData.setVisibility(View.VISIBLE);
         Toast.makeText(this, "Listando el Registro de Personal", Toast.LENGTH_SHORT).show();
-        arrayListData.clear();
 
         SQLiteDatabase database = conn.getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL2+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL2+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"' AND "+Utilidades.CAMPO_GARITA_TIPO_HORA_NIVEL2+"="+"'"+tipo+"'", null);
@@ -148,10 +149,11 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
     }
 
     private void listarRegistroUnidad(){
+        arrayListData.clear();
+        lvData.setAdapter(null);
         lvDataBus.setVisibility(View.GONE);
         lvData.setVisibility(View.VISIBLE);
         Toast.makeText(this, "Listando el Registro de Unidad", Toast.LENGTH_SHORT).show();
-        arrayListData.clear();
 
         SQLiteDatabase database = conn.getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL3+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL3+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);
