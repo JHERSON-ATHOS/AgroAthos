@@ -51,14 +51,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Editar Grupo" />
+                    android:text="Editar" />
 
                 <Button
                     android:id="@+id/btnDuplicarGrupoCONTENT_RRHH_TAREO_ARANDANO"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Duplicar Grupo" />
+                    android:text="Duplicar" />
+
+                <Button
+                    android:id="@+id/btnConfigurarGrupoCONTENT_RRHH_TAREO_ARANDANO"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="CONFIGURAR" />
 
             </LinearLayout>
         </LinearLayout>

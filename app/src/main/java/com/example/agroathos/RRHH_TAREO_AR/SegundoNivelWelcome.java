@@ -48,7 +48,10 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     String fundo = "";
     String cultivo = "";
     String dni = "";
+
+    //DATOS DE LA BD
     String idGrupo = "";
+    String idSupervisor = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             if (cursor.moveToFirst()){
                 do{
                     idGrupo = cursor.getString(1);
+                    idSupervisor = cursor.getString(7);
                 }while (cursor.moveToNext());
             }
         }
@@ -97,7 +101,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
         E_Grupos e_grupos = null;
         arrayGruposList = new ArrayList<E_Grupos>();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1_5 + " WHERE " + Utilidades.CAMPO_ID_GRUPO_NIVEL1_5 + "=" + "'"+idGrupo+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1_5 + " WHERE " + Utilidades.CAMPO_DNI_NIVEL1_5 + "=" + "'"+idSupervisor+"'", null);
 
         if (cursor != null){
             while (cursor.moveToNext()) {
@@ -115,13 +119,6 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     private void irRegistoGrupo(){
         Intent intent = new Intent(SegundoNivelWelcome.this, SegundoNivelRegistrarGrupoTrabajo.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("zona", zona);
-        bundle.putString("fundo", fundo);
-        bundle.putString("dni", dni);
-        intent.putExtras(bundle);
-
         startActivity(intent);
     }
 
@@ -156,6 +153,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+        Intent intent = new Intent(SegundoNivelWelcome.this, MainActivity.class);
+        startActivity(intent);
     }
 }

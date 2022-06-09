@@ -19,35 +19,43 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".TRANSPORTE_GARITA.TercerNivelListarRegistrosGarita"
-            android:exported="false"/>
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RRHH_TAREO_AR.TercerNivelAgregarPersonal"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TRANSPORTE_GARITA.SegundoNivelRegistrarPersonal"
-            android:exported="false"/>
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TRANSPORTE_GARITA.PrimerNivelWelcomeGarita"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RRHH_TAREO_AR.SegundoNivelRegistrarGrupoTrabajo"
-            android:exported="false"/>
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RRHH_TAREO_AR.SegundoNivelWelcome"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RRHH_TAREO_AR.PrimerNivelWelcomeTareo"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

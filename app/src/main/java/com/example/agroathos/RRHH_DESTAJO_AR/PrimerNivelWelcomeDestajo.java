@@ -1,9 +1,11 @@
 package com.example.agroathos.RRHH_DESTAJO_AR;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,7 +58,16 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
         tvFecha.setText(obtenerFechaActual("AMERICA/Lima"));
 
-        iniciarScan();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("SELECCION DE LABOR");
+        builder.setCancelable(false);
+        builder.setPositiveButton("COSECHA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                iniciarScan();
+            }
+        });
+        builder.create().show();
 
         btnRegistrar.setOnClickListener(view -> registrarJarras());
     }

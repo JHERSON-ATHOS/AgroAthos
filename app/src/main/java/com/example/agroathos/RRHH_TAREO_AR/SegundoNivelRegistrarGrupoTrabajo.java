@@ -618,51 +618,136 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             if (intentResult.getContents() == null){
 
                 if (valorPersonal.isEmpty() && valorJarra1.isEmpty() && valorJarra2.isEmpty()){
-                    Toast.makeText(this, "saliendo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Listando los registros", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(this, "Te faltaron llenar datos.", Toast.LENGTH_SHORT).show();
-                    contadorJarras = 0;
-                    valorPersonal = "";
-                    valorJarra1 = "";
-                    valorJarra2 = "";
-                    iniciarScanPersonal();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("ERROR");
+                    builder.setMessage("Te faltaron llenar datos.");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            contadorJarras = 0;
+                            valorPersonal = "";
+                            valorJarra1 = "";
+                            valorJarra2 = "";
+                            arrayPersonal.clear();
+                            iniciarScanPersonal();
+                        }
+                    });
+                    builder.create().show();
                 }
                 adaptadorListarPersonalTrabajo = new AdaptadorListarPersonalTrabajo(this, personalTrabajoArrayList);
                 lvPersonal.setAdapter(adaptadorListarPersonalTrabajo);
             }else{
                 if (valorPersonal.isEmpty()){
                     if (valorPersonal.contains(intentResult.getContents())){
-                        Toast.makeText(this, "Personal Duplicado", Toast.LENGTH_SHORT).show();
-                        iniciarScanJarra();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("ERROR");
+                        builder.setMessage("El personal ya está registrado.");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                iniciarScanJarra();
+                            }
+                        });
+                        builder.create().show();
                     }else{
-                        Toast.makeText(this, "Personal Registrado", Toast.LENGTH_SHORT).show();
-                        arrayPersonal.add(intentResult.getContents());
-                        valorPersonal = intentResult.getContents();
-
-                        iniciarScanJarra();
+                        if (arrayPersonal.contains(intentResult.getContents())){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setTitle("ERROR");
+                            builder.setMessage("El personal ya se encuentra en la lista.");
+                            builder.setCancelable(false);
+                            builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    iniciarScanJarra();
+                                }
+                            });
+                            builder.create().show();
+                        }else{
+                            Toast.makeText(this, "Personal Registrado", Toast.LENGTH_SHORT).show();
+                            arrayPersonal.add(intentResult.getContents());
+                            valorPersonal = intentResult.getContents();
+                            iniciarScanJarra();
+                        }
                     }
                 }else{
                     if (valorJarra1.isEmpty()){
                         if (valorJarra1.contains(intentResult.getContents()) || valorJarra2.contains(intentResult.getContents())){
-                            Toast.makeText(this, "Jarra Duplicada", Toast.LENGTH_SHORT).show();
-                            iniciarScanJarra();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setTitle("ERROR");
+                            builder.setMessage("La jarra ya se encuentra registrada.");
+                            builder.setCancelable(false);
+                            builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    iniciarScanJarra();
+                                }
+                            });
+                            builder.create().show();
                         }else{
-                            contadorJarras += 1;
-                            Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
-                            arrayJarras1.add(intentResult.getContents());
-                            valorJarra1 = intentResult.getContents();
-                            iniciarScanJarra();
+                            if (intentResult.getContents().length()>4){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                                builder.setTitle("ERROR");
+                                builder.setMessage("El límite de jarra es 9999.");
+                                builder.setCancelable(false);
+                                builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        iniciarScanJarra();
+                                    }
+                                });
+                                builder.create().show();
+                            }else{
+                                contadorJarras += 1;
+                                Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
+                                arrayJarras1.add(intentResult.getContents());
+                                valorJarra1 = intentResult.getContents();
+                                iniciarScanJarra();
+                            }
                         }
                     }else{
                         if (valorJarra1.contains(intentResult.getContents()) || valorJarra2.contains(intentResult.getContents())){
-                            Toast.makeText(this, "Jarra Duplicada", Toast.LENGTH_SHORT).show();
-                            iniciarScanJarra();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setTitle("ERROR");
+                            builder.setMessage("La jarra ya se encuentra registrada.");
+                            builder.setCancelable(false);
+                            builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    iniciarScanJarra();
+                                }
+                            });
+                            builder.create().show();
                         }else{
-                            contadorJarras += 1;
-                            Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
-                            arrayJarras2.add(intentResult.getContents());
-                            valorJarra2 = intentResult.getContents();
-                            iniciarScanJarra();
+                            if (intentResult.getContents().length()>4){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                                builder.setTitle("ERROR");
+                                builder.setMessage("El límite de jarra es 9999.");
+                                builder.setCancelable(false);
+                                builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        iniciarScanJarra();
+                                    }
+                                });
+                                builder.create().show();
+                            }else{
+                                contadorJarras += 1;
+                                Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
+                                arrayJarras2.add(intentResult.getContents());
+                                valorJarra2 = intentResult.getContents();
+                                iniciarScanJarra();
+                            }
                         }
                     }
                 }
