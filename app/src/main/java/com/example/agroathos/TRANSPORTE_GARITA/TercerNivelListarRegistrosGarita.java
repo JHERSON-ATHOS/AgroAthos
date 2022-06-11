@@ -68,11 +68,11 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
         arrayListData.clear();
 
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT "+Utilidades.CAMPO_GARITA_PLACA_NIVEL1_5+" FROM "+Utilidades.TABLA_GARITA_NIVEL1_5, null);
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1_5, null);
         if (cursor != null){
             if (cursor.moveToFirst()){
                 do{
-                    arrayListData.add(cursor.getString(0));
+                    arrayListData.add(cursor.getString(3));
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayListData);
                     lvDataBus.setAdapter(adapter);
                 }while (cursor.moveToNext());
@@ -83,24 +83,32 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
 
     private void listarRegistroBusPersonal(String placa){
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1+" WHERE "+Utilidades.CAMPO_GARITA_ANEXO_PLACA_NIVEL1+"="+"'"+placa+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_GARITA_PLACA_NIVEL1_5+"="+"'"+placa+"'", null);
         if (cursor != null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            final View view = getLayoutInflater().inflate(R.layout.content_transporte_garita_listar_personal_bus, null, false);
-            ListView lvDataPersonal = view.findViewById(R.id.lvDataPersonalBusTRANSPORTE_GARITA);
-            ArrayList<String> arrayList = new ArrayList<>();
             if (cursor.moveToFirst()){
-                do{
-                    arrayList.add(cursor.getString(4));
-                }while (cursor.moveToNext());
-            }
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
-            lvDataPersonal.setAdapter(adapter);
-            adapter.notifyDataSetInvalidated();
+                String anexo = cursor.getString(1);
 
-            builder.setView(view);
-            AlertDialog dialog = builder.create();
-            dialog.show();
+                Cursor cursor2 = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1+" WHERE "+Utilidades.CAMPO_GARITA_ANEXO_PLACA_NIVEL1+"="+"'"+anexo+"'", null);
+
+                if (cursor2 != null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    final View view = getLayoutInflater().inflate(R.layout.content_transporte_garita_listar_personal_bus, null, false);
+                    ListView lvDataPersonal = view.findViewById(R.id.lvDataPersonalBusTRANSPORTE_GARITA);
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    if (cursor2.moveToFirst()){
+                        do{
+                            arrayList.add(cursor2.getString(4));
+                        }while (cursor2.moveToNext());
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
+                    lvDataPersonal.setAdapter(adapter);
+                    adapter.notifyDataSetInvalidated();
+
+                    builder.setView(view);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
         }
         cursor.close();
     }
