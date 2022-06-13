@@ -57,6 +57,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     String moduloACT = "";
     String loteACT = "";
     String laborACT = "";
+    int hora = 0;
+    int minutos = 0;
 
     ConexionSQLiteHelper conn;
     ContentValues valuesEditarPersonal = new ContentValues();
@@ -110,6 +112,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         dni = bundle.getString("dni");
         valor = bundle.getInt("valor");
 
+        consultarGruposTrabajo();
+
         if (valor == 1){
             iniciarLayoutPrincipal();
             clPrincipal.setVisibility(View.VISIBLE);
@@ -117,7 +121,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         }
 
         if (valor == 2){
-            iniciarLayoutConfiguracion();
+            iniciarLayoutPrincipal();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
 
@@ -138,11 +142,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         }
 
         if (valor == 3){
-            iniciarLayoutPrincipal();
+            iniciarLayoutConfiguracion();
             clConfigurarPrincipal.setVisibility(View.VISIBLE);
         }
 
-        consultarGruposTrabajo();
     }
 
     public void iniciarLayoutPrincipal(){
@@ -153,7 +156,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         btnEditarPersona = findViewById(R.id.btnEditarPersonalNuevoRRHH_TAREO_AR);
         btnAgregarPersonal = findViewById(R.id.btnRegistrarPersonalNuevoRRHH_TAREO_AR);
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrayPersonalList);
+        ArrayAdapter adapter = new ArrayAdapter(TercerNivelConfiguracionGrupo.this, android.R.layout.simple_spinner_dropdown_item, arrayPersonalList);
         lvListadoPersonal.setAdapter(adapter);
 
         lvListadoPersonal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -184,6 +187,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         rbAbierto = findViewById(R.id.rbEstadoAbiertoActTERCER_NIVEL_RRHH_TAREO_AR);
         rbCerrado = findViewById(R.id.rbEstadoCerradoActTERCER_NIVEL_RRHH_TAREO_AR);
 
+        tvGrupo.setText(nombreGrupo);
+
         recibirFundo();
         cargarModulo();
         cargarLabores();
@@ -193,6 +198,36 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         }else if (BDestado.equals("CERRADO")){
             rbCerrado.setChecked(true);
         }
+
+        etHoraInicio.setText(BDhoraInicio);
+        etHoraFinal.setText(BDhoraFinal);
+
+        etHoraInicio.setOnClickListener(view ->{
+            final Calendar c = Calendar.getInstance();
+            hora = c.get(Calendar.HOUR_OF_DAY);
+            minutos = c.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    etHoraInicio.setText(hourOfDay+":"+minute);
+                }
+            }, hora, minutos, false);
+            timePickerDialog.show();
+        });
+        etHoraFinal.setOnClickListener(view ->{
+            final Calendar c = Calendar.getInstance();
+            hora = c.get(Calendar.HOUR_OF_DAY);
+            minutos = c.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    etHoraFinal.setText(hourOfDay+":"+minute);
+                }
+            }, hora, minutos, false);
+            timePickerDialog.show();
+        });
 
         spModulo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -565,6 +600,12 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         spLabor.setAdapter(adaptadorLabores);
     }
     private void actualizarGrupoTrabajo(){
+
+        if (etHoraInicio.getText().toString().equals("") || etHoraFinal.getText().toString().equals("")){
+            Toast.makeText(this, "Ingresa una hora", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         SQLiteDatabase database = conn.getWritableDatabase();
         String[] parametro = {BDid_nivel2};
 
@@ -624,12 +665,14 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         if (cursor != null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             final View view = getLayoutInflater().inflate(R.layout.content_rrhh_tareo_arandano_especificacion_personal, null, false);
-            EditText etHoraInicio = view.findViewById(R.id.etHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
-            EditText etHoraFinal = view.findViewById(R.id.etHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
+            TextView tvHoraInicio = view.findViewById(R.id.tvHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
+            TextView tvHoraFinal = view.findViewById(R.id.tvHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
+            Button btnHoraInicio = view.findViewById(R.id.btnHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
+            Button btnHoraFinal = view.findViewById(R.id.btnHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
             RadioButton rbAbierto = view.findViewById(R.id.rbEstadoAbiertoEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
             RadioButton rbCerrado = view.findViewById(R.id.rbEstadoCerradoEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
 
-            etHoraFinal.setOnClickListener(v ->{
+            btnHoraInicio.setOnClickListener(v ->{
                 final Calendar c = Calendar.getInstance();
                 int hora = c.get(Calendar.HOUR_OF_DAY);
                 int minutos = c.get(Calendar.MINUTE);
@@ -637,15 +680,29 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        etHoraFinal.setText(hourOfDay+":"+minute);
+                        tvHoraInicio.setText(hourOfDay+":"+minute);
+                    }
+                }, hora, minutos, false);
+                timePickerDialog.show();
+            });
+
+            btnHoraFinal.setOnClickListener(v ->{
+                final Calendar c = Calendar.getInstance();
+                int hora = c.get(Calendar.HOUR_OF_DAY);
+                int minutos = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        tvHoraFinal.setText(hourOfDay+":"+minute);
                     }
                 }, hora, minutos, false);
                 timePickerDialog.show();
             });
 
             if (cursor.moveToFirst()){
-                etHoraInicio.setText(cursor.getString(11));
-                etHoraFinal.setText(cursor.getString(12));
+                tvHoraInicio.setText(cursor.getString(11));
+                tvHoraFinal.setText(cursor.getString(12));
 
                 if (cursor.getString(13).equals("ABIERTO")){
                     rbAbierto.setChecked(true);
@@ -660,7 +717,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (rbAbierto.isChecked()){
-                        valuesEditarPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, etHoraFinal.getText().toString());
+                        valuesEditarPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, tvHoraInicio.getText().toString());
                         valuesEditarPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
 
                         String[] parametro = {BDid_nivel2};
@@ -669,7 +726,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                         dialog.dismiss();
                     }
                     if (rbCerrado.isChecked()){
-                        valuesEditarPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, etHoraFinal.getText().toString());
+                        valuesEditarPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, tvHoraFinal.getText().toString());
                         valuesEditarPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "CERRADO");
 
                         String[] parametro = {BDid_nivel2};
@@ -728,7 +785,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
 
     private void duplicarGrupoTrabajo(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorPersonal = dataObtenida.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2 + "=" + "'"+idGrupo+"'", null);
+        Cursor cursorPersonal = dataObtenida.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2 + "=" + "'"+idGrupo+"' AND "+Utilidades.CAMPO_ESTADO_NIVEL2+ "=" + "'ABIERTO'", null);
 
         ArrayList<String> arrayListPersonales = new ArrayList<>();
         String BDfundo = "";
@@ -820,7 +877,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     private void iniciarScanJarra(){
         if (!valorPersonal.isEmpty()){
             if (contadorJarras == 2){
-                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal, valorJarra1.concat(" - ").concat(valorJarra2), BDhoraInicio, BDhoraFinal));
+                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal, valorJarra1.concat(" - ").concat(valorJarra2)));
                 //arrayInformacion.add(valorPersonal.concat(" - ").concat(valorJarra1).concat(" - ").concat(valorJarra2));
                 iniciarScanPersonal();
                 valorPersonal = "";

@@ -4,15 +4,11 @@ public class E_PersonalTrabajo {
     String id;
     String nombre;
     String jarras;
-    String hora_inicio;
-    String hora_final;
 
-    public E_PersonalTrabajo(String id, String nombre, String jarras, String hora_inicio, String hora_final) {
+    public E_PersonalTrabajo(String id, String nombre, String jarras) {
         this.id = id;
         this.nombre = nombre;
         this.jarras = jarras;
-        this.hora_inicio = hora_inicio;
-        this.hora_final = hora_final;
     }
 
     public String getId() {
@@ -39,19 +35,4 @@ public class E_PersonalTrabajo {
         this.jarras = jarras;
     }
 
-    public String getHora_inicio() {
-        return hora_inicio;
-    }
-
-    public void setHora_inicio(String hora_inicio) {
-        this.hora_inicio = hora_inicio;
-    }
-
-    public String getHora_final() {
-        return hora_final;
-    }
-
-    public void setHora_final(String hora_final) {
-        this.hora_final = hora_final;
-    }
 }

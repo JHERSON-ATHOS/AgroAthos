@@ -2,16 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:layout_margin="10dp"
+        android:id="@+id/cvContentTareo"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        app:contentPadding="10dp"
         app:cardBackgroundColor="@color/crema"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        app:contentPadding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,26 +29,26 @@
                 android:id="@+id/tvIdGrupoCONTENT_RRHH_TAREO_ARANDANO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvIdCONTENT_RRHH_TAREO_ARANDANO"
                 android:layout_width="match_parent"
-                android:textStyle="bold|italic"
+                android:layout_height="wrap_content"
                 android:text="GRUPO 1"
-                android:textSize="30sp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:layout_height="wrap_content"/>
+                android:textSize="30sp"
+                android:textStyle="bold|italic" />
 
             <TextView
                 android:id="@+id/tvDniCONTENT_RRHH_TAREO_ARANDANO"
                 android:layout_width="match_parent"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:layout_margin="10dp"
                 android:layout_height="wrap_content"
-                android:text="SUPERVISOR: 24152365" />
+                android:layout_margin="10dp"
+                android:text="SUPERVISOR: 24152365"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

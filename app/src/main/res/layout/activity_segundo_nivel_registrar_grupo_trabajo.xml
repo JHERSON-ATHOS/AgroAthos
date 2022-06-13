@@ -42,7 +42,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
@@ -50,23 +50,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spLaborRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO">
 
-        <EditText
-            android:id="@+id/etHoraInicioRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:ems="10"
-            android:hint="Hora Inicio"
-            android:inputType="time" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnHoraInicioRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hora Inicio"/>
+            <TextView
+                android:id="@+id/tvHoraInicioRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO"
+                android:text="Hora inicio"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/etHoraFinalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:ems="10"
-            android:hint="Hora Final"
-            android:inputType="time" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnHoraFinalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hora Final"/>
+            <TextView
+                android:id="@+id/tvHoraFinalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO"
+                android:text="Hora Final"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -97,18 +116,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Jarras" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="H. Inicio" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="H. Final" />
 
     </LinearLayout>
 

@@ -22,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -46,9 +47,9 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
 
     Spinner spModulo, spLote, spLabor;
     FloatingActionButton fbRegistrarPersonal;
+    Button btnRegistrarPersonal, btnHoraInicio, btnHoraFinal;
     ListView lvPersonal;
-    Button btnRegistrarPersonal;
-    EditText etHoraInicio, etHoraFinal;
+    TextView tvHoraInicio, tvHoraFinal;
 
     ArrayList<String> arrayPersonal = new ArrayList<>();
     ArrayList<String> arrayJarras1 = new ArrayList<>();
@@ -89,8 +90,10 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
         spModulo = findViewById(R.id.spModuloRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         spLote = findViewById(R.id.spLoteRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         spLabor = findViewById(R.id.spLaborRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
-        etHoraInicio = findViewById(R.id.etHoraInicioRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
-        etHoraFinal = findViewById(R.id.etHoraFinalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
+        btnHoraInicio = findViewById(R.id.btnHoraInicioRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
+        btnHoraFinal = findViewById(R.id.btnHoraFinalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
+        tvHoraInicio = findViewById(R.id.tvHoraInicioRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
+        tvHoraFinal = findViewById(R.id.tvHoraFinalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         lvPersonal = findViewById(R.id.lvPersonalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         btnRegistrarPersonal = findViewById(R.id.btnRegistrarPersonalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         fbRegistrarPersonal = findViewById(R.id.fbRegistrarPersonalRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
@@ -105,7 +108,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
         cargarLabores();
 
         fbRegistrarPersonal.setOnClickListener(view -> {
-            if (etHoraInicio.getText().toString().isEmpty() || etHoraFinal.getText().toString().isEmpty()){
+            if (tvHoraInicio.getText().toString().isEmpty() || tvHoraFinal.getText().toString().isEmpty()){
                 Toast.makeText(this, "Selecciona un rango de horas", Toast.LENGTH_SHORT).show();
             }else{
                 iniciarScanPersonal();
@@ -114,7 +117,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
 
         btnRegistrarPersonal.setOnClickListener(view -> registrarPersonal() );
 
-        etHoraInicio.setOnClickListener(view ->{
+        btnHoraInicio.setOnClickListener(view ->{
             final Calendar c = Calendar.getInstance();
             hora = c.get(Calendar.HOUR_OF_DAY);
             minutos = c.get(Calendar.MINUTE);
@@ -122,12 +125,12 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    etHoraInicio.setText(hourOfDay+":"+minute);
+                    tvHoraInicio.setText(hourOfDay+":"+minute);
                 }
             }, hora, minutos, false);
             timePickerDialog.show();
         });
-        etHoraFinal.setOnClickListener(view ->{
+        btnHoraFinal.setOnClickListener(view ->{
             final Calendar c = Calendar.getInstance();
             hora = c.get(Calendar.HOUR_OF_DAY);
             minutos = c.get(Calendar.MINUTE);
@@ -135,7 +138,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    etHoraFinal.setText(hourOfDay+":"+minute);
+                    tvHoraFinal.setText(hourOfDay+":"+minute);
                 }
             }, hora, minutos, false);
             timePickerDialog.show();
@@ -546,8 +549,8 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             valuesPersonal.put(Utilidades.CAMPO_JARRA1_NIVEL2, arrayJarras1.get(i));
             valuesPersonal.put(Utilidades.CAMPO_JARRA2_NIVEL2, arrayJarras2.get(i));
             valuesPersonal.put(Utilidades.CAMPO_FECHA_NIVEL2, obtenerFechaActual("AMERICA/Lima"));
-            valuesPersonal.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, etHoraInicio.getText().toString());
-            valuesPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, etHoraFinal.getText().toString());
+            valuesPersonal.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, tvHoraInicio.getText().toString());
+            valuesPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, tvHoraFinal.getText().toString());
             valuesPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
 
             Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
@@ -589,7 +592,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     private void iniciarScanJarra(){
         if (!valorPersonal.isEmpty()){
             if (contadorJarras == 2){
-                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal, valorJarra1.concat(" - ").concat(valorJarra2), etHoraInicio.getText().toString(), etHoraFinal.getText().toString()));
+                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal, valorJarra1.concat(" - ").concat(valorJarra2)));
                 //arrayInformacion.add(valorPersonal.concat(" - ").concat(valorJarra1).concat(" - ").concat(valorJarra2));
                 iniciarScanPersonal();
                 valorPersonal = "";

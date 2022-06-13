@@ -13,20 +13,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/etHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:enabled="false"
-            android:text="Hora Inicio" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/etHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/btnHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL"
+                android:text="Hora Inicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
             android:layout_weight="1"
-            android:hint="Hora Final" />
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL"
+                android:text="Hora Final"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
