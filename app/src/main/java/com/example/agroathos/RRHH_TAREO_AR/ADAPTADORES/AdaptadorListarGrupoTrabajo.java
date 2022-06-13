@@ -9,11 +9,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.agroathos.ENTIDADES.E_Grupos;
 import com.example.agroathos.R;
-import com.example.agroathos.RRHH_TAREO_AR.TercerNivelAgregarPersonal;
+import com.example.agroathos.RRHH_TAREO_AR.TercerNivelConfiguracionGrupo;
 
 import java.util.ArrayList;
 
@@ -55,13 +54,14 @@ public class AdaptadorListarGrupoTrabajo extends BaseAdapter {
         TextView tvdni = vista.findViewById(R.id.tvDniCONTENT_RRHH_TAREO_ARANDANO);
         Button btnEditar = vista.findViewById(R.id.btnEditarGrupoCONTENT_RRHH_TAREO_ARANDANO);
         Button btnDuplicar = vista.findViewById(R.id.btnDuplicarGrupoCONTENT_RRHH_TAREO_ARANDANO);
+        Button btnConfigurar = vista.findViewById(R.id.btnConfigurarGrupoCONTENT_RRHH_TAREO_ARANDANO);
 
         tvid.setText("GRUPO ".concat(e_grupos.getContadorGrupo()));
         tvidgrupo.setText(e_grupos.getId_grupo());
         tvdni.setText("SUPERVISOR: ".concat(e_grupos.getAnexo_supervisor()));
 
         btnEditar.setOnClickListener(view->{
-            Intent intent = new Intent(vista.getContext(), TercerNivelAgregarPersonal.class);
+            Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
             Bundle bundle= new Bundle();
             bundle.putInt("valor", 1);
             bundle.putString("idGrupo", e_grupos.getId_grupo());
@@ -71,9 +71,20 @@ public class AdaptadorListarGrupoTrabajo extends BaseAdapter {
         });
 
         btnDuplicar.setOnClickListener(view -> {
-            Intent intent = new Intent(vista.getContext(), TercerNivelAgregarPersonal.class);
+            Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
             Bundle bundle= new Bundle();
             bundle.putInt("valor", 2);
+            bundle.putString("idGrupo", e_grupos.getId_grupo());
+            bundle.putString("dni", e_grupos.getAnexo_supervisor());
+            intent.putExtras(bundle);
+            vista.getContext().startActivity(intent);
+        });
+
+        btnConfigurar.setOnClickListener(view -> {
+            Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
+            Bundle bundle= new Bundle();
+            bundle.putInt("valor", 3);
+            bundle.putString("tvNombreGrupo", tvid.getText().toString());
             bundle.putString("idGrupo", e_grupos.getId_grupo());
             bundle.putString("dni", e_grupos.getAnexo_supervisor());
             intent.putExtras(bundle);

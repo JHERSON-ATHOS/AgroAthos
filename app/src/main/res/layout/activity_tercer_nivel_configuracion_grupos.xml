@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RRHH_TAREO_AR.TercerNivelConfiguracionGrupo">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPrincipalRRHH_TAREO_AR"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ListView
+            android:id="@+id/lvListadoPersonalACTTercerlNivelRRHH_TAREO_ARANDANO"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/fbAgregarPersonalNuevoRRHH_TAREO_AR"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ListView
+            android:id="@+id/lvListadoPersonalRegTercerlNivelRRHH_TAREO_ARANDANO"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/fbAgregarPersonalNuevoRRHH_TAREO_AR"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnEditarPersonalNuevoRRHH_TAREO_AR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="TERMINAR EDICION"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fbAgregarPersonalNuevoRRHH_TAREO_AR"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnRegistrarPersonalNuevoRRHH_TAREO_AR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="REGISTRAR GRUPO DE TRABAJO"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fbAgregarPersonalNuevoRRHH_TAREO_AR"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbAgregarPersonalNuevoRRHH_TAREO_AR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:src="@drawable/ic_welcome_segundo_nivel_registrar_personal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.923"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clConfiguracionPrincipalRRHH_TAREO_AR"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvGrupoActTERCER_NIVEL_RRHH_TAREO_AR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="GRUPO"
+            android:textSize="50sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spModuloActTERCER_NIVEL_RRHH_TAREO_AR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:minHeight="48dp"
+            android:contentDescription="Lista Modulos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvGrupoActTERCER_NIVEL_RRHH_TAREO_AR" />
+
+        <Spinner
+            android:id="@+id/spLoteActTERCER_NIVEL_RRHH_TAREO_AR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:minHeight="48dp"
+            android:contentDescription="Lista Lotes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spModuloActTERCER_NIVEL_RRHH_TAREO_AR" />
+
+        <Spinner
+            android:id="@+id/spLaborActTERCER_NIVEL_RRHH_TAREO_AR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:minHeight="48dp"
+            android:contentDescription="Lista Labores"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spLoteActTERCER_NIVEL_RRHH_TAREO_AR" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spLaborActTERCER_NIVEL_RRHH_TAREO_AR">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hora Inicio"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/ethoraInicioActTERCER_NIVEL_RRHH_TAREO_AR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789:"
+                    android:ems="10"
+                    android:hint="Hora de Inicio"
+                    android:inputType="time"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hora Final"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/etHoraFinalActTERCER_NIVEL_RRHH_TAREO_AR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789:"
+                    android:ems="10"
+                    android:hint="Hora de Fin"
+                    android:inputType="time"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+            <RadioButton
+                android:id="@+id/rbEstadoAbiertoActTERCER_NIVEL_RRHH_TAREO_AR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ABIERTO" />
+
+            <RadioButton
+                android:id="@+id/rbEstadoCerradoActTERCER_NIVEL_RRHH_TAREO_AR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CERRADO" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnActualizarGrupoTrabajoTERCER_NIVEL_RRHH_TAREO_AR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Actualizar Grupo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
