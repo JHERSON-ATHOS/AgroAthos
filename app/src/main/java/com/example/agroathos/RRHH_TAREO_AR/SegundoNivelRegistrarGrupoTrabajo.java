@@ -111,6 +111,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                 iniciarScanPersonal();
             }
         } );
+
         btnRegistrarPersonal.setOnClickListener(view -> registrarPersonal() );
 
         etHoraInicio.setOnClickListener(view ->{

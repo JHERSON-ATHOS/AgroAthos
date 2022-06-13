@@ -1,24 +1,17 @@
 package com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.agroathos.ENTIDADES.E_Cultivos;
-import com.example.agroathos.ENTIDADES.E_Grupos;
 import com.example.agroathos.ENTIDADES.E_PersonalTrabajo;
 import com.example.agroathos.R;
-import com.example.agroathos.RRHH_TAREO_AR.TercerNivelAgregarPersonal;
 
 import java.util.ArrayList;
 

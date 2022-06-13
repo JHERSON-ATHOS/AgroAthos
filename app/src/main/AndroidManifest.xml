@@ -26,7 +26,7 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".RRHH_TAREO_AR.TercerNivelAgregarPersonal"
+            android:name=".RRHH_TAREO_AR.TercerNivelConfiguracionGrupo"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity

@@ -4,7 +4,7 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="teal_700">#3C0C94</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
@@ -13,5 +13,11 @@
     <color name="verdeMA">#009900</color>
     <color name="naranjaMA">#ff8533</color>
     <color name="azulMA">#000099</color>
+    
+    <!--COLORES ATHOS-->
+    <color name="amarillo">#F2C404</color>
+    <color name="azul">#0B5F92</color>
+    <color name="crema">#E89D36</color>
+    <color name="verde">#10923B</color>
 
 </resources>
