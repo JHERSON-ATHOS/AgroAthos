@@ -3,6 +3,8 @@ package com.example.agroathos.RRHH_TAREO_AR;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -26,9 +28,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
+import com.example.agroathos.ENTIDADES.E_DetalleGrupoTrabajo;
 import com.example.agroathos.ENTIDADES.E_PersonalTrabajo;
 import com.example.agroathos.R;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
+import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListaDetalleGrupoTrabajo;
 import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListarPersonalTrabajo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -40,11 +44,12 @@ import java.util.UUID;
 
 public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
 
-    ListView lvListadoPersonal, lvRegistrarPersonal;
+    ListView lvRegistrarPersonal;
+    RecyclerView rvListadoPersonal;
     FloatingActionButton fbAgregarPersonal;
     Button btnEditarPersona, btnAgregarPersonal;
     ConstraintLayout clPrincipal, clConfigurarPrincipal;
-    ArrayList<String> arrayPersonalList;
+    ArrayList<E_DetalleGrupoTrabajo> arrayPersonalList;
 
     /*CONFIGURACION*/
     TextView tvGrupo;
@@ -150,24 +155,18 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
 
     public void iniciarLayoutPrincipal(){
         clPrincipal = findViewById(R.id.clPrincipalRRHH_TAREO_AR);
-        lvListadoPersonal = findViewById(R.id.lvListadoPersonalACTTercerlNivelRRHH_TAREO_ARANDANO);
+        rvListadoPersonal = findViewById(R.id.rvListadoPersonalACTTercerlNivelRRHH_TAREO_ARANDANO);
         lvRegistrarPersonal = findViewById(R.id.lvListadoPersonalRegTercerlNivelRRHH_TAREO_ARANDANO);
         fbAgregarPersonal = findViewById(R.id.fbAgregarPersonalNuevoRRHH_TAREO_AR);
         btnEditarPersona = findViewById(R.id.btnEditarPersonalNuevoRRHH_TAREO_AR);
         btnAgregarPersonal = findViewById(R.id.btnRegistrarPersonalNuevoRRHH_TAREO_AR);
 
-        ArrayAdapter adapter = new ArrayAdapter(TercerNivelConfiguracionGrupo.this, android.R.layout.simple_spinner_dropdown_item, arrayPersonalList);
-        lvListadoPersonal.setAdapter(adapter);
-
-        lvListadoPersonal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                obtenerDatosPersonal(BDdniPersonal);
-            }
-        });
+        rvListadoPersonal.setLayoutManager(new LinearLayoutManager(this));
+        AdaptadorListaDetalleGrupoTrabajo adaptadorListaDetalleGrupoTrabajo = new AdaptadorListaDetalleGrupoTrabajo(arrayPersonalList);
+        rvListadoPersonal.setAdapter(adaptadorListaDetalleGrupoTrabajo);
 
         fbAgregarPersonal.setOnClickListener(view->{
-            lvListadoPersonal.setVisibility(View.GONE);
+            rvListadoPersonal.setVisibility(View.GONE);
             lvRegistrarPersonal.setVisibility(View.VISIBLE);
             iniciarScanPersonal();
         });
@@ -634,11 +633,32 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     private void consultarGruposTrabajo(){
         SQLiteDatabase database = conn.getReadableDatabase();
 
-        arrayPersonalList = new ArrayList<String>();
+        arrayPersonalList = new ArrayList<>();
+
         Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2 + "=" + "'"+idGrupo+"'", null);
 
         if (cursor != null){
-            while (cursor.moveToNext()) {
+            if (cursor.moveToFirst()){
+                do {
+                    E_DetalleGrupoTrabajo e_detalleGrupoTrabajo = new E_DetalleGrupoTrabajo();
+                    e_detalleGrupoTrabajo.setId(cursor.getString(0));
+                    e_detalleGrupoTrabajo.setId_grupo(cursor.getString(1));
+                    e_detalleGrupoTrabajo.setFundo(cursor.getString(2));
+                    e_detalleGrupoTrabajo.setModulo(cursor.getString(3));
+                    e_detalleGrupoTrabajo.setLote(cursor.getString(4));
+                    e_detalleGrupoTrabajo.setLabor(cursor.getString(5));
+                    e_detalleGrupoTrabajo.setPersonal(cursor.getString(6));
+                    e_detalleGrupoTrabajo.setSupervisor(cursor.getString(7));
+                    e_detalleGrupoTrabajo.setJarra_uno(cursor.getString(8));
+                    e_detalleGrupoTrabajo.setJarra_dos(cursor.getString(9));
+                    e_detalleGrupoTrabajo.setFecha(cursor.getString(10));
+                    e_detalleGrupoTrabajo.setHora_inicio(cursor.getString(11));
+                    e_detalleGrupoTrabajo.setHora_final(cursor.getString(12));
+                    e_detalleGrupoTrabajo.setEstado(cursor.getString(13));
+                    arrayPersonalList.add(e_detalleGrupoTrabajo);
+                }while (cursor.moveToNext());
+            }
+            /*while (cursor.moveToNext()) {
                 arrayPersonalList.add(cursor.getString(6));
                 BDid_nivel2 = cursor.getString(0);
                 BDgrupo = cursor.getString(1);
@@ -652,14 +672,14 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                 BDhoraInicio = cursor.getString(11);
                 BDhoraFinal = cursor.getString(12);
                 BDestado = cursor.getString(13);
-            }
+            }*/
         }
     }
 
     private void obtenerDatosPersonal(String dni_personal){
         SQLiteDatabase database = conn.getReadableDatabase();
 
-        arrayPersonalList = new ArrayList<String>();
+        //arrayPersonalList = new ArrayList<String>();
         Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_PERSONAL_NIVEL2 + "=" + "'"+dni_personal+"'", null);
 
         if (cursor != null){
@@ -701,6 +721,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             });
 
             if (cursor.moveToFirst()){
+                Toast.makeText(this, cursor.getString(0), Toast.LENGTH_SHORT).show();
+
                 tvHoraInicio.setText(cursor.getString(11));
                 tvHoraFinal.setText(cursor.getString(12));
 
@@ -753,7 +775,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         if (personalTrabajoArrayList.size()>0){
             SQLiteDatabase database = conn.getWritableDatabase();
             ContentValues valuesPersonal = new ContentValues();
-            for (int i=0; i<lvListadoPersonal.getAdapter().getCount(); i++){
+            for (int i=0; i<rvListadoPersonal.getChildCount(); i++){
                 valuesPersonal.put(Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2, idGrupo);
                 valuesPersonal.put(Utilidades.CAMPO_FUNDO_NIVEL2, BDfundo);
                 valuesPersonal.put(Utilidades.CAMPO_MODULO_NIVEL2, BDmodulo);
@@ -836,7 +858,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
 
         databaseGrupo.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_DNI_NIVEL1_5, valuesAgregarGrupo);
 
-        for (int i=0; i<lvListadoPersonal.getAdapter().getCount(); i++){
+        for (int i=0; i<rvListadoPersonal.getChildCount(); i++){
             SQLiteDatabase database = conn.getWritableDatabase();
             ContentValues valuesPersonalClonado = new ContentValues();
 

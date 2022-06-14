@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/amarillo"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:contentPadding="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvIdPersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="50sp"
+                />
+
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvDatosPersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="21545236 - JUANITO PEREZ" />
+
+                <TextView
+                    android:id="@+id/tvJarra1PersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jarra 1" />
+
+                <TextView
+                    android:id="@+id/tvJarra2PersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jarra 2" />
+
+                <TextView
+                    android:id="@+id/tvEstadoPersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estado" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnEditarPersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Editar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
