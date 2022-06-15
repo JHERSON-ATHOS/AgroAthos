@@ -661,21 +661,6 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     BDestado = cursor.getString(13);
                 }while (cursor.moveToNext());//
             }
-            /*while (cursor.moveToNext()) {
-                arrayPersonalList.add(cursor.getString(6));
-                BDid_nivel2 = cursor.getString(0);
-                BDgrupo = cursor.getString(1);
-                BDfundo = cursor.getString(2);
-                BDmodulo = cursor.getString(3);
-                BDlote = cursor.getString(4);
-                BDlabor = cursor.getString(5);
-                BDdniPersonal = cursor.getString(6);
-                BDdniSupervisor = cursor.getString(7);
-                BDFecha = cursor.getString(10);
-                BDhoraInicio = cursor.getString(11);
-                BDhoraFinal = cursor.getString(12);
-                BDestado = cursor.getString(13);
-            }*/
         }
     }
 

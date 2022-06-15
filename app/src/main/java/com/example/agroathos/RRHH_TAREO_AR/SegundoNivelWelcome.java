@@ -13,12 +13,22 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.ENTIDADES.E_Grupos;
 import com.example.agroathos.MainActivity;
@@ -27,10 +37,16 @@ import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListarGrupoTraba
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -52,6 +68,14 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     //DATOS DE LA BD
     String idGrupo = "";
     String idSupervisor = "";
+
+    //DATOS PARA SUBIDA
+    String zonaUP = "";
+    String fundoUP = "";
+    String cultivoUP = "";
+    String dni_supervisorUP = "";
+    String horaUP = "";
+    String fechaUP = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +100,9 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
         obtenerIdGrupo();
         consultarGruposTrabajo();
+        obtenerDataRegistrada();
+
+        Toast.makeText(this, zonaUP+" "+fundoUP+" "+cultivoUP+" "+dni_supervisorUP+" "+fechaUP+" "+horaUP, Toast.LENGTH_SHORT).show();
 
         listView.setAdapter(new AdaptadorListarGrupoTrabajo(this,arrayGruposList));
 
@@ -145,10 +172,68 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 break;
 
             case R.id.menu_sincronizar_action:
-                Toast.makeText(this, "OSEA SÍ, PERO NO!", Toast.LENGTH_SHORT).show();
+                registrarDatos();
+                //Toast.makeText(this, "OSEA SÍ, PERO NO!", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void obtenerDataRegistrada(){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1+"="+"'"+dni+"'", null);
+        if (cursorData != null){
+            if (cursorData.moveToFirst()){
+                do {
+                    zonaUP = cursorData.getString(1);
+                    fundoUP = cursorData.getString(2);
+                    cultivoUP = cursorData.getString(3);
+                    dni_supervisorUP = cursorData.getString(4);
+                    fechaUP = cursorData.getString(5);
+                    horaUP = cursorData.getString(6);
+                }while (cursorData.moveToNext());
+            }
+        }
+        cursorData.close();
+    }
+
+    private void registrarDatos(){
+        RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
+
+        String url = "https://agroathos.com/api/nivel_uno";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(SegundoNivelWelcome.this, "Post Data: "+response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(SegundoNivelWelcome.this, "Post Data: Response Failed "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("zona", zonaUP);
+                params.put("fundo", fundoUP);
+                params.put("cultivo", cultivoUP);
+                params.put("dni_supervisor", dni_supervisorUP);
+                params.put("fecha", fechaUP);
+                params.put("hora", horaUP);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError{
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+
+        requestQueue.add(stringRequest);
     }
 
     @Override
