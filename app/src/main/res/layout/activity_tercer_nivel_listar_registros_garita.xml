@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".TRANSPORTE_GARITA.TercerNivelListarRegistrosGarita">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarTERCER_NIVEL_LISTAR_REGISTROS_GARITA"
+        app:menu="@menu/menu_garita"
+        android:layout_width="match_parent"
+        app:titleTextColor="@color/black"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <ListView
         android:id="@+id/lvDataRegistradaGARITA"
         android:layout_width="match_parent"
@@ -17,7 +29,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarTERCER_NIVEL_LISTAR_REGISTROS_GARITA">
 
     </ListView>
 
@@ -25,15 +37,15 @@
         android:id="@+id/lvDataBusRegistradaGARITA"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarTERCER_NIVEL_LISTAR_REGISTROS_GARITA" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"

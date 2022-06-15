@@ -197,30 +197,31 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
             values.put(Utilidades.CAMPO_GARITA_HORA_NIVEL1, arrayHorasPersonal.get(i));
 
             database.insert(Utilidades.TABLA_GARITA_NIVEL1, Utilidades.CAMPO_GARITA_ID_NIVEL1, values);
-            Toast.makeText(this, "Registro Exitoso!", Toast.LENGTH_SHORT).show();
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("REGISTRO DE BUS");
-            builder.setMessage("¿Continuarás registrando?");
-            builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    etPlaca.setText("");
-                    arrayDataPersonal.clear();
-                    arrayHorasPersonal.clear();
-                    adapter.clear();
-                    iniciarScanBus();
-                }
-            });
-            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    regresarPrimerActividad();
-                }
-            });
-
-            builder.create().show();
         }
+
+        Toast.makeText(this, "Registro Exitoso!", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("REGISTRO DE BUS");
+        builder.setMessage("¿Continuarás registrando?");
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                etPlaca.setText("");
+                arrayDataPersonal.clear();
+                arrayHorasPersonal.clear();
+                adapter.clear();
+                iniciarScanBus();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                regresarPrimerActividad();
+            }
+        });
+
+        builder.create().show();
     }
 
     private void registrarPersonal(){

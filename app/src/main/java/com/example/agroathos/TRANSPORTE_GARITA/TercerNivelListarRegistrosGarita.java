@@ -1,14 +1,19 @@
 package com.example.agroathos.TRANSPORTE_GARITA;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +24,9 @@ import android.widget.Toast;
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.R;
+import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
+import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +37,7 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
 
     ListView lvData, lvDataBus;
     Button btnBus, btnPersonal, btnUnidad;
+    Toolbar toolbar;
 
     ConexionSQLiteHelper conn;
     ArrayList<String> arrayListData = new ArrayList<>();
@@ -37,6 +46,11 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tercer_nivel_listar_registros_garita);
+
+        toolbar = findViewById(R.id.toolbarTERCER_NIVEL_LISTAR_REGISTROS_GARITA);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("¡JUNTOS HACEMOS MÁS!");
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.white));
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
@@ -68,7 +82,7 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
         arrayListData.clear();
 
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1_5, null);
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1_5+" GROUP BY placa HAVING COUNT(*)>=1", null);
         if (cursor != null){
             if (cursor.moveToFirst()){
                 do{
@@ -83,31 +97,36 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
 
     private void listarRegistroBusPersonal(String placa){
         SQLiteDatabase database = conn.getReadableDatabase();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View view = getLayoutInflater().inflate(R.layout.content_transporte_garita_listar_personal_bus, null, false);
+        ListView lvDataPersonal = view.findViewById(R.id.lvDataPersonalBusTRANSPORTE_GARITA);
+        ArrayList<String> arrayList = new ArrayList<>();
+
         Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_GARITA_PLACA_NIVEL1_5+"="+"'"+placa+"'", null);
         if (cursor != null){
             if (cursor.moveToFirst()){
-                String anexo = cursor.getString(1);
+                do {
+                    String anexo = cursor.getString(1);
+                    Cursor cursor2 = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1+" WHERE "+Utilidades.CAMPO_GARITA_ANEXO_PLACA_NIVEL1+"="+"'"+anexo+"'", null);
+                    if (cursor2 != null){
+                        if (cursor2.moveToFirst()){
+                            do{
+                                arrayList.add(cursor2.getString(4));
+                            }while (cursor2.moveToNext());
+                        }
 
-                Cursor cursor2 = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL1+" WHERE "+Utilidades.CAMPO_GARITA_ANEXO_PLACA_NIVEL1+"="+"'"+anexo+"'", null);
-
-                if (cursor2 != null){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    final View view = getLayoutInflater().inflate(R.layout.content_transporte_garita_listar_personal_bus, null, false);
-                    ListView lvDataPersonal = view.findViewById(R.id.lvDataPersonalBusTRANSPORTE_GARITA);
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    if (cursor2.moveToFirst()){
-                        do{
-                            arrayList.add(cursor2.getString(4));
-                        }while (cursor2.moveToNext());
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
-                    lvDataPersonal.setAdapter(adapter);
-                    adapter.notifyDataSetInvalidated();
+                }while (cursor.moveToNext());
 
-                    builder.setView(view);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
+                lvDataPersonal.setAdapter(adapter);
+                adapter.notifyDataSetInvalidated();
+
+                builder.setView(view);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         }
         cursor.close();
@@ -190,6 +209,22 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
         sdf = new SimpleDateFormat(formato);
         sdf.setTimeZone(TimeZone.getTimeZone(zonaHoraria));
         return sdf.format(date);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_garita, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_sincronizar_action:
+                Toast.makeText(this, "OSEA SÍ, PERO NO!", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
