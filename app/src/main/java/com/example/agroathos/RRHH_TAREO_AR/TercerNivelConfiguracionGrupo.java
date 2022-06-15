@@ -66,7 +66,6 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     int minutos = 0;
 
     ConexionSQLiteHelper conn;
-    ContentValues valuesEditarPersonal = new ContentValues();
     ContentValues valuesAgregarGrupo = new ContentValues();
     ContentValues valuesActualizarGrupo = new ContentValues();
 
@@ -162,7 +161,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         btnAgregarPersonal = findViewById(R.id.btnRegistrarPersonalNuevoRRHH_TAREO_AR);
 
         rvListadoPersonal.setLayoutManager(new LinearLayoutManager(this));
-        AdaptadorListaDetalleGrupoTrabajo adaptadorListaDetalleGrupoTrabajo = new AdaptadorListaDetalleGrupoTrabajo(arrayPersonalList);
+        AdaptadorListaDetalleGrupoTrabajo adaptadorListaDetalleGrupoTrabajo = new AdaptadorListaDetalleGrupoTrabajo(this,arrayPersonalList);
         rvListadoPersonal.setAdapter(adaptadorListaDetalleGrupoTrabajo);
 
         fbAgregarPersonal.setOnClickListener(view->{
@@ -656,6 +655,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     e_detalleGrupoTrabajo.setHora_final(cursor.getString(12));
                     e_detalleGrupoTrabajo.setEstado(cursor.getString(13));
                     arrayPersonalList.add(e_detalleGrupoTrabajo);
+
+                    BDhoraInicio = cursor.getString(11);
+                    BDhoraFinal = cursor.getString(12);
+                    BDestado = cursor.getString(13);
                 }while (cursor.moveToNext());//
             }
             /*while (cursor.moveToNext()) {
@@ -673,101 +676,6 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                 BDhoraFinal = cursor.getString(12);
                 BDestado = cursor.getString(13);
             }*/
-        }
-    }
-
-    private void obtenerDatosPersonal(String dni_personal){
-        SQLiteDatabase database = conn.getReadableDatabase();
-
-        //arrayPersonalList = new ArrayList<String>();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_PERSONAL_NIVEL2 + "=" + "'"+dni_personal+"'", null);
-
-        if (cursor != null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            final View view = getLayoutInflater().inflate(R.layout.content_rrhh_tareo_arandano_especificacion_personal, null, false);
-            TextView tvHoraInicio = view.findViewById(R.id.tvHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
-            TextView tvHoraFinal = view.findViewById(R.id.tvHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
-            Button btnHoraInicio = view.findViewById(R.id.btnHoraInicioEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
-            Button btnHoraFinal = view.findViewById(R.id.btnHoraFinalEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
-            RadioButton rbAbierto = view.findViewById(R.id.rbEstadoAbiertoEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
-            RadioButton rbCerrado = view.findViewById(R.id.rbEstadoCerradoEditarRRHH_TAREO_ARANDANO_ESPECIFICACION_PERSONAL);
-
-            btnHoraInicio.setOnClickListener(v ->{
-                final Calendar c = Calendar.getInstance();
-                int hora = c.get(Calendar.HOUR_OF_DAY);
-                int minutos = c.get(Calendar.MINUTE);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        tvHoraInicio.setText(hourOfDay+":"+minute);
-                    }
-                }, hora, minutos, false);
-                timePickerDialog.show();
-            });
-
-            btnHoraFinal.setOnClickListener(v ->{
-                final Calendar c = Calendar.getInstance();
-                int hora = c.get(Calendar.HOUR_OF_DAY);
-                int minutos = c.get(Calendar.MINUTE);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        tvHoraFinal.setText(hourOfDay+":"+minute);
-                    }
-                }, hora, minutos, false);
-                timePickerDialog.show();
-            });
-
-            if (cursor.moveToFirst()){
-                Toast.makeText(this, cursor.getString(0), Toast.LENGTH_SHORT).show();
-
-                tvHoraInicio.setText(cursor.getString(11));
-                tvHoraFinal.setText(cursor.getString(12));
-
-                if (cursor.getString(13).equals("ABIERTO")){
-                    rbAbierto.setChecked(true);
-                }else{
-                    rbCerrado.setChecked(true);
-                }
-            }
-
-            builder.setView(view);
-
-            builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (rbAbierto.isChecked()){
-                        valuesEditarPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, tvHoraInicio.getText().toString());
-                        valuesEditarPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
-
-                        String[] parametro = {BDid_nivel2};
-                        database.update(Utilidades.TABLA_NIVEL2, valuesEditarPersonal, Utilidades.CAMPO_ID_NIVEL2+"=?", parametro);
-                        Toast.makeText(TercerNivelConfiguracionGrupo.this, "Datos Actualizados!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                    if (rbCerrado.isChecked()){
-                        valuesEditarPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, tvHoraFinal.getText().toString());
-                        valuesEditarPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "CERRADO");
-
-                        String[] parametro = {BDid_nivel2};
-                        database.update(Utilidades.TABLA_NIVEL2, valuesEditarPersonal, Utilidades.CAMPO_ID_NIVEL2+"=?", parametro);
-                        Toast.makeText(TercerNivelConfiguracionGrupo.this, "Datos Actualizados!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                }
-            });
-
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
         }
     }
 
