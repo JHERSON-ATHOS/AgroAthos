@@ -656,7 +656,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     e_detalleGrupoTrabajo.setHora_final(cursor.getString(12));
                     e_detalleGrupoTrabajo.setEstado(cursor.getString(13));
                     arrayPersonalList.add(e_detalleGrupoTrabajo);
-                }while (cursor.moveToNext());//
+                }while (cursor.moveToNext());
             }
             /*while (cursor.moveToNext()) {
                 arrayPersonalList.add(cursor.getString(6));
