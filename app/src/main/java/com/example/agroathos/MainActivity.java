@@ -60,13 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (preferences.getString("dni", "").isEmpty()){
             solicitarAcceso();
-            btnGarita.setEnabled(false);
-            btnTareo.setEnabled(false);
-            btnDestajo.setEnabled(false);
-        }else{
-            btnGarita.setEnabled(true);
-            btnTareo.setEnabled(true);
-            btnDestajo.setEnabled(true);
+            btnGarita.setVisibility(View.GONE);
+            btnTareo.setVisibility(View.GONE);
+            btnDestajo.setVisibility(View.GONE);
         }
 
     }
@@ -102,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject data = jsonArray.getJSONObject(i);
                         usuariosList.add(data.getString("dni"));
                         usuariosList.add(data.getString("usuario"));
+                        usuariosList.add(data.getString("tipo_usuario"));
 
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("dni", dni_login);
@@ -111,6 +108,11 @@ public class MainActivity extends AppCompatActivity {
 
                     if (usuariosList.contains(username)){
                         Toast.makeText(MainActivity.this, "Bienvenido: "+usuariosList.get(1), Toast.LENGTH_SHORT).show();
+                        if (usuariosList.contains("ADMINISTRADOR")){
+                            btnGarita.setVisibility(View.VISIBLE);
+                            btnTareo.setVisibility(View.VISIBLE);
+                            btnDestajo.setVisibility(View.VISIBLE);
+                        }
                     }else{
                         solicitarAcceso();
                     }
