@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_spinner_zonas_rrhhtareoar" />
+        tools:listitem="@layout/item_spinner_datos_rrhhtareoar" />
 
     <Spinner
         android:id="@+id/spFundoRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spZonaRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
-        tools:listitem="@layout/item_spinner_fundos_rrhhtareoar" />
+        tools:listitem="@layout/item_spinner_datos_rrhhtareoar" />
 
     <Spinner
         android:id="@+id/spCultivoRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
@@ -48,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spFundoRRHH_TAREO_ARANDANO_PRIMER_NIVEL"
-        tools:listitem="@layout/item_spinner_cultivos_rrhhtareoar" />
+        tools:listitem="@layout/item_spinner_datos_rrhhtareoar" />
 
     <EditText
         android:id="@+id/etDNIRRHH_TAREO_ARANDANO_PRIMER_NIVEL"

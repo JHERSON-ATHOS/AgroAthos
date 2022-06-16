@@ -29,11 +29,17 @@ import android.widget.Toast;
 
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.ENTIDADES.E_DetalleGrupoTrabajo;
+import com.example.agroathos.ENTIDADES.E_Labores;
+import com.example.agroathos.ENTIDADES.E_Lotes;
+import com.example.agroathos.ENTIDADES.E_Modulos;
 import com.example.agroathos.ENTIDADES.E_PersonalTrabajo;
 import com.example.agroathos.R;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
+import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorLabores;
 import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListaDetalleGrupoTrabajo;
 import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListarPersonalTrabajo;
+import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorLotes;
+import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorModulos;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -57,8 +63,12 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     EditText etHoraInicio, etHoraFinal;
     Button btnActualizarGrupo;
     RadioButton rbAbierto, rbCerrado;
-    ArrayList<String> arrayModulo = new ArrayList<>();
-    ArrayList<String> arrayLote = new ArrayList<>();
+    AdaptadorModulos adaptadorModulos;
+    AdaptadorLotes adaptadorLotes;
+    AdaptadorLabores adaptadorLabores;
+    ArrayList<E_Modulos> arrayModulo = new ArrayList<>();
+    ArrayList<E_Lotes> arrayLote = new ArrayList<>();
+    ArrayList<E_Labores> arrayLabores = new ArrayList<>();
     String moduloACT = "";
     String loteACT = "";
     String laborACT = "";
@@ -230,289 +240,323 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         spModulo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                arrayLote.clear();
-                moduloACT = spModulo.getItemAtPosition(i).toString();
+                E_Modulos e_modulos = arrayModulo.get(i);
+                moduloACT = e_modulos.getNombre();
 
                 switch (moduloACT){
                     case"MO1":
                         switch (BDfundo){
                             case "CAY":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
-                                arrayLote.add("L10");
-                                arrayLote.add("L11");
-                                arrayLote.add("L12");
-                                arrayLote.add("L13");
-                                arrayLote.add("L14");
-                                arrayLote.add("L15");
-                                arrayLote.add("L16");
-                                arrayLote.add("L17");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L11"));
+                                arrayLote.add(new E_Lotes("L12"));
+                                arrayLote.add(new E_Lotes("L13"));
+                                arrayLote.add(new E_Lotes("L14"));
+                                arrayLote.add(new E_Lotes("L15"));
+                                arrayLote.add(new E_Lotes("L16"));
+                                arrayLote.add(new E_Lotes("L17"));
                                 break;
                             case "CHI":
-                                arrayLote.add("L01");
-                                arrayLote.add("L03");
-                                arrayLote.add("L05");
-                                arrayLote.add("L2A");
-                                arrayLote.add("L3A");
-                                arrayLote.add("L5A");
-                                arrayLote.add("LTN");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L2A"));
+                                arrayLote.add(new E_Lotes("L3A"));
+                                arrayLote.add(new E_Lotes("L5A"));
+                                arrayLote.add(new E_Lotes("LTN"));
                                 break;
                             case "LDN":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
                                 break;
                             case "LIN":
                             case "MEN":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
                                 break;
                             case "LPO":
-                                arrayLote.add("LRJ");
-                                arrayLote.add("LTQ");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("LRJ"));
+                                arrayLote.add(new E_Lotes("LTQ"));
                                 break;
                             case "LU1":
-                                arrayLote.add("L01");
-                                arrayLote.add("L04");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L04"));
                                 break;
                             case "LUC":
-                                arrayLote.add("L04");
-                                arrayLote.add("L4A");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L4A"));
                                 break;
                             case "MAC":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L4A");
-                                arrayLote.add("LD1");
-                                arrayLote.add("LD2");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L4A"));
+                                arrayLote.add(new E_Lotes("LD1"));
+                                arrayLote.add(new E_Lotes("LD2"));
                                 break;
                             case "MAT":
                             case "SOJ":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
                                 break;
                             case "PAR":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L07");
-                                arrayLote.add("LTI");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("LTI"));
                                 break;
                             case "POM":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
                                 break;
                             case "SAT":
-                                arrayLote.add("LTA");
-                                arrayLote.add("LTB");
-                                arrayLote.add("LTC");
-                                arrayLote.add("LTD");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("LTA"));
+                                arrayLote.add(new E_Lotes("LTB"));
+                                arrayLote.add(new E_Lotes("LTC"));
+                                arrayLote.add(new E_Lotes("LTD"));
                                 break;
                             case "SCA":
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
-                                arrayLote.add("L10");
-                                arrayLote.add("L11");
-                                arrayLote.add("L7A");
-                                arrayLote.add("L9A");
-                                arrayLote.add("L11A");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L11"));
+                                arrayLote.add(new E_Lotes("L7A"));
+                                arrayLote.add(new E_Lotes("L9A"));
+                                arrayLote.add(new E_Lotes("L11A"));
                                 break;
                             case "SLA":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
-                                arrayLote.add("L10");
-                                arrayLote.add("L11");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L11"));
                                 break;
                             case "SNA":
-                                arrayLote.add("L01");
-                                arrayLote.add("L07");
-                                arrayLote.add("LE1");
-                                arrayLote.add("LE2");
-                                arrayLote.add("LTI");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("LE1"));
+                                arrayLote.add(new E_Lotes("LE2"));
+                                arrayLote.add(new E_Lotes("LTI"));
                                 break;
                             case "SOI":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
-                                arrayLote.add("L10");
-                                arrayLote.add("L4A");
-                                arrayLote.add("LD1");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L4A"));
+                                arrayLote.add(new E_Lotes("LD1"));
                                 break;
                             case "STF":
-                                arrayLote.add("L02");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("LD1");
-                                arrayLote.add("LD2");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("LD1"));
+                                arrayLote.add(new E_Lotes("LD2"));
                                 break;
                         }
                         break;
                     case"MO2":
                         switch (BDfundo){
                             case "CHI":
-                                arrayLote.add("L02");
-                                arrayLote.add("L04");
-                                arrayLote.add("L06");
-                                arrayLote.add("L08");
-                                arrayLote.add("L2A");
-                                arrayLote.add("L3A");
-                                arrayLote.add("L4A");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L2A"));
+                                arrayLote.add(new E_Lotes("L3A"));
+                                arrayLote.add(new E_Lotes("L4A"));
                                 break;
                             case "LDN":
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
-                                arrayLote.add("L10");
-                                arrayLote.add("L11");
-                                arrayLote.add("L12");
-                                arrayLote.add("L13");
-                                arrayLote.add("L14");
-                                arrayLote.add("L15");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L11"));
+                                arrayLote.add(new E_Lotes("L12"));
+                                arrayLote.add(new E_Lotes("L13"));
+                                arrayLote.add(new E_Lotes("L14"));
+                                arrayLote.add(new E_Lotes("L15"));
                                 break;
                             case "LU2":
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
                                 break;
                             case "LU3":
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
                                 break;
                             case "LUC":
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
                                 break;
                             case "MAC":
-                                arrayLote.add("LRE");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("LRE"));
                                 break;
                             case "PAR":
-                                arrayLote.add("L06");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L06"));
                                 break;
                             case "POM":
                             case "SOI":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
                                 break;
                             case "SAT":
-                                arrayLote.add("LTI");
-                                arrayLote.add("LTJ");
-                                arrayLote.add("LTK");
-                                arrayLote.add("LTL");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("LTI"));
+                                arrayLote.add(new E_Lotes("LTJ"));
+                                arrayLote.add(new E_Lotes("LTK"));
+                                arrayLote.add(new E_Lotes("LTL"));
                                 break;
                             case "SCA":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
-                                arrayLote.add("L10");
-                                arrayLote.add("L11");
-                                arrayLote.add("L4A");
-                                arrayLote.add("L5A");
-                                arrayLote.add("L7A");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L11"));
+                                arrayLote.add(new E_Lotes("L4A"));
+                                arrayLote.add(new E_Lotes("L5A"));
+                                arrayLote.add(new E_Lotes("L7A"));
                                 break;
                             case "SLA":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
-                                arrayLote.add("L05");
-                                arrayLote.add("L06");
-                                arrayLote.add("L07");
-                                arrayLote.add("L08");
-                                arrayLote.add("L09");
-                                arrayLote.add("L10");
-                                arrayLote.add("L11");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
+                                arrayLote.add(new E_Lotes("L05"));
+                                arrayLote.add(new E_Lotes("L06"));
+                                arrayLote.add(new E_Lotes("L07"));
+                                arrayLote.add(new E_Lotes("L08"));
+                                arrayLote.add(new E_Lotes("L09"));
+                                arrayLote.add(new E_Lotes("L10"));
+                                arrayLote.add(new E_Lotes("L11"));
                                 break;
                             case "SNA":
-                                arrayLote.add("LTD");
-                                arrayLote.add("LTF");
-                                arrayLote.add("LTG");
-                                arrayLote.add("LTH");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("LTD"));
+                                arrayLote.add(new E_Lotes("LTF"));
+                                arrayLote.add(new E_Lotes("LTG"));
+                                arrayLote.add(new E_Lotes("LTH"));
                                 break;
                         }
                         break;
                     case "MO3":
                         switch (BDfundo){
                             case "POM":
-                                arrayLote.add("L01");
-                                arrayLote.add("L02");
-                                arrayLote.add("L03");
-                                arrayLote.add("L04");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("L01"));
+                                arrayLote.add(new E_Lotes("L02"));
+                                arrayLote.add(new E_Lotes("L03"));
+                                arrayLote.add(new E_Lotes("L04"));
                                 break;
                             case "SNA":
-                                arrayLote.add("LJ7");
-                                arrayLote.add("LJ8");
+                                arrayLote.clear();
+                                arrayLote.add(new E_Lotes("LJ7"));
+                                arrayLote.add(new E_Lotes("LJ8"));
                                 break;
                         }
                         break;
                     case "MO4":
                     case "MO6":
                         if (BDfundo.equals("POM")){
-                            arrayLote.add("L01");
-                            arrayLote.add("L02");
-                            arrayLote.add("L03");
-                            arrayLote.add("L04");
+                            arrayLote.clear();
+                            arrayLote.add(new E_Lotes("L01"));
+                            arrayLote.add(new E_Lotes("L02"));
+                            arrayLote.add(new E_Lotes("L03"));
+                            arrayLote.add(new E_Lotes("L04"));
                         }
                         break;
                     case "MO5":
                         if (BDfundo.equals("POM")){
-                            arrayLote.add("L01");
-                            arrayLote.add("L02");
-                            arrayLote.add("L03");
-                            arrayLote.add("L04");
-                            arrayLote.add("L05");
+                            arrayLote.clear();
+                            arrayLote.add(new E_Lotes("L01"));
+                            arrayLote.add(new E_Lotes("L02"));
+                            arrayLote.add(new E_Lotes("L03"));
+                            arrayLote.add(new E_Lotes("L04"));
+                            arrayLote.add(new E_Lotes("L05"));
                         }
                         break;
                 }
 
-                ArrayAdapter<String> adaptadorLote = new ArrayAdapter<>(TercerNivelConfiguracionGrupo.this, android.R.layout.simple_spinner_dropdown_item, arrayLote);
-                spLote.setAdapter(adaptadorLote);
+                adaptadorLotes = new AdaptadorLotes(TercerNivelConfiguracionGrupo.this, arrayLote);
+                spLote.setAdapter(adaptadorLotes);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -522,7 +566,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         spLote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                loteACT = spLote.getItemAtPosition(i).toString();
+                E_Lotes e_lotes = arrayLote.get(i);
+                loteACT = e_lotes.getNombre();
             }
 
             @Override
@@ -533,7 +578,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         spLabor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                laborACT = spLabor.getItemAtPosition(i).toString();
+                E_Labores e_labores = arrayLabores.get(i);
+                laborACT = e_labores.getNombre();
             }
 
             @Override
@@ -555,7 +601,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             case "LU1":
             case "MAT":
             case "SOJ":
-                arrayModulo.add("MO1");
+                arrayModulo.clear();
+                arrayModulo.add(new E_Modulos("MO1"));
                 break;
             case "CHI":
             case "SOI":
@@ -566,35 +613,39 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             case "MAC":
             case "LUC":
             case "LDN":
-                arrayModulo.add("MO1");
-                arrayModulo.add("MO2");
+                arrayModulo.clear();
+                arrayModulo.add(new E_Modulos("MO1"));
+                arrayModulo.add(new E_Modulos("MO2"));
                 break;
             case "LU2":
             case "LU3":
-                arrayModulo.add("MO2");
+                arrayModulo.clear();
+                arrayModulo.add(new E_Modulos("MO2"));
                 break;
             case "POM":
-                arrayModulo.add("MO1");
-                arrayModulo.add("MO2");
-                arrayModulo.add("MO3");
-                arrayModulo.add("MO4");
-                arrayModulo.add("MO5");
-                arrayModulo.add("MO6");
+                arrayModulo.clear();
+                arrayModulo.add(new E_Modulos("MO1"));
+                arrayModulo.add(new E_Modulos("MO2"));
+                arrayModulo.add(new E_Modulos("MO3"));
+                arrayModulo.add(new E_Modulos("MO4"));
+                arrayModulo.add(new E_Modulos("MO5"));
+                arrayModulo.add(new E_Modulos("MO6"));
                 break;
             case "SNA":
-                arrayModulo.add("MO1");
-                arrayModulo.add("MO2");
-                arrayModulo.add("MO3");
+                arrayModulo.clear();
+                arrayModulo.add(new E_Modulos("MO1"));
+                arrayModulo.add(new E_Modulos("MO2"));
+                arrayModulo.add(new E_Modulos("MO3"));
                 break;
         }
     }
     public void cargarModulo(){
-        ArrayAdapter<String> adaptadorModulo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, arrayModulo);
-        spModulo.setAdapter(adaptadorModulo);
+        adaptadorModulos = new AdaptadorModulos(TercerNivelConfiguracionGrupo.this, arrayModulo);
+        spModulo.setAdapter(adaptadorModulos);
     }
     public void cargarLabores(){
-        String[] labores = {"ARREGLO DE CABECERAS/SURCOS","ARREGLO DE PLANTAS","COSECHA"};
-        ArrayAdapter<String> adaptadorLabores = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, labores);
+        arrayLabores.add(new E_Labores("Cosecha"));
+        adaptadorLabores = new AdaptadorLabores(TercerNivelConfiguracionGrupo.this, arrayLabores);
         spLabor.setAdapter(adaptadorLabores);
     }
     private void actualizarGrupoTrabajo(){
@@ -656,6 +707,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     e_detalleGrupoTrabajo.setEstado(cursor.getString(13));
                     arrayPersonalList.add(e_detalleGrupoTrabajo);
 
+                    BDfundo = cursor.getString(2);
+                    BDmodulo = cursor.getString(3);
+                    BDlote = cursor.getString(4);
+                    BDlabor = cursor.getString(5);
                     BDhoraInicio = cursor.getString(11);
                     BDhoraFinal = cursor.getString(12);
                     BDestado = cursor.getString(13);

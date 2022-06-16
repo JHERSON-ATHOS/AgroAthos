@@ -39,9 +39,9 @@ public class AdaptadorFundos extends ArrayAdapter<E_Fundos> {
     }
 
     private View view(int position, View convertView, ViewGroup parent){
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_fundos_rrhhtareoar, parent, false);
+        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_datos_rrhhtareoar, parent, false);
 
-        TextView tvCultivo = convertView.findViewById(R.id.tvNombreFundoRRHH_TAREO_AR);
+        TextView tvCultivo = convertView.findViewById(R.id.tvNombreDatoRRHH_TAREO_AR);
 
         E_Fundos e_fundos = getItem(position);
 
@@ -51,11 +51,11 @@ public class AdaptadorFundos extends ArrayAdapter<E_Fundos> {
     }
 
     private View viewInicial(int position, View convertView, ViewGroup parent){
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_inicial_fundos_rrhhtareoar, null);
+        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_inicial_datos_rrhhtareoar, null);
 
         E_Fundos e_fundos = getItem(position);
 
-        TextView tvCultivoInicial = convertView.findViewById(R.id.tvNombreFundoInicialRRHH_TAREO_AR);
+        TextView tvCultivoInicial = convertView.findViewById(R.id.tvNombreDatosInicialRRHH_TAREO_AR);
         tvCultivoInicial.setText(e_fundos.getNombre());
 
         return convertView;

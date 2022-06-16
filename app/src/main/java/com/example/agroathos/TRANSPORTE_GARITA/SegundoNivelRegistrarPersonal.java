@@ -71,7 +71,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
 
         recibirDatos();
 
-        tvFecha.setText(obtenerFechaActual("AMERICA/Lima"));
+        tvFecha.setText(obtenerFechaActual("GMT-5"));
         btnRegistrar.setOnClickListener(view ->{
             switch (valor){
                 case 1:
@@ -338,7 +338,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                         Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                         arrayDataPersonal.add(intentResult.getContents());
 
-                                        arrayHorasPersonal.add(obtenerHoraActual("AMERICA/Lima"));
+                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
                                         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
                                         lvData.setAdapter(adapter);
 
@@ -348,7 +348,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                     Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                     arrayDataPersonal.add(intentResult.getContents());
 
-                                    arrayHorasPersonal.add(obtenerHoraActual("AMERICA/Lima"));
+                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
                                     adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
                                     lvData.setAdapter(adapter);
 
@@ -364,7 +364,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                         Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                         arrayDataPersonal.add(intentResult.getContents());
 
-                                        arrayHorasPersonal.add(obtenerHoraActual("AMERICA/Lima"));
+                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
                                         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
                                         lvData.setAdapter(adapter);
 
@@ -374,7 +374,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                     Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                     arrayDataPersonal.add(intentResult.getContents());
 
-                                    arrayHorasPersonal.add(obtenerHoraActual("AMERICA/Lima"));
+                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
                                     adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
                                     lvData.setAdapter(adapter);
 
@@ -390,7 +390,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                         Toast.makeText(this, "UNIDAD REGISTRADA", Toast.LENGTH_SHORT).show();
                                         arrayDataUnidad.add(intentResult.getContents());
 
-                                        arrayHorasUnidad.add(obtenerHoraActual("AMERICA/Lima"));
+                                        arrayHorasUnidad.add(obtenerHoraActual("GMT-5"));
                                         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataUnidad);
                                         lvData.setAdapter(adapter);
 
@@ -400,7 +400,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                     Toast.makeText(this, "UNIDAD REGISTRADA", Toast.LENGTH_SHORT).show();
                                     arrayDataUnidad.add(intentResult.getContents());
 
-                                    arrayHorasUnidad.add(obtenerHoraActual("AMERICA/Lima"));
+                                    arrayHorasUnidad.add(obtenerHoraActual("GMT-5"));
                                     adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataUnidad);
                                     lvData.setAdapter(adapter);
 

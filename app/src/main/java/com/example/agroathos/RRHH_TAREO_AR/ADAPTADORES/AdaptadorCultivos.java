@@ -39,9 +39,9 @@ public class AdaptadorCultivos extends ArrayAdapter<E_Cultivos> {
     }
 
     private View view(int position, View convertView, ViewGroup parent){
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_cultivos_rrhhtareoar, parent, false);
+        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_datos_rrhhtareoar, parent, false);
 
-        TextView tvCultivo = convertView.findViewById(R.id.tvNombreCultivoRRHH_TAREO_AR);
+        TextView tvCultivo = convertView.findViewById(R.id.tvNombreDatoRRHH_TAREO_AR);
 
         E_Cultivos e_cultivos = getItem(position);
 
@@ -51,11 +51,11 @@ public class AdaptadorCultivos extends ArrayAdapter<E_Cultivos> {
     }
 
     private View viewInicial(int position, View convertView, ViewGroup parent){
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_inicial_cultivos_rrhhtareoar, null);
+        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_inicial_datos_rrhhtareoar, null);
 
         E_Cultivos e_cultivos = getItem(position);
 
-        TextView tvCultivoInicial = convertView.findViewById(R.id.tvNombreCultivoInicialRRHH_TAREO_AR);
+        TextView tvCultivoInicial = convertView.findViewById(R.id.tvNombreDatosInicialRRHH_TAREO_AR);
         tvCultivoInicial.setText(e_cultivos.getNombre());
 
         return convertView;

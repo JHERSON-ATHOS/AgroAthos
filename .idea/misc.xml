@@ -4,19 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_primer_nivel_welcome.xml" value="0.20416666666666666" />
         <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_primer_nivel_welcome_destajo.xml" value="0.17074275362318841" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_primer_nivel_welcome_garita.xml" value="0.20416666666666666" />
         <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_segundo_nivel_welcome.xml" value="0.17074275362318841" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_tercer_nivel_asignar_jarras.xml" value="0.21" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_tercer_nivel_configuracion_grupos.xml" value="0.20416666666666666" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_tercer_nivel_listar_registros_garita.xml" value="0.20416666666666666" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_especificacion_personal.xml" value="0.20416666666666666" />
+        <entry key="..\:/AgroAthos/app/src/main/res/layout/activity_tercer_nivel_asignar_jarras.xml" value="0.17074275362318841" />
         <entry key="..\:/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_listar_grupo_trabajo.xml" value="0.25" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_listar_personal_grupo.xml" value="0.20416666666666666" />
-        <entry key="..\:/AgroAthos/app/src/main/res/layout/load_transporte_garita_clonacion_grupos.xml" value="0.20416666666666666" />
-        <entry key="..\:/AgroAthos/app/src/main/res/menu/menu_garita.xml" value="0.20416666666666666" />
-        <entry key="..\:/AgroAthos/app/src/main/res/menu/menu_principal.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable-anydpi/ic_sincronizar_welcome_segundo_nivel_registrar_personal.xml" value="0.1975" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable-anydpi/ic_welcome_segundo_nivel_agregar.xml" value="0.1975" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.124" />
@@ -24,6 +15,8 @@
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable-xhdpi/rrhh_tareo_primernivel_bgbtndestajo.xml" value="0.17" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable-xhdpi/rrhh_tareo_primernivel_bgbtntareo.xml" value="0.17" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable-xhdpi/rrhh_tareo_primernivel_bgbtntransporte.xml" value="0.17" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable/bg_content_rrhh_tareo_arandano_listar_grupo_trabajo.xml" value="0.264" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable/ic_edit_detalle_grupo_trabajo_rrhh_tareo_ar.xml" value="0.191" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable/ic_launcher_background.xml" value="0.17" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable/ic_spinner.xml" value="0.1975" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/drawable/item_spinner_style_rrhhtareoar.xml" value="0.1975" />
@@ -39,24 +32,33 @@
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_primer_nivel_welcome_destajo.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_primer_nivel_welcome_garita.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_registrar_grupo_trabajo_segundo_nivel.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_segundo_nivel_registrar_grupo_trabajo.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_segundo_nivel_registrar_grupo_trabajo.xml" value="0.264" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_segundo_nivel_registrar_personal.xml" value="0.264" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_segundo_nivel_welcome.xml" value="0.264" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_tercer_nivel_asignar_jarras.xml" value="0.264" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_tercer_nivel_configuracion_grupos.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_tercer_nivel_listar_registros_garita.xml" value="0.25" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_welcome_primer_nivel.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/activity_welcome_segundo_nivel.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_listar_grupo_trabajo.xml" value="0.4" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/content_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_especificacion_personal.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_listar_detalle_grupo_trabajo.xml" value="0.253125" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_listar_grupo_trabajo.xml" value="0.536" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/content_rrhh_tareo_arandano_listar_personal_grupo.xml" value="0.4" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/content_transporte_garita_listar_personal_bus.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/dialog_segundo_nivel_rgt_asignar_labor.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_cultivos_rrhhtareoar.xml" value="0.264" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_datos_rrhhtareoar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_fundos_rrhhtareoar.xml" value="0.264" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_inicial_cultivos_rrhhtareoar.xml" value="0.4" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_inicial_datos_rrhhtareoar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_inicial_fundos_rrhhtareoar.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_inicial_rrhhtareoar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_inicial_zonas_rrhhtareoar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_inicial_zonas_transportegarita.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_rrhhtareoar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/item_spinner_zonas_rrhhtareoar.xml" value="0.264" />
+        <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/load_transporte_garita_clonacion_grupos.xml" value="0.253125" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/layout/rrhh_tareo_arandano_listar_grupo_trabajo.xml" value="0.4" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/menu/menu_principal.xml" value="0.264" />
         <entry key="..\:/Users/jhuamanp/AndroidStudioProjects/AgroAthos/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.124" />
@@ -64,7 +66,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

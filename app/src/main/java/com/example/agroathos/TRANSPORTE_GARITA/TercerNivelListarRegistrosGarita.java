@@ -162,7 +162,7 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
         Toast.makeText(this, "Listando el Registro de Personal", Toast.LENGTH_SHORT).show();
 
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL2+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL2+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"' AND "+Utilidades.CAMPO_GARITA_TIPO_HORA_NIVEL2+"="+"'"+tipo+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_GARITA_NIVEL2+" WHERE "+Utilidades.CAMPO_GARITA_FECHA_NIVEL2+"="+"'"+obtenerFechaActual("GMT-5")+"' AND "+Utilidades.CAMPO_GARITA_TIPO_HORA_NIVEL2+"="+"'"+tipo+"'", null);
         if (cursor != null){
             if (cursor.moveToFirst()){
                 do{

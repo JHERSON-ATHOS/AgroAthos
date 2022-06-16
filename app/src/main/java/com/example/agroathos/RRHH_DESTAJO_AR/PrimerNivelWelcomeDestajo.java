@@ -147,7 +147,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                 consultarJarraPersonal(intentResult.getContents());
                 arrayInfo.add(intentResult.getContents().concat(" - DNI= ").concat(dniObtenido));
                 arrayJarras.add(intentResult.getContents());
-                arrayHoras.add(obtenerHoraActual("AMERICA/Lima"));
+                arrayHoras.add(obtenerHoraActual("GMT-5"));
                 iniciarScan();
             }
         }else{

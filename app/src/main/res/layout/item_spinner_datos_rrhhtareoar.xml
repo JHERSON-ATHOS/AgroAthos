@@ -6,23 +6,29 @@
     android:padding="5dp"
     >
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="5dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="#98902C"/>
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:background="@drawable/item_spinner_style_rrhhtareoar"
-        >
+        android:background="@drawable/item_spinner_style_rrhhtareoar">
 
         <TextView
-            android:id="@+id/tvNombreCultivoInicialRRHH_TAREO_AR"
+            android:id="@+id/tvNombreDatoRRHH_TAREO_AR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="-- Selecciona un Cultivo --"
+            android:text="DATO"
             android:layout_gravity="center"
             android:layout_margin="5dp"
             android:textStyle="bold"
             android:textSize="20dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            />
 
     </LinearLayout>
 

@@ -1,11 +1,14 @@
 package com.example.agroathos;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.agroathos.RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo;
 import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
+import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
 import com.example.agroathos.TRANSPORTE_GARITA.PrimerNivelWelcomeGarita;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +34,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnGarita, btnBus, btnTareo, btnDestajo;
+    Button btnGarita, btnTareo, btnDestajo;
+    ConstraintLayout layout;
     ArrayList<String> usuariosList = new ArrayList<>();
+
+    SharedPreferences preferences;
+    String dni_login = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pedirPermisos();
+        preferences = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
 
+        layout = findViewById(R.id.clMainActivity);
         btnGarita = findViewById(R.id.btnLauncherGarita);
         btnTareo = findViewById(R.id.btnLauncherTareo);
         btnDestajo = findViewById(R.id.btnLauncherDestajos);
@@ -48,17 +58,32 @@ public class MainActivity extends AppCompatActivity {
         btnTareo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareo.class));
         btnDestajo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeDestajo.class));
 
+        if (preferences.getString("dni", "").isEmpty()){
+            solicitarAcceso();
+            btnGarita.setEnabled(false);
+            btnTareo.setEnabled(false);
+            btnDestajo.setEnabled(false);
+        }else{
+            btnGarita.setEnabled(true);
+            btnTareo.setEnabled(true);
+            btnDestajo.setEnabled(true);
+        }
+
+    }
+
+    public void solicitarAcceso(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("ACCESO DE PERSONAL ATHOS");
-        //builder.setCancelable(false);
+        builder.setCancelable(false);
 
         final View view = getLayoutInflater().inflate(R.layout.content_login, null, false);
         EditText etUser = view.findViewById(R.id.etUserLoginMAINACTIVITY);
 
         builder.setPositiveButton("VALIDAR", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                validarAcceso(etUser.getText().toString().trim());
+            public void onClick(DialogInterface dialog, int which){
+                dni_login = etUser.getText().toString().trim();
+                validarAcceso(dni_login);
             }
         });
 
@@ -75,13 +100,19 @@ public class MainActivity extends AppCompatActivity {
 
                     for (int i=0; i<jsonArray.length(); i++){
                         JSONObject data = jsonArray.getJSONObject(i);
-                        usuariosList.add(data.getString("username"));
+                        usuariosList.add(data.getString("dni"));
+                        usuariosList.add(data.getString("usuario"));
+
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("dni", dni_login);
+                        editor.commit();
+
                     }
 
                     if (usuariosList.contains(username)){
-                        Toast.makeText(MainActivity.this, "Existe", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Bienvenido: "+usuariosList.get(1), Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(MainActivity.this, "No existe", Toast.LENGTH_SHORT).show();
+                        solicitarAcceso();
                     }
 
                 } catch (JSONException e) {

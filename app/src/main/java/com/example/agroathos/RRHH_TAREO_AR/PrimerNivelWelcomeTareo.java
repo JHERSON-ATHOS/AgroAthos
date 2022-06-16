@@ -291,7 +291,7 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
         values.put(Utilidades.CAMPO_CULTIVO_NIVEL1, cultivo);
         values.put(Utilidades.CAMPO_DNI_NIVEL1, etDNI.getText().toString());
         values.put(Utilidades.CAMPO_FECHA_NIVEL1, obtenerFechaActual("AMERICA/Lima"));
-        values.put(Utilidades.CAMPO_HORA_NIVEL1, obtenerHoraActual("AMERICA/Lima"));
+        values.put(Utilidades.CAMPO_HORA_NIVEL1, obtenerHoraActual("GMT-5"));
 
         Long idResultante = database.insert(Utilidades.TABLA_NIVEL1, Utilidades.CAMPO_ID_NIVEL1, values);
 

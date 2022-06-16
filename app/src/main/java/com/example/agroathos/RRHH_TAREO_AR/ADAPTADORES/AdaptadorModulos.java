@@ -10,15 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.agroathos.ENTIDADES.E_Zonas;
+import com.example.agroathos.ENTIDADES.E_Modulos;
 import com.example.agroathos.R;
 
 import java.util.ArrayList;
 
-public class AdaptadorZonas extends ArrayAdapter<E_Zonas> {
+public class AdaptadorModulos extends ArrayAdapter<E_Modulos> {
 
-    public AdaptadorZonas(@NonNull Context context, ArrayList<E_Zonas> zonasArrayList) {
-        super(context, 0, zonasArrayList);
+    public AdaptadorModulos(@NonNull Context context, ArrayList<E_Modulos> modulosArrayList) {
+        super(context, 0, modulosArrayList);
     }
 
     @NonNull
@@ -42,9 +42,9 @@ public class AdaptadorZonas extends ArrayAdapter<E_Zonas> {
 
         TextView tvCultivo = convertView.findViewById(R.id.tvNombreDatoRRHH_TAREO_AR);
 
-        E_Zonas e_zonas = getItem(position);
+        E_Modulos e_modulos = getItem(position);
 
-        tvCultivo.setText(e_zonas.getNombre());
+        tvCultivo.setText(e_modulos.getNombre());
 
         return convertView;
     }
@@ -52,10 +52,10 @@ public class AdaptadorZonas extends ArrayAdapter<E_Zonas> {
     private View viewInicial(int position, View convertView, ViewGroup parent){
         convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_spinner_inicial_datos_rrhhtareoar, null);
 
-        E_Zonas e_zonas = getItem(position);
+        E_Modulos e_modulos = getItem(position);
 
         TextView tvCultivoInicial = convertView.findViewById(R.id.tvNombreDatosInicialRRHH_TAREO_AR);
-        tvCultivoInicial.setText(e_zonas.getNombre());
+        tvCultivoInicial.setText(e_modulos.getNombre());
 
         return convertView;
     }
