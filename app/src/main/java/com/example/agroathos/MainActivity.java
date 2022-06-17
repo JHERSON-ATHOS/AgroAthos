@@ -11,10 +11,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,15 +35,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
     Button btnGarita, btnTareo, btnDestajo;
+    TextView tvUsuario;
     ConstraintLayout layout;
-    ArrayList<String> usuariosList = new ArrayList<>();
+    LinearLayout layoutAdministrador, layoutGarita, layoutAuxiliar, layoutProductividad;
 
     SharedPreferences preferences;
     String dni_login = "";
+
+    String dni_access = "";
+    String usuario_access = "";
+    String tipo_usuario_access = "";
+
+    private int currentProgress = 0;
+
+    String dni_preferences = "";
+    String usuario_preferences = "";
+    String tipo_usuario_preferences = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +65,16 @@ public class MainActivity extends AppCompatActivity {
 
         pedirPermisos();
         preferences = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
+        dni_preferences = preferences.getString("dni", "");
+        usuario_preferences = preferences.getString("usuario", "");
+        tipo_usuario_preferences = preferences.getString("tipo_usuario", "");
 
         layout = findViewById(R.id.clMainActivity);
+        layoutAdministrador = findViewById(R.id.llVistaAdminMAINACTIVITY);
+        layoutGarita = findViewById(R.id.llVistaGaritaMAINACTIVITY);
+        layoutAuxiliar = findViewById(R.id.llVistaAuxiliarMAINACTIVITY);
+        layoutProductividad = findViewById(R.id.llVistaProductividadMAINACTIVITY);
+        tvUsuario = findViewById(R.id.tvNombreUsuarioLogueadoACTIVITYMAIN);
         btnGarita = findViewById(R.id.btnLauncherGarita);
         btnTareo = findViewById(R.id.btnLauncherTareo);
         btnDestajo = findViewById(R.id.btnLauncherDestajos);
@@ -58,15 +83,40 @@ public class MainActivity extends AppCompatActivity {
         btnTareo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareo.class));
         btnDestajo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeDestajo.class));
 
-        if (preferences.getString("dni", "").isEmpty()){
-            btnGarita.setVisibility(View.GONE);
-            btnTareo.setVisibility(View.GONE);
-            btnDestajo.setVisibility(View.GONE);
+        if (dni_preferences.isEmpty()){
             solicitarAcceso();
         }else{
+            validarAccesoSecundario();
 
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+
+            final View view = getLayoutInflater().inflate(R.layout.load_transporte_garita_clonacion_grupos, null, false);
+            ProgressBar progressBar = view.findViewById(R.id.progressBarClonandoGrupoTRANSPORTE_GARITA);
+            TextView tvTitulo = view.findViewById(R.id.tvTituloProgressBar);
+
+            tvTitulo.setText("Estamos configurando tu entorno");
+
+            builder.setView(view).create();
+            AlertDialog dialog = builder.show();
+
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    currentProgress = currentProgress + 10;
+                    progressBar.setProgress(currentProgress);
+                    progressBar.setMax(100);
+
+                    if (currentProgress == 100){
+                        timer.cancel();
+                        dialog.dismiss();
+                    }
+
+                }
+            };
+            timer.schedule(timerTask, 2000, 100);*/
         }
-
     }
 
     public void solicitarAcceso(){
@@ -90,13 +140,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void validarAcceso(String dni){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/login", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/login/"+dni, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jsonArray = response.getJSONArray("users");
+                    JSONObject object = response.getJSONObject("data_unitaria");
+                    dni_access = object.getString("dni");
+                    usuario_access = object.getString("usuario");
+                    tipo_usuario_access = object.getString("tipo_usuario_id");
 
-                    for (int i=0; i<jsonArray.length(); i++){
+                    if (!TextUtils.isEmpty(dni_access)) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("dni", dni_access);
+                        editor.putString("usuario", usuario_access);
+                        editor.putString("tipo_usuario", tipo_usuario_access);
+                        editor.commit();
+
+                        tvUsuario.setVisibility(View.VISIBLE);
+                        tvUsuario.setText("BIENVENID@\n"+usuario_access);
+
+                        switch (tipo_usuario_access){
+                            case "1":
+                                layoutAdministrador.setVisibility(View.VISIBLE);
+                                break;
+                            case "2":
+                                layoutGarita.setVisibility(View.VISIBLE);
+                                break;
+                            case "3":
+                                layoutAuxiliar.setVisibility(View.VISIBLE);
+                                break;
+                            case "4":
+                                layoutProductividad.setVisibility(View.VISIBLE);
+                                break;
+                        }
+                    }
+                    //LEIDA DE DATOS MASIVOS
+                    //JSONArray jsonArray = response.getJSONArray("data_unitaria");
+                    /*for (int i=0; i<jsonArray.length(); i++){
                         JSONObject data = jsonArray.getJSONObject(i);
                         usuariosList.add(data.getString("dni"));
                         usuariosList.add(data.getString("usuario"));
@@ -105,25 +185,23 @@ public class MainActivity extends AppCompatActivity {
 
                     if (usuariosList.contains(dni)){
 
+                        Toast.makeText(MainActivity.this, "BIENVENIDO: "+usuariosList.get(1), Toast.LENGTH_SHORT).show();
+
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("dni", dni_login);
                         editor.commit();
 
-                        btnGarita.setVisibility(View.VISIBLE);
-                        btnTareo.setVisibility(View.VISIBLE);
-                        btnDestajo.setVisibility(View.VISIBLE);
-
-                        /*if (usuariosList.contains("ADMINISTRADOR")){
+                        if (usuariosList.contains("ADMINISTRADOR")){
                             btnGarita.setVisibility(View.VISIBLE);
                             btnTareo.setVisibility(View.VISIBLE);
                             btnDestajo.setVisibility(View.VISIBLE);
-                        }*/
+                        }
                     }else{
                         solicitarAcceso();
-                    }
-
+                    }*/
                 } catch (JSONException e) {
-                    Toast.makeText(MainActivity.this, "ERROR: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Error: No existe usuario", Toast.LENGTH_SHORT).show();
+                    solicitarAcceso();
                 }
             }
         }, new Response.ErrorListener() {
@@ -135,6 +213,30 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private void validarAccesoSecundario(){
+
+        if (dni_preferences != ""){
+
+            tvUsuario.setVisibility(View.VISIBLE);
+            tvUsuario.setText("BIENVENID@\n"+usuario_preferences);
+
+            switch (tipo_usuario_preferences){
+                case "1":
+                    layoutAdministrador.setVisibility(View.VISIBLE);
+                    break;
+                case "2":
+                    layoutGarita.setVisibility(View.VISIBLE);
+                    break;
+                case "3":
+                    layoutAuxiliar.setVisibility(View.VISIBLE);
+                    break;
+                case "4":
+                    layoutProductividad.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
 
     private void pedirPermisos() {

@@ -111,7 +111,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
     private void iniciarScan(){
         IntentIntegrator integrator = new IntentIntegrator(PrimerNivelWelcomeDestajo.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("Lector QR Jarras");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);

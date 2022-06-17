@@ -134,7 +134,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
     private void iniciarScanBus(){
         valorScan = 1;
         IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarPersonal.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("LECTOR QR BUS");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
@@ -146,7 +146,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
     private void iniciarScanPersonal(){
         valorScan = 2;
         IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarPersonal.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("LECTOR QR PERSONAL");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
@@ -157,7 +157,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
     private void iniciarScanUnidad(){
         valorScan = 3;
         IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarPersonal.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("LECTOR QR UNIDAD");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
