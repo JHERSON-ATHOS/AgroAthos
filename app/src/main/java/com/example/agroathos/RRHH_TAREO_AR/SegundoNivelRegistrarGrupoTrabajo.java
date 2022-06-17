@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -535,6 +536,8 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
 
             }
         });
+
+        Toast.makeText(this, modulo, Toast.LENGTH_SHORT).show();
     }
 
     public void cargarModulo(){
@@ -552,7 +555,6 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     public void recibirFundo(){
         arrayModulo.add(new E_Modulos("-- Selecciona un Módulo --"));
         arrayLote.add(new E_Lotes("-- Selecciona un Lote --"));
-        arrayLabores.add(new E_Labores("-- Selecciona una Labor --"));
         switch (fundo){
             case "CAY":
             case "STF":
@@ -607,6 +609,32 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     }
 
     private void registrarPersonal(){
+
+        if (TextUtils.isEmpty(modulo) || modulo.equals("-- Selecciona un Módulo --")){
+            Toast.makeText(this, "Selecciona un módulo", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(lote) || modulo.equals("-- Selecciona un Lote --")){
+            Toast.makeText(this, "Selecciona un lote", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(labor) || modulo.equals("-- Selecciona una Labor --")){
+            Toast.makeText(this, "Selecciona una labor", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (tvHoraInicio.getText().toString().equals("Hora Inicio")){
+            Toast.makeText(this, "Ingresa la hora de inicio", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (tvHoraFinal.getText().toString().equals("Hora Final")){
+            Toast.makeText(this, "Ingresa la hora de fin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (lvPersonal.getCount()==0){
             Toast.makeText(this, "No hay personal", Toast.LENGTH_SHORT).show();
             return;
@@ -643,15 +671,22 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             valuesPersonal.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, tvHoraInicio.getText().toString());
             valuesPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, tvHoraFinal.getText().toString());
             valuesPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
-
-            Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
+            /*Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
 
             if (idResultante > 0){
                 Toast.makeText(this, "Datos Registrados!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(SegundoNivelRegistrarGrupoTrabajo.this, SegundoNivelWelcome.class);
                 startActivity(intent);
-            }
+            }*/
+        }
+        Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
+
+        if (idResultante > 0){
+            Toast.makeText(this, "Datos Registrados!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(SegundoNivelRegistrarGrupoTrabajo.this, SegundoNivelWelcome.class);
+            startActivity(intent);
         }
     }
 
@@ -672,7 +707,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
 
     private void iniciarScanPersonal(){
         IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarGrupoTrabajo.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("LECTOR QR PERSONAL");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
@@ -692,7 +727,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                 contadorJarras = 0;
             }else{
                 IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarGrupoTrabajo.this);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
                 integrator.setPrompt("LECTOR QR JARRAS");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(true);
@@ -737,10 +772,10 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                 lvPersonal.setAdapter(adaptadorListarPersonalTrabajo);
             }else{
                 if (valorPersonal.isEmpty()){
-                    if (valorPersonal.contains(intentResult.getContents())){
+                    if (intentResult.getContents().length()<5){
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("ERROR");
-                        builder.setMessage("El personal ya está registrado.");
+                        builder.setMessage("Valor no aceptado");
                         builder.setCancelable(false);
                         builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                             @Override
@@ -773,7 +808,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                     }
                 }else{
                     if (valorJarra1.isEmpty()){
-                        if (valorJarra1.contains(intentResult.getContents()) || valorJarra2.contains(intentResult.getContents())){
+                        if (arrayJarras1.contains(intentResult.getContents()) || arrayJarras2.contains(intentResult.getContents())){
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setTitle("ERROR");
                             builder.setMessage("La jarra ya se encuentra registrada.");
@@ -809,7 +844,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                             }
                         }
                     }else{
-                        if (valorJarra1.contains(intentResult.getContents()) || valorJarra2.contains(intentResult.getContents())){
+                        if (arrayJarras1.contains(intentResult.getContents()) || arrayJarras2.contains(intentResult.getContents())){
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setTitle("ERROR");
                             builder.setMessage("La jarra ya se encuentra registrada.");

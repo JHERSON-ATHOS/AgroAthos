@@ -59,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
         btnDestajo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeDestajo.class));
 
         if (preferences.getString("dni", "").isEmpty()){
-            solicitarAcceso();
             btnGarita.setVisibility(View.GONE);
             btnTareo.setVisibility(View.GONE);
             btnDestajo.setVisibility(View.GONE);
+            solicitarAcceso();
+        }else{
+
         }
 
     }
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void validarAcceso(String username){
+    private void validarAcceso(String dni){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/login", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -99,20 +101,23 @@ public class MainActivity extends AppCompatActivity {
                         usuariosList.add(data.getString("dni"));
                         usuariosList.add(data.getString("usuario"));
                         usuariosList.add(data.getString("tipo_usuario"));
+                    }
+
+                    if (usuariosList.contains(dni)){
 
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("dni", dni_login);
                         editor.commit();
 
-                    }
+                        btnGarita.setVisibility(View.VISIBLE);
+                        btnTareo.setVisibility(View.VISIBLE);
+                        btnDestajo.setVisibility(View.VISIBLE);
 
-                    if (usuariosList.contains(username)){
-                        Toast.makeText(MainActivity.this, "Bienvenido: "+usuariosList.get(1), Toast.LENGTH_SHORT).show();
-                        if (usuariosList.contains("ADMINISTRADOR")){
+                        /*if (usuariosList.contains("ADMINISTRADOR")){
                             btnGarita.setVisibility(View.VISIBLE);
                             btnTareo.setVisibility(View.VISIBLE);
                             btnDestajo.setVisibility(View.VISIBLE);
-                        }
+                        }*/
                     }else{
                         solicitarAcceso();
                     }
