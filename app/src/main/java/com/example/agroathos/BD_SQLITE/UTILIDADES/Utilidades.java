@@ -24,9 +24,10 @@ public class Utilidades {
     public static final String CAMPO_ID_GRUPO_NIVEL1_5 = "id_grupo";
     public static final String CAMPO_CONTADOR_GRUPO_NIVEL1_5 = "contador";
     public static final String CAMPO_DNI_NIVEL1_5 = "anexo_supervisor";
+    public static final String CAMPO_ESTADO_NIVEL1_5 = "estado";
     public static final String CREAR_TABLA_NIVEL1_5 = "CREATE TABLE "+TABLA_NIVEL1_5+" " +
             "("+CAMPO_ID_NIVEL1_5+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CAMPO_ID_GRUPO_NIVEL1_5+" TEXT, " +
-            ""+CAMPO_CONTADOR_GRUPO_NIVEL1_5+" TEXT, "+CAMPO_DNI_NIVEL1_5+" TEXT)";
+            ""+CAMPO_CONTADOR_GRUPO_NIVEL1_5+" TEXT, "+CAMPO_DNI_NIVEL1_5+" TEXT, "+CAMPO_ESTADO_NIVEL1_5+" TEXT)";
 
     //DATOS NIVEL 2
     public static final String TABLA_NIVEL2 = "RRHH_NIVEL2";

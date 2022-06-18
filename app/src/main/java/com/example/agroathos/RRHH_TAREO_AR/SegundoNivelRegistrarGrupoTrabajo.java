@@ -537,7 +537,6 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, modulo, Toast.LENGTH_SHORT).show();
     }
 
     public void cargarModulo(){
@@ -649,10 +648,12 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             valuesGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idGrupo);
             valuesGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, 1);
             valuesGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
+            valuesGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL1_5, "ABIERTO");
         }else{
             valuesGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idGrupo);
             valuesGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, cursor.getCount()+1);
             valuesGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
+            valuesGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL1_5, "ABIERTO");
         }
 
         database.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_DNI_NIVEL1_5, valuesGrupo);
@@ -671,22 +672,14 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             valuesPersonal.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, tvHoraInicio.getText().toString());
             valuesPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, tvHoraFinal.getText().toString());
             valuesPersonal.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
-            /*Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
+            Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
 
             if (idResultante > 0){
                 Toast.makeText(this, "Datos Registrados!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(SegundoNivelRegistrarGrupoTrabajo.this, SegundoNivelWelcome.class);
                 startActivity(intent);
-            }*/
-        }
-        Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonal);
-
-        if (idResultante > 0){
-            Toast.makeText(this, "Datos Registrados!", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(SegundoNivelRegistrarGrupoTrabajo.this, SegundoNivelWelcome.class);
-            startActivity(intent);
+            }
         }
     }
 
@@ -719,7 +712,6 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
         if (!valorPersonal.isEmpty()){
             if (contadorJarras == 2){
                 personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal, valorJarra1.concat(" - ").concat(valorJarra2)));
-                //arrayInformacion.add(valorPersonal.concat(" - ").concat(valorJarra1).concat(" - ").concat(valorJarra2));
                 iniciarScanPersonal();
                 valorPersonal = "";
                 valorJarra1 = "";

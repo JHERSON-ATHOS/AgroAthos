@@ -87,13 +87,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
 
     /*VALORES OBTENIDOS BD*/
     String BDid_nivel2 = "";
-    String BDgrupo = "";
     String BDfundo = "";
     String BDmodulo = "";
     String BDlote = "";
     String BDlabor = "";
-    String BDdniPersonal = "";
-    String BDdniSupervisor = "";
     String BDFecha = "";
     String BDhoraInicio = "";
     String BDhoraFinal = "";
@@ -136,23 +133,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
 
         if (valor == 2){
             iniciarLayoutPrincipal();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-
-            final View view = getLayoutInflater().inflate(R.layout.load_transporte_garita_clonacion_grupos, null, false);
-            ProgressBar progressBar = view.findViewById(R.id.progressBarClonandoGrupoTRANSPORTE_GARITA);
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    duplicarGrupoTrabajo();
-                }
-            }, 5000);
-
-            builder.setView(view);
-            builder.create().show();
-
-            btnAgregarPersonal.setVisibility(View.VISIBLE);
+            duplicarGrupoTrabajo();
         }
 
         if (valor == 3){
@@ -592,6 +573,9 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     }
 
     public void recibirFundo(){
+        arrayModulo.add(new E_Modulos(BDmodulo));
+        arrayLote.add(new E_Lotes(BDlote));
+        arrayLabores.add(new E_Labores(BDlabor));
         switch (BDfundo){
             case "CAY":
             case "STF":
@@ -602,6 +586,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             case "MAT":
             case "SOJ":
                 arrayModulo.clear();
+                arrayModulo.add(new E_Modulos(BDmodulo));
                 arrayModulo.add(new E_Modulos("MO1"));
                 break;
             case "CHI":
@@ -614,16 +599,19 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             case "LUC":
             case "LDN":
                 arrayModulo.clear();
+                arrayModulo.add(new E_Modulos(BDmodulo));
                 arrayModulo.add(new E_Modulos("MO1"));
                 arrayModulo.add(new E_Modulos("MO2"));
                 break;
             case "LU2":
             case "LU3":
                 arrayModulo.clear();
+                arrayModulo.add(new E_Modulos(BDmodulo));
                 arrayModulo.add(new E_Modulos("MO2"));
                 break;
             case "POM":
                 arrayModulo.clear();
+                arrayModulo.add(new E_Modulos(BDmodulo));
                 arrayModulo.add(new E_Modulos("MO1"));
                 arrayModulo.add(new E_Modulos("MO2"));
                 arrayModulo.add(new E_Modulos("MO3"));
@@ -633,6 +621,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                 break;
             case "SNA":
                 arrayModulo.clear();
+                arrayModulo.add(new E_Modulos(BDmodulo));
                 arrayModulo.add(new E_Modulos("MO1"));
                 arrayModulo.add(new E_Modulos("MO2"));
                 arrayModulo.add(new E_Modulos("MO3"));
@@ -656,7 +645,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         }
 
         SQLiteDatabase database = conn.getWritableDatabase();
-        String[] parametro = {BDid_nivel2};
+        String[] parametro = {idGrupo};
 
         if (rbAbierto.isChecked()){
             valuesActualizarGrupo.put(Utilidades.CAMPO_MODULO_NIVEL2, moduloACT);
@@ -665,7 +654,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             valuesActualizarGrupo.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, etHoraInicio.getText().toString());
             valuesActualizarGrupo.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, etHoraFinal.getText().toString());
             valuesActualizarGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
-        }else if (rbCerrado.isChecked()){
+        }
+        if (rbCerrado.isChecked()){
             valuesActualizarGrupo.put(Utilidades.CAMPO_MODULO_NIVEL2, moduloACT);
             valuesActualizarGrupo.put(Utilidades.CAMPO_LOTE_NIVEL2, loteACT);
             valuesActualizarGrupo.put(Utilidades.CAMPO_LABOR_NIVEL2, laborACT);
@@ -674,7 +664,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             valuesActualizarGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL2, "CERRADO");
         }
 
-        database.update(Utilidades.TABLA_NIVEL2, valuesActualizarGrupo, Utilidades.CAMPO_ID_NIVEL2+"=?", parametro);
+        database.update(Utilidades.TABLA_NIVEL2, valuesActualizarGrupo, Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2+"=?", parametro);
         Intent intent = new Intent(TercerNivelConfiguracionGrupo.this, SegundoNivelWelcome.class);
         startActivity(intent);
         Toast.makeText(TercerNivelConfiguracionGrupo.this, "Grupo Actualizado!", Toast.LENGTH_SHORT).show();
@@ -707,6 +697,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     e_detalleGrupoTrabajo.setEstado(cursor.getString(13));
                     arrayPersonalList.add(e_detalleGrupoTrabajo);
 
+                    BDid_nivel2 = cursor.getString(0);
                     BDfundo = cursor.getString(2);
                     BDmodulo = cursor.getString(3);
                     BDlote = cursor.getString(4);
@@ -757,34 +748,34 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         Cursor cursorPersonal = dataObtenida.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2 + "=" + "'"+idGrupo+"' AND "+Utilidades.CAMPO_ESTADO_NIVEL2+ "=" + "'ABIERTO'", null);
 
+        ArrayList<String> arrayListFundos = new ArrayList<>();
+        ArrayList<String> arrayListModulos = new ArrayList<>();
+        ArrayList<String> arrayListLotes = new ArrayList<>();
+        ArrayList<String> arrayListLabores = new ArrayList<>();
         ArrayList<String> arrayListPersonales = new ArrayList<>();
-        String BDfundo = "";
-        String BDmodulo = "";
-        String BDlote = "";
-        String BDlabor = "";
-        String BDdniSupervisor = "";
-        String BDjarra1 = "";
-        String BDjarra2 = "";
-        String BDFecha = "";
-        String BDhoraInicio = "";
-        String BDhoraFinal = "";
-        String BDestado = "";
+        ArrayList<String> arrayListSupervisores = new ArrayList<>();
+        ArrayList<String> arrayListJarras1 = new ArrayList<>();
+        ArrayList<String> arrayListJarras2 = new ArrayList<>();
+        ArrayList<String> arrayListFechas = new ArrayList<>();
+        ArrayList<String> arrayListHorasInicio = new ArrayList<>();
+        ArrayList<String> arrayListHorasFinal = new ArrayList<>();
+        ArrayList<String> arrayListEstados = new ArrayList<>();
 
         if (cursorPersonal != null){
             if (cursorPersonal.moveToFirst()){
                 do{
-                    BDfundo = cursorPersonal.getString(2);
-                    BDmodulo = cursorPersonal.getString(3);
-                    BDlote = cursorPersonal.getString(4);
-                    BDlabor = cursorPersonal.getString(5);
+                    arrayListFundos.add(cursorPersonal.getString(2));
+                    arrayListModulos.add(cursorPersonal.getString(3));
+                    arrayListLotes.add(cursorPersonal.getString(4));
+                    arrayListLabores.add(cursorPersonal.getString(5));
                     arrayListPersonales.add(cursorPersonal.getString(6));
-                    BDdniSupervisor = cursorPersonal.getString(7);
-                    BDjarra1 = cursorPersonal.getString(8);
-                    BDjarra2 = cursorPersonal.getString(9);
-                    BDFecha = cursorPersonal.getString(10);
-                    BDhoraInicio = cursorPersonal.getString(11);
-                    BDhoraFinal = cursorPersonal.getString(12);
-                    BDestado = cursorPersonal.getString(13);
+                    arrayListSupervisores.add(cursorPersonal.getString(7));
+                    arrayListJarras1.add(cursorPersonal.getString(8));
+                    arrayListJarras2.add(cursorPersonal.getString(9));
+                    arrayListFechas.add(cursorPersonal.getString(10));
+                    arrayListHorasInicio.add(cursorPersonal.getString(11));
+                    arrayListHorasFinal.add(cursorPersonal.getString(12));
+                    arrayListEstados.add(cursorPersonal.getString(13));
                 }while (cursorPersonal.moveToNext());
             }
         }
@@ -797,32 +788,34 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         if (cursorGrupo.getCount()<0){
             valuesAgregarGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idNewGrupo);
             valuesAgregarGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, 1);
-            valuesAgregarGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, BDdniSupervisor);
+            valuesAgregarGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
+            valuesAgregarGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL1_5, "ABIERTO");
         }else{
             valuesAgregarGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idNewGrupo);
             valuesAgregarGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, cursorGrupo.getCount()+1);
-            valuesAgregarGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, BDdniSupervisor);
+            valuesAgregarGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
+            valuesAgregarGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL1_5, "ABIERTO");
         }
 
         databaseGrupo.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_DNI_NIVEL1_5, valuesAgregarGrupo);
 
-        for (int i=0; i<rvListadoPersonal.getChildCount(); i++){
+        for (int i=0; i<arrayListSupervisores.size(); i++){
             SQLiteDatabase database = conn.getWritableDatabase();
             ContentValues valuesPersonalClonado = new ContentValues();
 
             valuesPersonalClonado.put(Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2, idNewGrupo);
-            valuesPersonalClonado.put(Utilidades.CAMPO_FUNDO_NIVEL2, BDfundo);
-            valuesPersonalClonado.put(Utilidades.CAMPO_MODULO_NIVEL2, BDmodulo);
-            valuesPersonalClonado.put(Utilidades.CAMPO_LOTE_NIVEL2, BDlote);
-            valuesPersonalClonado.put(Utilidades.CAMPO_LABOR_NIVEL2, BDlabor);
+            valuesPersonalClonado.put(Utilidades.CAMPO_FUNDO_NIVEL2, arrayListFundos.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_MODULO_NIVEL2, arrayListModulos.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_LOTE_NIVEL2, arrayListLotes.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_LABOR_NIVEL2, arrayListLabores.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_PERSONAL_NIVEL2, arrayListPersonales.get(i));
-            valuesPersonalClonado.put(Utilidades.CAMPO_DNI_NIVEL2, BDdniSupervisor);
-            valuesPersonalClonado.put(Utilidades.CAMPO_JARRA1_NIVEL2, BDjarra1);
-            valuesPersonalClonado.put(Utilidades.CAMPO_JARRA2_NIVEL2, BDjarra2);
-            valuesPersonalClonado.put(Utilidades.CAMPO_FECHA_NIVEL2, BDFecha);
-            valuesPersonalClonado.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, BDhoraInicio);
-            valuesPersonalClonado.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, BDhoraFinal);
-            valuesPersonalClonado.put(Utilidades.CAMPO_ESTADO_NIVEL2, BDestado);
+            valuesPersonalClonado.put(Utilidades.CAMPO_DNI_NIVEL2, arrayListSupervisores.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_JARRA1_NIVEL2, arrayListJarras1.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_JARRA2_NIVEL2, arrayListJarras2.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_FECHA_NIVEL2, arrayListFechas.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, arrayListHorasInicio.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, arrayListHorasFinal.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_ESTADO_NIVEL2, arrayListEstados.get(i));
 
             Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonalClonado);
 
