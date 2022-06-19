@@ -41,6 +41,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     Button btnGarita, btnTareo, btnDestajo;
+    Button btnGaritaUsuarioGarita, btnTareoUsuarioAuxiliar, btnDestajoUsuarioProductividad;
     TextView tvUsuario;
     ConstraintLayout layout;
     LinearLayout layoutAdministrador, layoutGarita, layoutAuxiliar, layoutProductividad;
@@ -78,10 +79,16 @@ public class MainActivity extends AppCompatActivity {
         btnGarita = findViewById(R.id.btnLauncherGarita);
         btnTareo = findViewById(R.id.btnLauncherTareo);
         btnDestajo = findViewById(R.id.btnLauncherDestajos);
+        btnGaritaUsuarioGarita = findViewById(R.id.btnLauncherGaritaUsuarioGaritaMAINACTIVITY);
+        btnTareoUsuarioAuxiliar = findViewById(R.id.btnLauncherTareoUsuarioAxuliarMAINACTIVITY);
+        btnDestajoUsuarioProductividad = findViewById(R.id.btnLauncherDestajosUsuarioProductividadMAINACTIVITY);
 
         btnGarita.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeGarita.class));
         btnTareo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareo.class));
         btnDestajo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeDestajo.class));
+        btnGaritaUsuarioGarita.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeGarita.class));
+        btnTareoUsuarioAuxiliar.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareo.class));
+        btnDestajoUsuarioProductividad.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeDestajo.class));
 
         if (dni_preferences.isEmpty()){
             solicitarAcceso();

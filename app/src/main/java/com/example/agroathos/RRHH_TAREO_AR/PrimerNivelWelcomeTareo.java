@@ -61,6 +61,7 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
 
     ConexionSQLiteHelper conn;
     SharedPreferences preferences;
+    SharedPreferences preferencesLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
         preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        preferencesLogin = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
 
         spZona = findViewById(R.id.spZonaRRHH_TAREO_ARANDANO_PRIMER_NIVEL);
         spFundo = findViewById(R.id.spFundoRRHH_TAREO_ARANDANO_PRIMER_NIVEL);
@@ -78,6 +80,11 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
         layout = findViewById(R.id.layoutPrincipalPrimerNivelWelcomeTareoArRRHH_TAREO_AR);
 
         cargarDatos();
+
+        if (!preferencesLogin.getString("dni", "").isEmpty()){
+            etDNI.setEnabled(false);
+            etDNI.setText(preferencesLogin.getString("dni", ""));
+        }
 
         if (!preferences.getString("dniSupervisor", "").isEmpty()){
             Intent intent = new Intent(PrimerNivelWelcomeTareo.this, SegundoNivelWelcome.class);
