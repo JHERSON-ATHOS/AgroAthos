@@ -5,10 +5,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,14 +17,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.R;
-import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
-import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -221,7 +215,7 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_sincronizar_action:
-                Toast.makeText(this, "OSEA SÍ, PERO NO!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "OSEA SÍ, PERO NO!", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);

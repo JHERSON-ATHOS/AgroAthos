@@ -11,13 +11,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -28,15 +26,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.agroathos.RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo;
 import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
-import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
 import com.example.agroathos.TRANSPORTE_GARITA.PrimerNivelWelcomeGarita;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -2,7 +2,6 @@ package com.example.agroathos.RRHH_DESTAJO_AR;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -15,20 +14,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.R;
-import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelRegistrarGrupoTrabajo;
-import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
@@ -100,13 +94,14 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
             values.put(Utilidades.CAMPO_DESTAJO_JARRA_NIVEL1, arrayJarras.get(i));
             values.put(Utilidades.CAMPO_DESTAJO_FECHA_NIVEL1, tvFecha.getText().toString());
             values.put(Utilidades.CAMPO_DESTAJO_HORA_NIVEL1, arrayHoras.get(i));
+            values.put(Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1, "0");
 
-            Long idResultante = database.insert(Utilidades.TABLA_DESTAJO_NIVEL1, Utilidades.CAMPO_DESTAJO_ID_NIVEL1, values);
+            database.insert(Utilidades.TABLA_DESTAJO_NIVEL1, Utilidades.CAMPO_DESTAJO_ID_NIVEL1, values);
 
-            if (idResultante > 0){
-                Toast.makeText(this, "Registro Exitoso!", Toast.LENGTH_SHORT).show();
-            }
         }
+
+        Toast.makeText(this, "Registro Exitoso!", Toast.LENGTH_SHORT).show();
+        lvJarras.setAdapter(null);
     }
 
     private void iniciarScan(){
@@ -116,7 +111,6 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
         integrator.setBarcodeImageEnabled(true);
-        //flash-integrator.setTorchEnabled(true);
         integrator.initiateScan();
     }
 

@@ -63,6 +63,27 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     String horaUP = "";
     String fechaUP = "";
 
+    //NIVEL 2
+    ArrayList<String> arrayListNivelDosIdGrupo = new ArrayList<>();
+    ArrayList<String> arrayListNivelDosContador = new ArrayList<>();
+    ArrayList<String> arrayListNivelDosAnexoSupervisor = new ArrayList<>();
+    ArrayList<String> arrayListNivelDosEstado = new ArrayList<>();
+
+    //NIVEL 3
+    ArrayList<String> arrayListNivelTresIdGrupo = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresFundo = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresModulo = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresLote = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresLabor = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresPersonal = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresSupervisor = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresJarraUno = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresJarraDos = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresFecha = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresHoraInicio = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresHoraFinal = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresEstado = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +107,6 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
         obtenerIdGrupo();
         consultarGruposTrabajo();
-        obtenerDataRegistrada();
 
         listView.setAdapter(new AdaptadorListarGrupoTrabajo(this,arrayGruposList));
 
@@ -156,8 +176,19 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 break;
 
             case R.id.menu_sincronizar_action:
+
+                obtenerDataRegistrada();
                 registrarDatos();
-                //Toast.makeText(this, "OSEA SÍ, PERO NO!", Toast.LENGTH_SHORT).show();
+
+                arrayListNivelDosIdGrupo.clear();
+                obtenerDataRegistradaNivelDos();
+                registrarDatosNivelDos();
+
+                arrayListNivelTresIdGrupo.clear();
+                obtenerDataRegistradaNivelTres();
+                registrarDatosNivelTres();
+
+                Toast.makeText(this, "Sincronizado Exitosamente!", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -180,7 +211,6 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         }
         cursorData.close();
     }
-
     private void registrarDatos(){
         JSONObject object = new JSONObject();
         try {
@@ -208,6 +238,112 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private void obtenerDataRegistradaNivelDos(){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1_5+"="+"'"+dni+"'", null);
+        if (cursorData != null){
+            if (cursorData.moveToFirst()){
+                do {
+                    arrayListNivelDosIdGrupo.add(cursorData.getString(1));
+                    arrayListNivelDosContador.add(cursorData.getString(2));
+                    arrayListNivelDosAnexoSupervisor.add(cursorData.getString(3));
+                    arrayListNivelDosEstado.add(cursorData.getString(4));
+                }while (cursorData.moveToNext());
+            }
+        }
+        cursorData.close();
+    }
+    private void registrarDatosNivelDos(){
+        for (int i=0; i<arrayListNivelDosIdGrupo.size(); i++){
+            JSONObject object = new JSONObject();
+            try {
+                object.put("id_grupo",arrayListNivelDosIdGrupo.get(i));
+                object.put("contador",arrayListNivelDosContador.get(i));
+                object.put("anexo_supervisor",arrayListNivelDosAnexoSupervisor.get(i));
+                object.put("estado",arrayListNivelDosEstado.get(i));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/nivel_dos", object, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(SegundoNivelWelcome.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
+            requestQueue.add(jsonObjectRequest);
+        }
+    }
+
+    private void obtenerDataRegistradaNivelTres(){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL2+" WHERE "+Utilidades.CAMPO_DNI_NIVEL2+"="+"'"+dni+"'", null);
+        if (cursorData != null){
+            if (cursorData.moveToFirst()){
+                do {
+                    arrayListNivelTresIdGrupo.add(cursorData.getString(1));
+                    arrayListNivelTresFundo.add(cursorData.getString(2));
+                    arrayListNivelTresModulo.add(cursorData.getString(3));
+                    arrayListNivelTresLote.add(cursorData.getString(4));
+                    arrayListNivelTresLabor.add(cursorData.getString(5));
+                    arrayListNivelTresPersonal.add(cursorData.getString(6));
+                    arrayListNivelTresSupervisor.add(cursorData.getString(7));
+                    arrayListNivelTresJarraUno.add(cursorData.getString(8));
+                    arrayListNivelTresJarraDos.add(cursorData.getString(9));
+                    arrayListNivelTresFecha.add(cursorData.getString(10));
+                    arrayListNivelTresHoraInicio.add(cursorData.getString(11));
+                    arrayListNivelTresHoraFinal.add(cursorData.getString(12));
+                    arrayListNivelTresEstado.add(cursorData.getString(13));
+                }while (cursorData.moveToNext());
+            }
+        }
+        cursorData.close();
+    }
+    private void registrarDatosNivelTres(){
+        for (int i=0; i<arrayListNivelTresIdGrupo.size(); i++){
+            JSONObject object = new JSONObject();
+            try {
+                object.put("anexo_grupo",arrayListNivelTresIdGrupo.get(i));
+                object.put("fundo",arrayListNivelTresFundo.get(i));
+                object.put("modulo",arrayListNivelTresModulo.get(i));
+                object.put("lote",arrayListNivelTresLote.get(i));
+                object.put("labor",arrayListNivelTresLabor.get(i));
+                object.put("personal",arrayListNivelTresPersonal.get(i));
+                object.put("anexo_supervisor",arrayListNivelTresSupervisor.get(i));
+                object.put("jarra_uno",arrayListNivelTresJarraUno.get(i));
+                object.put("jarra_dos",arrayListNivelTresJarraDos.get(i));
+                object.put("fecha",arrayListNivelTresFecha.get(i));
+                object.put("hora_inicio",arrayListNivelTresHoraInicio.get(i));
+                object.put("hora_final",arrayListNivelTresHoraFinal.get(i));
+                object.put("estado",arrayListNivelTresEstado.get(i));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/nivel_tres", object, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(SegundoNivelWelcome.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
+            requestQueue.add(jsonObjectRequest);
+        }
     }
 
     @Override

@@ -2,32 +2,21 @@ package com.example.agroathos.TRANSPORTE_GARITA;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.agroathos.ENTIDADES.E_Fundos;
 import com.example.agroathos.ENTIDADES.E_Zonas;
 import com.example.agroathos.MainActivity;
 import com.example.agroathos.R;
 import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorFundos;
 import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorZonas;
-import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class PrimerNivelWelcomeGarita extends AppCompatActivity {
 

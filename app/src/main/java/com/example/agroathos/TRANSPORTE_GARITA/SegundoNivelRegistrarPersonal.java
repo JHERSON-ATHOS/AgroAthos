@@ -2,7 +2,6 @@ package com.example.agroathos.TRANSPORTE_GARITA;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -10,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,14 +17,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
-import com.example.agroathos.MainActivity;
 import com.example.agroathos.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -134,19 +131,18 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
     private void iniciarScanBus(){
         valorScan = 1;
         IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarPersonal.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         integrator.setPrompt("LECTOR QR BUS");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
         integrator.setBarcodeImageEnabled(true);
-        //flash-integrator.setTorchEnabled(true);
         integrator.initiateScan();
     }
 
     private void iniciarScanPersonal(){
         valorScan = 2;
         IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarPersonal.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         integrator.setPrompt("LECTOR QR PERSONAL");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
@@ -157,7 +153,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
     private void iniciarScanUnidad(){
         valorScan = 3;
         IntentIntegrator integrator = new IntentIntegrator(SegundoNivelRegistrarPersonal.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         integrator.setPrompt("LECTOR QR UNIDAD");
         integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
@@ -180,10 +176,12 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
             valuesIntermedio.put(Utilidades.CAMPO_GARITA_ANEXO_PERSONAL_NIVEL1_5, idGrupo);
             valuesIntermedio.put(Utilidades.CAMPO_GARITA_CONTADOR_NIVEL1_5, 1);
             valuesIntermedio.put(Utilidades.CAMPO_GARITA_PLACA_NIVEL1_5, etPlaca.getText().toString().trim());
+            valuesIntermedio.put(Utilidades.CAMPO_GARITA_SINCRONIZADO_NIVEL1_5, "0");
         }else{
             valuesIntermedio.put(Utilidades.CAMPO_GARITA_ANEXO_PERSONAL_NIVEL1_5, idGrupo);
             valuesIntermedio.put(Utilidades.CAMPO_GARITA_CONTADOR_NIVEL1_5, cursor.getCount()+1);
             valuesIntermedio.put(Utilidades.CAMPO_GARITA_PLACA_NIVEL1_5, etPlaca.getText().toString().trim());
+            valuesIntermedio.put(Utilidades.CAMPO_GARITA_SINCRONIZADO_NIVEL1_5, "0");
         }
 
         database.insert(Utilidades.TABLA_GARITA_NIVEL1_5, Utilidades.CAMPO_GARITA_ID_NIVEL1_5, valuesIntermedio);
@@ -195,6 +193,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
             values.put(Utilidades.CAMPO_GARITA_PERSONAL_NIVEL1, arrayDataPersonal.get(i));
             values.put(Utilidades.CAMPO_GARITA_FECHA_NIVEL1, tvFecha.getText().toString());
             values.put(Utilidades.CAMPO_GARITA_HORA_NIVEL1, arrayHorasPersonal.get(i));
+            values.put(Utilidades.CAMPO_GARITA_SINCRONIZADO_NIVEL1, "0");
 
             database.insert(Utilidades.TABLA_GARITA_NIVEL1, Utilidades.CAMPO_GARITA_ID_NIVEL1, values);
         }
@@ -235,6 +234,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
             values.put(Utilidades.CAMPO_GARITA_TIPO_HORA_NIVEL2, tipo);
             values.put(Utilidades.CAMPO_GARITA_FECHA_NIVEL2, tvFecha.getText().toString());
             values.put(Utilidades.CAMPO_GARITA_HORA_NIVEL2, arrayHorasPersonal.get(i));
+            values.put(Utilidades.CAMPO_GARITA_SINCRONIZADO_NIVEL2, "0");
 
             database.insert(Utilidades.TABLA_GARITA_NIVEL2, Utilidades.CAMPO_GARITA_ID_NIVEL2, values);
 
@@ -274,6 +274,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
             values.put(Utilidades.CAMPO_GARITA_TIPO_HORA_NIVEL3, tipo);
             values.put(Utilidades.CAMPO_GARITA_FECHA_NIVEL3, tvFecha.getText().toString());
             values.put(Utilidades.CAMPO_GARITA_HORA_NIVEL3, arrayHorasUnidad.get(i));
+            values.put(Utilidades.CAMPO_GARITA_SINCRONIZADO_NIVEL3, "0");
 
             database.insert(Utilidades.TABLA_GARITA_NIVEL3, Utilidades.CAMPO_GARITA_ID_NIVEL3, values);
 
@@ -314,103 +315,122 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
         if (intentResult != null){
-            if (intentResult.getContents() == null){
-                //Toast.makeText(this, "Lectura Cancelada", Toast.LENGTH_SHORT).show();
-            }else{
-                switch (valorScan){
-                    case 1:
-                        Toast.makeText(this, "PLACA REGISTRADA", Toast.LENGTH_SHORT).show();
-                        etPlaca.setText(intentResult.getContents());
-                        iniciarScanPersonal();
-                        break;
-                    case 2:
-                    case 3:
-                        switch (valor){
+            String scanFormat = intentResult.getFormatName();
+
+            if (!TextUtils.isEmpty(scanFormat)) {
+                if (scanFormat.equals("QR_CODE") || scanFormat.equals("CODE_39")) {
+
+                    if (intentResult.getContents() == null){
+                        //Toast.makeText(this, "Lectura Cancelada", Toast.LENGTH_SHORT).show();
+                    }else{
+                        switch (valorScan){
                             case 1:
-                                if (etPlaca.getText().toString().equals(intentResult.getContents())){
-                                    Toast.makeText(this, "PLACA NO PERMITIDA", Toast.LENGTH_SHORT).show();
-                                    iniciarScanPersonal();
-                                }else if (lvData.getCount()>0){
-                                    if (arrayDataPersonal.contains(intentResult.getContents())){
-                                        Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
-                                        iniciarScanPersonal();
-                                    }else{
-                                        Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                        arrayDataPersonal.add(intentResult.getContents());
-
-                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                        lvData.setAdapter(adapter);
-
-                                        iniciarScanPersonal();
-                                    }
-                                }else{
-                                    Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                    arrayDataPersonal.add(intentResult.getContents());
-
-                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                    lvData.setAdapter(adapter);
-
-                                    iniciarScanPersonal();
-                                }
+                                Toast.makeText(this, "PLACA REGISTRADA", Toast.LENGTH_SHORT).show();
+                                etPlaca.setText(intentResult.getContents());
+                                iniciarScanPersonal();
                                 break;
                             case 2:
-                                if (lvData.getCount()>0){
-                                    if (arrayDataPersonal.contains(intentResult.getContents())){
-                                        Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
-                                        iniciarScanPersonal();
-                                    }else{
-                                        Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                        arrayDataPersonal.add(intentResult.getContents());
-
-                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                        lvData.setAdapter(adapter);
-
-                                        iniciarScanPersonal();
-                                    }
-                                }else{
-                                    Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                    arrayDataPersonal.add(intentResult.getContents());
-
-                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                    lvData.setAdapter(adapter);
-
-                                    iniciarScanPersonal();
-                                }
-                                break;
                             case 3:
-                                if (lvData.getCount()>0){
-                                    if (arrayDataUnidad.contains(intentResult.getContents())){
-                                        Toast.makeText(this, "UNIDAD YA INGRESADA", Toast.LENGTH_SHORT).show();
-                                        iniciarScanUnidad();
-                                    }else{
-                                        Toast.makeText(this, "UNIDAD REGISTRADA", Toast.LENGTH_SHORT).show();
-                                        arrayDataUnidad.add(intentResult.getContents());
+                                switch (valor){
+                                    case 1:
+                                        if (etPlaca.getText().toString().equals(intentResult.getContents())){
+                                            //Toast.makeText(this, "PLACA NO PERMITIDA", Toast.LENGTH_SHORT).show();
+                                            iniciarScanPersonal();
+                                        }else if (lvData.getCount()>0){
+                                            if (arrayDataPersonal.contains(intentResult.getContents())){
+                                                //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
+                                                iniciarScanPersonal();
+                                            }else{
+                                                //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
+                                                arrayDataPersonal.add(intentResult.getContents());
 
-                                        arrayHorasUnidad.add(obtenerHoraActual("GMT-5"));
-                                        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataUnidad);
-                                        lvData.setAdapter(adapter);
+                                                arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                lvData.setAdapter(adapter);
 
-                                        iniciarScanUnidad();
-                                    }
-                                }else{
-                                    Toast.makeText(this, "UNIDAD REGISTRADA", Toast.LENGTH_SHORT).show();
-                                    arrayDataUnidad.add(intentResult.getContents());
+                                                iniciarScanPersonal();
+                                            }
+                                        }else{
+                                            //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
+                                            arrayDataPersonal.add(intentResult.getContents());
 
-                                    arrayHorasUnidad.add(obtenerHoraActual("GMT-5"));
-                                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataUnidad);
-                                    lvData.setAdapter(adapter);
+                                            arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                            lvData.setAdapter(adapter);
 
-                                    iniciarScanUnidad();
+                                            iniciarScanPersonal();
+                                        }
+                                        break;
+                                    case 2:
+                                        if (lvData.getCount()>0){
+                                            if (arrayDataPersonal.contains(intentResult.getContents())){
+                                                //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
+                                                iniciarScanPersonal();
+                                            }else{
+                                                //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
+                                                arrayDataPersonal.add(intentResult.getContents());
+
+                                                arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                lvData.setAdapter(adapter);
+
+                                                iniciarScanPersonal();
+                                            }
+                                        }else{
+                                            //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
+                                            arrayDataPersonal.add(intentResult.getContents());
+
+                                            arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                            lvData.setAdapter(adapter);
+
+                                            iniciarScanPersonal();
+                                        }
+                                        break;
+                                    case 3:
+                                        if (lvData.getCount()>0){
+                                            if (arrayDataUnidad.contains(intentResult.getContents())){
+                                                //Toast.makeText(this, "UNIDAD YA INGRESADA", Toast.LENGTH_SHORT).show();
+                                                iniciarScanUnidad();
+                                            }else{
+                                                //Toast.makeText(this, "UNIDAD REGISTRADA", Toast.LENGTH_SHORT).show();
+                                                arrayDataUnidad.add(intentResult.getContents());
+
+                                                arrayHorasUnidad.add(obtenerHoraActual("GMT-5"));
+                                                adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataUnidad);
+                                                lvData.setAdapter(adapter);
+
+                                                iniciarScanUnidad();
+                                            }
+                                        }else{
+                                            //Toast.makeText(this, "UNIDAD REGISTRADA", Toast.LENGTH_SHORT).show();
+                                            arrayDataUnidad.add(intentResult.getContents());
+
+                                            arrayHorasUnidad.add(obtenerHoraActual("GMT-5"));
+                                            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataUnidad);
+                                            lvData.setAdapter(adapter);
+
+                                            iniciarScanUnidad();
+                                        }
+                                        break;
                                 }
                                 break;
                         }
-                        break;
+                    }
+
+                }
+            }else{
+                if (arrayDataPersonal.size()>0){
+                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                    lvData.setAdapter(adapter);
+                }
+
+                if (arrayDataUnidad.size()>0){
+                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataUnidad);
+                    lvData.setAdapter(adapter);
                 }
             }
+
         }else{
             super.onActivityResult(requestCode, resultCode, data);
         }
