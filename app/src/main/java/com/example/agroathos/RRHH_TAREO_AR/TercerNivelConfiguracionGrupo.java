@@ -644,6 +644,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         adaptadorLabores = new AdaptadorLabores(TercerNivelConfiguracionGrupo.this, arrayLabores);
         spLabor.setAdapter(adaptadorLabores);
     }
+
     private void actualizarGrupoTrabajo(){
 
         if (etHoraInicio.getText().toString().equals("") || etHoraFinal.getText().toString().equals("")){
@@ -661,7 +662,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             valuesActualizarGrupo.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, etHoraInicio.getText().toString());
             valuesActualizarGrupo.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, etHoraFinal.getText().toString());
             valuesActualizarGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL2, "ABIERTO");
-            valuesActualizarGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL2, "0");
+            valuesActualizarGrupo.put(Utilidades.CAMPO_SINCRONIZADO_NIVEL2, "0");
         }
         if (rbCerrado.isChecked()){
             valuesActualizarGrupo.put(Utilidades.CAMPO_MODULO_NIVEL2, moduloACT);
@@ -787,7 +788,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     arrayListHorasInicio.add(cursorPersonal.getString(11));
                     arrayListHorasFinal.add(cursorPersonal.getString(12));
                     arrayListEstados.add(cursorPersonal.getString(13));
-                    arrayListSinc.add(cursorPersonal.getString(14));
+                    arrayListSinc.add("0");
                 }while (cursorPersonal.moveToNext());
             }
         }
@@ -830,7 +831,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             valuesPersonalClonado.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, arrayListHorasInicio.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, arrayListHorasFinal.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_ESTADO_NIVEL2, arrayListEstados.get(i));
-            valuesPersonalClonado.put(Utilidades.CAMPO_SINCRONIZADO_NIVEL2, arrayListSinc.get(i));
+            valuesPersonalClonado.put(Utilidades.CAMPO_SINCRONIZADO_NIVEL2, arrayListSinc.add("0"));
 
             Long idResultante = database.insert(Utilidades.TABLA_NIVEL2, Utilidades.CAMPO_ID_NIVEL2, valuesPersonalClonado);
 

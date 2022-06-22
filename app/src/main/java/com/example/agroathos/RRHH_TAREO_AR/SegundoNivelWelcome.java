@@ -3,6 +3,8 @@ package com.example.agroathos.RRHH_TAREO_AR;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,6 +56,9 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     //DATOS DE LA BD
     String idGrupo = "";
     String idSupervisor = "";
+    String idNivel1 = "";
+    String idNivel2 = "";
+    String idNivel3 = "";
 
     //DATOS PARA SUBIDA
     String zonaUP = "";
@@ -62,6 +67,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     String dni_supervisorUP = "";
     String horaUP = "";
     String fechaUP = "";
+    String sincUP = "";
 
     //NIVEL 2
     ArrayList<String> arrayListNivelDosIdGrupo = new ArrayList<>();
@@ -177,18 +183,55 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
             case R.id.menu_sincronizar_action:
 
-                obtenerDataRegistrada();
-                registrarDatos();
-
                 arrayListNivelDosIdGrupo.clear();
-                obtenerDataRegistradaNivelDos();
-                registrarDatosNivelDos();
-
                 arrayListNivelTresIdGrupo.clear();
-                obtenerDataRegistradaNivelTres();
-                registrarDatosNivelTres();
 
-                Toast.makeText(this, "Sincronizado Exitosamente!", Toast.LENGTH_SHORT).show();
+                obtenerDataRegistrada();
+                obtenerDataRegistradaNivelDos();
+                obtenerDataRegistradaNivelTres();
+
+                if (!zonaUP.isEmpty() || sincUP.equals("1")){
+                    if (sincUP.equals("1")){
+                        if (!arrayListNivelDosIdGrupo.isEmpty()){
+                            if (!arrayListNivelTresIdGrupo.isEmpty()){
+                                registrarDatosNivelDos();
+                                actualizarEstadoSincronizacionNivelDos();
+
+                                registrarDatosNivelTres();
+                                actualizarEstadoSincronizacionNivelTres();
+
+                                Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        if (!arrayListNivelDosIdGrupo.isEmpty()){
+                            if (!arrayListNivelTresIdGrupo.isEmpty()){
+                                registrarDatos();
+                                actualizarEstadoSincronizacionNivelUno();
+
+                                registrarDatosNivelDos();
+                                actualizarEstadoSincronizacionNivelDos();
+
+                                registrarDatosNivelTres();
+                                actualizarEstadoSincronizacionNivelTres();
+
+                                sincUP = "1";
+                                Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }else{
+                    Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -196,7 +239,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     private void obtenerDataRegistrada(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1+"="+"'"+dni+"'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
@@ -220,6 +263,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             object.put("dni_supervisor",dni_supervisorUP);
             object.put("fecha",fechaUP);
             object.put("hora",horaUP);
+            object.put("sinc","1");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -227,12 +271,12 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/nivel_uno", object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(SegundoNivelWelcome.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SegundoNivelWelcome.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -242,7 +286,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     private void obtenerDataRegistradaNivelDos(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1_5+"="+"'"+dni+"'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1_5+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5+"="+"'0'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
@@ -263,6 +307,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 object.put("contador",arrayListNivelDosContador.get(i));
                 object.put("anexo_supervisor",arrayListNivelDosAnexoSupervisor.get(i));
                 object.put("estado",arrayListNivelDosEstado.get(i));
+                object.put("sinc","1");
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -286,7 +331,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     private void obtenerDataRegistradaNivelTres(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL2+" WHERE "+Utilidades.CAMPO_DNI_NIVEL2+"="+"'"+dni+"'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL2+" WHERE "+Utilidades.CAMPO_DNI_NIVEL2+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL2+"="+"'0'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
@@ -325,6 +370,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 object.put("hora_inicio",arrayListNivelTresHoraInicio.get(i));
                 object.put("hora_final",arrayListNivelTresHoraFinal.get(i));
                 object.put("estado",arrayListNivelTresEstado.get(i));
+                object.put("sinc","1");
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -344,6 +390,70 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
             requestQueue.add(jsonObjectRequest);
         }
+    }
+
+    private void actualizarEstadoSincronizacionNivelUno(){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        SQLiteDatabase database = conn.getWritableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
+
+        if (cursorData != null){
+            if (cursorData.moveToFirst()){
+                do {
+                    idNivel1 = cursorData.getString(0);
+                }while (cursorData.moveToNext());
+
+                String [] parametro = {idNivel1};
+
+                ContentValues contentValuesActSincronizacion = new ContentValues();
+                contentValuesActSincronizacion.put("sincronizado","1");
+                database.update(Utilidades.TABLA_NIVEL1, contentValuesActSincronizacion, Utilidades.CAMPO_ID_NIVEL1+"=?", parametro);
+                cursorData.close();
+            }
+        }
+
+    }
+    private void actualizarEstadoSincronizacionNivelDos(){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        SQLiteDatabase database = conn.getWritableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1_5+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5+"="+"'0'", null);
+
+        if (cursorData != null){
+            if (cursorData.moveToFirst()){
+                do {
+                    idNivel2 = cursorData.getString(1);
+                }while (cursorData.moveToNext());
+
+                String [] parametro = {idNivel2};
+
+                ContentValues contentValuesActSincronizacion = new ContentValues();
+                contentValuesActSincronizacion.put("sincronizado","1");
+                database.update(Utilidades.TABLA_NIVEL1_5, contentValuesActSincronizacion, Utilidades.CAMPO_ID_GRUPO_NIVEL1_5+"=?", parametro);
+                cursorData.close();
+            }
+        }
+
+    }
+    private void actualizarEstadoSincronizacionNivelTres(){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        SQLiteDatabase database = conn.getWritableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL2+" WHERE "+Utilidades.CAMPO_DNI_NIVEL2+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL2+"="+"'0'", null);
+
+        if (cursorData != null){
+            if (cursorData.moveToFirst()){
+                do {
+                    idNivel3 = cursorData.getString(1);
+                }while (cursorData.moveToNext());
+
+                String [] parametro = {idNivel3};
+
+                ContentValues contentValuesActSincronizacion = new ContentValues();
+                contentValuesActSincronizacion.put("sincronizado","1");
+                database.update(Utilidades.TABLA_NIVEL2, contentValuesActSincronizacion, Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2+"=?", parametro);
+                cursorData.close();
+            }
+        }
+
     }
 
     @Override

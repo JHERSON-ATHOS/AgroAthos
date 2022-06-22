@@ -2,7 +2,7 @@ package com.example.agroathos.BD_SQLITE.UTILIDADES;
 
 public class Utilidades {
 
-    public static final int VERSION_APP = 1;
+    public static final int VERSION_APP = 2;
 
     //DATOS NIVEL1
     public static final String TABLA_NIVEL1 = "RRHH_NIVEL1";
