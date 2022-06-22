@@ -634,7 +634,13 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         spModulo.setAdapter(adaptadorModulos);
     }
     public void cargarLabores(){
-        arrayLabores.add(new E_Labores("Cosecha"));
+        arrayLabores.add(new E_Labores("7001 - COSECHA"));
+        arrayLabores.add(new E_Labores("7002 - ESTIBADORES"));
+        arrayLabores.add(new E_Labores("7010 - TRANSPORTE DE MATERIALES"));
+        arrayLabores.add(new E_Labores("7012 - ACOPIO"));
+        arrayLabores.add(new E_Labores("7017 - JABEROS"));
+        arrayLabores.add(new E_Labores("7018 - SUPERVISOR DE COSECHA"));
+        arrayLabores.add(new E_Labores("7019 - CONTROL DE CALIDAD"));
         adaptadorLabores = new AdaptadorLabores(TercerNivelConfiguracionGrupo.this, arrayLabores);
         spLabor.setAdapter(adaptadorLabores);
     }
