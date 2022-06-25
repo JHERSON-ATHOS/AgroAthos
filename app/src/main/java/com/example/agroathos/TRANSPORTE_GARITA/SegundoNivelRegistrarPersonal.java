@@ -2,6 +2,8 @@ package com.example.agroathos.TRANSPORTE_GARITA;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.text.SimpleDateFormat;
@@ -35,6 +38,7 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
     EditText etPlaca;
     ListView lvData;
     Button btnRegistrar;
+    FloatingActionButton fabCamara;
 
     int valorScan = 0;
 
@@ -65,9 +69,17 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
         etPlaca = findViewById(R.id.etPlacaBusGARITA);
         lvData = findViewById(R.id.lvDataGARITA);
         btnRegistrar = findViewById(R.id.btnRegistrarDataGARITA);
+        fabCamara = findViewById(R.id.fbActivarCamaraGARITA);
 
         recibirDatos();
 
+        fabCamara.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(etPlaca.getText().toString())){
+                iniciarScanBus();
+            }else{
+                iniciarScanPersonal();
+            }
+        });
         tvFecha.setText(obtenerFechaActual("GMT-5"));
         btnRegistrar.setOnClickListener(view ->{
             switch (valor){

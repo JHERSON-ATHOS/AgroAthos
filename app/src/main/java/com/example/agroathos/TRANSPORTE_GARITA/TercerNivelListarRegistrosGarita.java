@@ -31,7 +31,6 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
 
     ListView lvData, lvDataBus;
     Button btnBus, btnPersonal, btnUnidad;
-    Toolbar toolbar;
 
     ConexionSQLiteHelper conn;
     ArrayList<String> arrayListData = new ArrayList<>();
@@ -40,11 +39,6 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tercer_nivel_listar_registros_garita);
-
-        toolbar = findViewById(R.id.toolbarTERCER_NIVEL_LISTAR_REGISTROS_GARITA);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("¡JUNTOS HACEMOS MÁS!");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.white));
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
@@ -203,22 +197,6 @@ public class TercerNivelListarRegistrosGarita extends AppCompatActivity {
         sdf = new SimpleDateFormat(formato);
         sdf.setTimeZone(TimeZone.getTimeZone(zonaHoraria));
         return sdf.format(date);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_garita, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_sincronizar_action:
-                //Toast.makeText(this, "OSEA SÍ, PERO NO!", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

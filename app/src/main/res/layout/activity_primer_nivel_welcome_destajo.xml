@@ -6,18 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarPRIMER_NIVEL_LISTAR_REGISTROS_GARITA"
+        android:layout_width="match_parent"
+        app:titleTextColor="@color/black"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:menu="@menu/menu_garita"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/tvFechaRRHH_DESTAJO_AR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="FECHA"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPRIMER_NIVEL_LISTAR_REGISTROS_GARITA" />
 
     <ListView
         android:id="@+id/lvJarrasRRHH_DESTAJO_AR"
@@ -27,22 +39,62 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrarJarrasRRHH_DESTAJO_AR"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFechaRRHH_DESTAJO_AR">
+        app:layout_constraintTop_toBottomOf="@+id/tvFechaRRHH_DESTAJO_AR" />
 
-    </ListView>
-
-    <Button
-        android:id="@+id/btnRegistrarJarrasRRHH_DESTAJO_AR"
+    <ListView
+        android:id="@+id/lvListarDatosProductividadRRHH_DESTAJO_AR"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="REGISTRAR"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFechaRRHH_DESTAJO_AR" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fabCamaraRRHH_DESTAJO_AR"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btnRegistrarJarrasRRHH_DESTAJO_AR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="REGISTRAR" />
+
+        <Button
+            android:id="@+id/btnListarJarrasRRHH_DESTAJO_AR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LISTAR" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCamaraRRHH_DESTAJO_AR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:srcCompat="@drawable/ic_welcome_segundo_nivel_registrar_personal" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
