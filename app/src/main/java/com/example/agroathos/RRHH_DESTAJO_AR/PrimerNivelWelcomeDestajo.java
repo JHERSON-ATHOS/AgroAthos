@@ -33,6 +33,7 @@ import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.MainActivity;
 import com.example.agroathos.R;
+import com.example.agroathos.TRANSPORTE_GARITA.PrimerNivelWelcomeGarita;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -60,9 +61,18 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
     ConexionSQLiteHelper conn;
 
-    String dniObtenido = "";
-
     String dni_personal_BD = "";
+
+    ArrayList<String> arrayListDataLocal = new ArrayList<>();
+
+    //DATOS ACT
+    ArrayList<String> idProductividad = new ArrayList<>();
+    int validarEstado = 0;
+    ArrayList<String> arrayListIdBD = new ArrayList<>();
+    ArrayList<String> arrayListFechaBD = new ArrayList<>();
+    ArrayList<String> arrayListHoraBD = new ArrayList<>();
+    ArrayList<String> arrayListJarraBD = new ArrayList<>();
+    ArrayList<String> arrayListSincBD = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +81,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
 
-        toolbar = findViewById(R.id.toolbarPRIMER_NIVEL_LISTAR_REGISTROS_GARITA);
+        toolbar = findViewById(R.id.toolbarPRIMER_NIVEL_PRODUCTIVIDAD);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("¡JUNTOS HACEMOS MÁS!");
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.white));
@@ -85,7 +95,8 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
         tvFecha.setText(obtenerFechaActual("AMERICA/Lima"));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        iniciarScan();
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("SELECCION DE LABOR");
         builder.setCancelable(false);
         builder.setPositiveButton("COSECHA", new DialogInterface.OnClickListener() {
@@ -94,10 +105,12 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                 iniciarScan();
             }
         });
-        builder.create().show();
+        builder.create().show();*/
 
         fabCamara.setOnClickListener(view -> {
             iniciarScan();
+            lvJarras.setVisibility(View.VISIBLE);
+            lvDatosProd.setVisibility(View.GONE);
         });
         btnListar.setOnClickListener(view -> {
             lvJarras.setVisibility(View.GONE);
@@ -108,20 +121,20 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     }
 
     private void listarDatos(){
+        arrayListDataLocal.clear();
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0' AND "+Utilidades.CAMPO_DESTAJO_FECHA_NIVEL1+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    zonaUP = cursorData.getString(1);
-                    fundoUP = cursorData.getString(2);
-                    cultivoUP = cursorData.getString(3);
-                    dni_supervisorUP = cursorData.getString(4);
-                    fechaUP = cursorData.getString(5);
-                    horaUP = cursorData.getString(6);
+                    arrayListDataLocal.add(cursorData.getString(1).concat(" ").concat(cursorData.getString(2)).concat(" => JARRA: ").concat(cursorData.getString(3)));
                 }while (cursorData.moveToNext());
             }
         }
+
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayListDataLocal);
+        lvDatosProd.setAdapter(adapter);
+
         cursorData.close();
     }
     private void registrarJarras(){
@@ -140,6 +153,75 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
         Toast.makeText(this, "Registro Exitoso!", Toast.LENGTH_SHORT).show();
         lvJarras.setAdapter(null);
+    }
+    private void verificarRegistros() {
+        SQLiteDatabase database = conn.getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                validarEstado = 1;
+                arrayListIdBD.add(cursor.getString(0));
+                arrayListFechaBD.add(cursor.getString(1));
+                arrayListHoraBD.add(cursor.getString(2));
+                arrayListJarraBD.add(cursor.getString(3));
+                arrayListSincBD.add(cursor.getString(4));
+            }
+        }else{
+            validarEstado = 0;
+        }
+
+    }
+    private void registrarDatos(){
+        for (int i=0; i<arrayListIdBD.size(); i++){
+            JSONObject object = new JSONObject();
+            try {
+                object.put("fecha",arrayListFechaBD.get(i));
+                object.put("hora",arrayListHoraBD.get(i));
+                object.put("jarra",arrayListJarraBD.get(i));
+                object.put("sinc","1");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/productividad", object, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(SegundoNivelWelcome.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            RequestQueue requestQueue = Volley.newRequestQueue(PrimerNivelWelcomeDestajo.this);
+            requestQueue.add(jsonObjectRequest);
+        }
+    }
+    private void actualizarEstadoSincronizacion(){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        SQLiteDatabase database = conn.getWritableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
+
+        if (cursorData != null){
+            if (cursorData.moveToFirst()){
+                do {
+                    idProductividad.add(cursorData.getString(0));
+                }while (cursorData.moveToNext());
+
+                for (int i=0; i<idProductividad.size(); i++){
+                    String [] parametro = {idProductividad.get(i)};
+
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado","1");
+                    database.update(Utilidades.TABLA_DESTAJO_NIVEL1, contentValuesActSincronizacion, Utilidades.CAMPO_DESTAJO_ID_NIVEL1+"=?", parametro);
+                }
+                cursorData.close();
+            }
+        }
+
     }
 
     private void iniciarScan(){
@@ -180,7 +262,14 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_sincronizar_action:
-                //OSEA SÍ, PERO NO!
+                verificarRegistros();
+                if (validarEstado == 1){
+                    actualizarEstadoSincronizacion();
+                    registrarDatos();
+                    Toast.makeText(this, "Datos Sincronizados", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

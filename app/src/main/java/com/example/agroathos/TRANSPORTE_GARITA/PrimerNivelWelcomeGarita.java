@@ -102,10 +102,10 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
     int validarUNIDAD = 0;
 
     //ACTUALIZACIÓN
-    String idBusNivelUno = "";
-    String idBusNivelDos = "";
-    String idPersonalNivelUno = "";
-    String idUnidadNivelUno = "";
+    ArrayList<String> idBusNivelUno = new ArrayList<>();
+    ArrayList<String> idBusNivelDos = new ArrayList<>();
+    ArrayList<String> idPersonalNivelUno = new ArrayList<>();
+    ArrayList<String> idUnidadNivelUno = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -570,14 +570,16 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    idBusNivelUno = cursorData.getString(0);
+                    idBusNivelUno.add(cursorData.getString(0));
                 }while (cursorData.moveToNext());
 
-                String [] parametro = {idBusNivelUno};
+                for (int i=0; i<idBusNivelUno.size(); i++){
+                    String [] parametro = {idBusNivelUno.get(i)};
 
-                ContentValues contentValuesActSincronizacion = new ContentValues();
-                contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_GARITA_NIVEL1, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL1+"=?", parametro);
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado","1");
+                    database.update(Utilidades.TABLA_GARITA_NIVEL1, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL1+"=?", parametro);
+                }
                 cursorData.close();
             }
         }
@@ -591,14 +593,16 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    idBusNivelDos = cursorData.getString(0);
+                    idBusNivelDos.add(cursorData.getString(0));
                 }while (cursorData.moveToNext());
 
-                String [] parametro = {idBusNivelDos};
+                for (int i=0; i<idBusNivelDos.size(); i++){
+                    String [] parametro = {idBusNivelDos.get(i)};
 
-                ContentValues contentValuesActSincronizacion = new ContentValues();
-                contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_GARITA_NIVEL1_5, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL1_5+"=?", parametro);
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado","1");
+                    database.update(Utilidades.TABLA_GARITA_NIVEL1_5, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL1_5+"=?", parametro);
+                }
                 cursorData.close();
             }
         }
@@ -612,14 +616,16 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    idPersonalNivelUno = cursorData.getString(0);
+                    idPersonalNivelUno.add(cursorData.getString(0));
                 }while (cursorData.moveToNext());
 
-                String [] parametro = {idPersonalNivelUno};
+                for (int i=0; i<idPersonalNivelUno.size(); i++){
+                    String [] parametro = {idPersonalNivelUno.get(i)};
 
-                ContentValues contentValuesActSincronizacion = new ContentValues();
-                contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_GARITA_NIVEL2, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL2+"=?", parametro);
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado","1");
+                    database.update(Utilidades.TABLA_GARITA_NIVEL2, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL2+"=?", parametro);
+                }
                 cursorData.close();
             }
         }
@@ -633,14 +639,16 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    idUnidadNivelUno = cursorData.getString(0);
+                    idUnidadNivelUno.add(cursorData.getString(0));
                 }while (cursorData.moveToNext());
 
-                String [] parametro = {idUnidadNivelUno};
+                for (int i=0; i<idUnidadNivelUno.size(); i++){
+                    String [] parametro = {idUnidadNivelUno.get(i)};
 
-                ContentValues contentValuesActSincronizacion = new ContentValues();
-                contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_GARITA_NIVEL3, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL3+"=?", parametro);
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado","1");
+                    database.update(Utilidades.TABLA_GARITA_NIVEL3, contentValuesActSincronizacion, Utilidades.CAMPO_GARITA_ID_NIVEL3+"=?", parametro);
+                }
                 cursorData.close();
             }
         }

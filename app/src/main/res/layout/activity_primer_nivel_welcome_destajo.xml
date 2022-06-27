@@ -7,7 +7,7 @@
     tools:context=".RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarPRIMER_NIVEL_LISTAR_REGISTROS_GARITA"
+        android:id="@+id/toolbarPRIMER_NIVEL_PRODUCTIVIDAD"
         android:layout_width="match_parent"
         app:titleTextColor="@color/black"
         android:layout_height="wrap_content"
