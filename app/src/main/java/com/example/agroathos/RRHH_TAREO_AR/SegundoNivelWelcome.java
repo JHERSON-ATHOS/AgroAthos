@@ -67,7 +67,9 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     String dni_supervisorUP = "";
     String horaUP = "";
     String fechaUP = "";
-    String sincUP = "";
+    String sincUP1 = "";
+    String sincUP2 = "";
+    String sincUP3 = "";
 
     //NIVEL 2
     ArrayList<String> arrayListNivelDosIdGrupo = new ArrayList<>();
@@ -190,46 +192,62 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 obtenerDataRegistradaNivelDos();
                 obtenerDataRegistradaNivelTres();
 
-                if (!zonaUP.isEmpty() || sincUP.equals("1")){
-                    if (sincUP.equals("1")){
-                        if (!arrayListNivelDosIdGrupo.isEmpty()){
-                            if (!arrayListNivelTresIdGrupo.isEmpty()){
-                                registrarDatosNivelDos();
-                                actualizarEstadoSincronizacionNivelDos();
+                if (sincUP1.equals("1")){
+                    if (sincUP2.equals("2")){
+                        if (sincUP3.equals("3")){
+                            registrarDatos();
+                            actualizarEstadoSincronizacionNivelUno();
 
-                                registrarDatosNivelTres();
-                                actualizarEstadoSincronizacionNivelTres();
+                            registrarDatosNivelDos();
+                            actualizarEstadoSincronizacionNivelDos();
 
-                                Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
-                            }
+                            registrarDatosNivelTres();
+                            actualizarEstadoSincronizacionNivelTres();
+
+                            Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
                         }
                     }else{
-                        if (!arrayListNivelDosIdGrupo.isEmpty()){
-                            if (!arrayListNivelTresIdGrupo.isEmpty()){
-                                registrarDatos();
-                                actualizarEstadoSincronizacionNivelUno();
+                        if (sincUP3.equals("3")){
+                            registrarDatosNivelTres();
+                            actualizarEstadoSincronizacionNivelTres();
 
-                                registrarDatosNivelDos();
-                                actualizarEstadoSincronizacionNivelDos();
-
-                                registrarDatosNivelTres();
-                                actualizarEstadoSincronizacionNivelTres();
-
-                                sincUP = "1";
-                                Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }else{
-                    Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+                    if (sincUP2.equals("2")){
+                        if (sincUP3.equals("3")){
+                            registrarDatosNivelDos();
+                            actualizarEstadoSincronizacionNivelDos();
+
+                            registrarDatosNivelTres();
+                            actualizarEstadoSincronizacionNivelTres();
+
+                            Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            if (sincUP2.equals("2")){
+                                registrarDatosNivelDos();
+                                actualizarEstadoSincronizacionNivelDos();
+
+                                Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }else{
+                        if (sincUP3.equals("3")){
+                            registrarDatosNivelTres();
+                            actualizarEstadoSincronizacionNivelTres();
+
+                            Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
 
                 break;
@@ -249,6 +267,9 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                     dni_supervisorUP = cursorData.getString(4);
                     fechaUP = cursorData.getString(5);
                     horaUP = cursorData.getString(6);
+
+                    sincUP1 = "1";
+
                 }while (cursorData.moveToNext());
             }
         }
@@ -294,6 +315,8 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                     arrayListNivelDosContador.add(cursorData.getString(2));
                     arrayListNivelDosAnexoSupervisor.add(cursorData.getString(3));
                     arrayListNivelDosEstado.add(cursorData.getString(4));
+
+                    sincUP2 = "2";
                 }while (cursorData.moveToNext());
             }
         }
@@ -348,6 +371,8 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                     arrayListNivelTresHoraInicio.add(cursorData.getString(11));
                     arrayListNivelTresHoraFinal.add(cursorData.getString(12));
                     arrayListNivelTresEstado.add(cursorData.getString(13));
+
+                    sincUP3 = "3";
                 }while (cursorData.moveToNext());
             }
         }
@@ -401,6 +426,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             if (cursorData.moveToFirst()){
                 do {
                     idNivel1 = cursorData.getString(0);
+                    sincUP1 = "";
                 }while (cursorData.moveToNext());
 
                 String [] parametro = {idNivel1};
@@ -422,6 +448,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             if (cursorData.moveToFirst()){
                 do {
                     idNivel2 = cursorData.getString(1);
+                    sincUP2 = "";
                 }while (cursorData.moveToNext());
 
                 String [] parametro = {idNivel2};
@@ -443,6 +470,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             if (cursorData.moveToFirst()){
                 do {
                     idNivel3 = cursorData.getString(1);
+                    sincUP3 = "";
                 }while (cursorData.moveToNext());
 
                 String [] parametro = {idNivel3};

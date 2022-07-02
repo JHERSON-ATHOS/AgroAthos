@@ -209,6 +209,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
             if (cursorData.moveToFirst()){
                 do {
                     idProductividad.add(cursorData.getString(0));
+                    validarEstado = 0;
                 }while (cursorData.moveToNext());
 
                 for (int i=0; i<idProductividad.size(); i++){
@@ -264,8 +265,8 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
             case R.id.menu_sincronizar_action:
                 verificarRegistros();
                 if (validarEstado == 1){
-                    actualizarEstadoSincronizacion();
                     registrarDatos();
+                    actualizarEstadoSincronizacion();
                     Toast.makeText(this, "Datos Sincronizados", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
@@ -286,7 +287,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                 lvJarras.setAdapter(adapter);
             }else{
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/productividad/"+intentResult.getContents(), null, new Response.Listener<JSONObject>() {
+                /*JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/productividad/"+intentResult.getContents(), null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -307,8 +308,9 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                 });
 
                 RequestQueue requestQueue = Volley.newRequestQueue(PrimerNivelWelcomeDestajo.this);
-                requestQueue.add(jsonObjectRequest);
+                requestQueue.add(jsonObjectRequest);*/
 
+                arrayInfo.add(intentResult.getContents().concat(" - HORA: ").concat(obtenerHoraActual("GMT-5")));
                 arrayJarras.add(intentResult.getContents());
                 arrayHoras.add(obtenerHoraActual("GMT-5"));
                 iniciarScan();

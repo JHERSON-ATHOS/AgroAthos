@@ -8,7 +8,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,6 +29,13 @@ import com.android.volley.toolbox.Volley;
 import com.example.agroathos.RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo;
 import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
 import com.example.agroathos.TRANSPORTE_GARITA.PrimerNivelWelcomeGarita;
+import com.google.android.gms.tasks.Task;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -116,6 +125,51 @@ public class MainActivity extends AppCompatActivity {
             };
             timer.schedule(timerTask, 2000, 100);*/
         }
+
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
+
+        // Returns an intent object that you use to check for an update.
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    // This example applies an immediate update. To apply a flexible update
+                    // instead, pass in AppUpdateType.FLEXIBLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                // Request the update.
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                            appUpdateInfo,
+                            // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                            AppUpdateType.IMMEDIATE,
+                            // The current activity making the update request.
+                            this,
+                            // Include a request code to later monitor this update request.
+                            200);
+                    Toast.makeText(this, "Actualización disponible", Toast.LENGTH_SHORT).show();
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    public String obtenerVersionApp(){
+        try {
+            PackageInfo paquete = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionDeAplicacion = paquete.versionName;
+
+            Toast.makeText(this, versionDeAplicacion, Toast.LENGTH_SHORT).show();
+            return versionDeAplicacion;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void solicitarAcceso(){
