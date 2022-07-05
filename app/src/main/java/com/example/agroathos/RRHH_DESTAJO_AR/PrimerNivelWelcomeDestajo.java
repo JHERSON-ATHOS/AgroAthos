@@ -7,11 +7,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -33,6 +36,7 @@ import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.MainActivity;
 import com.example.agroathos.R;
+import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
 import com.example.agroathos.TRANSPORTE_GARITA.PrimerNivelWelcomeGarita;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -61,8 +65,6 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
     ConexionSQLiteHelper conn;
 
-    String dni_personal_BD = "";
-
     ArrayList<String> arrayListDataLocal = new ArrayList<>();
 
     //DATOS ACT
@@ -73,6 +75,9 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     ArrayList<String> arrayListHoraBD = new ArrayList<>();
     ArrayList<String> arrayListJarraBD = new ArrayList<>();
     ArrayList<String> arrayListSincBD = new ArrayList<>();
+
+    String fechaActual = "";
+    String fechaBDAntigua = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,38 +101,42 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         tvFecha.setText(obtenerFechaActual("AMERICA/Lima"));
 
         iniciarScan();
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("SELECCION DE LABOR");
-        builder.setCancelable(false);
-        builder.setPositiveButton("COSECHA", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                iniciarScan();
-            }
-        });
-        builder.create().show();*/
 
         fabCamara.setOnClickListener(view -> {
             iniciarScan();
             lvJarras.setVisibility(View.VISIBLE);
             lvDatosProd.setVisibility(View.GONE);
         });
+
         btnListar.setOnClickListener(view -> {
             lvJarras.setVisibility(View.GONE);
             lvDatosProd.setVisibility(View.VISIBLE);
             listarDatos();
         });
-        btnRegistrar.setOnClickListener(view -> registrarJarras());
+
+        btnRegistrar.setOnClickListener(view -> {
+            if (lvJarras.getCount()>0){
+                registrarJarras();
+            }else{
+                Toast.makeText(this, "Faltan Datos", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        limpiezaPeriodica();
+
+        if (!fechaBDAntigua.equals(fechaActual)){
+            limpiarBDSQLite();
+        }
     }
 
     private void listarDatos(){
         arrayListDataLocal.clear();
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0' AND "+Utilidades.CAMPO_DESTAJO_FECHA_NIVEL1+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0' OR "+ Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'1' AND "+Utilidades.CAMPO_DESTAJO_FECHA_NIVEL1+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    arrayListDataLocal.add(cursorData.getString(1).concat(" ").concat(cursorData.getString(2)).concat(" => JARRA: ").concat(cursorData.getString(3)));
+                    arrayListDataLocal.add(cursorData.getString(3));
                 }while (cursorData.moveToNext());
             }
         }
@@ -178,7 +187,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
             try {
                 object.put("fecha",arrayListFechaBD.get(i));
                 object.put("hora",arrayListHoraBD.get(i));
-                object.put("jarra",arrayListJarraBD.get(i));
+                object.put("dni_personal",arrayListJarraBD.get(i));
                 object.put("sinc","1");
             }catch (Exception e){
                 e.printStackTrace();
@@ -225,24 +234,6 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
     }
 
-    private void iniciarScan(){
-        IntentIntegrator integrator = new IntentIntegrator(PrimerNivelWelcomeDestajo.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        integrator.setPrompt("Lector QR Jarras");
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(true);
-        integrator.setBarcodeImageEnabled(true);
-        integrator.initiateScan();
-    }
-
-    public static String obtenerHoraActual(String zonaHoraria) {
-        String formato = "HH:mm:ss";
-        return obtenerFechaConFormato(formato, zonaHoraria);
-    }
-    public static String obtenerFechaActual(String zonaHoraria) {
-        String formato = "dd-MM-yyyy";
-        return obtenerFechaConFormato(formato, zonaHoraria);
-    }
     @SuppressLint("SimpleDateFormat")
     public static String obtenerFechaConFormato(String formato, String zonaHoraria) {
         Calendar calendar = Calendar.getInstance();
@@ -251,6 +242,14 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         sdf = new SimpleDateFormat(formato);
         sdf.setTimeZone(TimeZone.getTimeZone(zonaHoraria));
         return sdf.format(date);
+    }
+    public static String obtenerHoraActual(String zonaHoraria) {
+        String formato = "HH:mm:ss";
+        return obtenerFechaConFormato(formato, zonaHoraria);
+    }
+    public static String obtenerFechaActual(String zonaHoraria) {
+        String formato = "dd-MM-yyyy";
+        return obtenerFechaConFormato(formato, zonaHoraria);
     }
 
     @Override
@@ -263,17 +262,20 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_sincronizar_action:
-                verificarRegistros();
-                if (validarEstado == 1){
-                    registrarDatos();
-                    actualizarEstadoSincronizacion();
-                    Toast.makeText(this, "Datos Sincronizados", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
-                }
+                validarConexionInternet();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void iniciarScan(){
+        IntentIntegrator integrator = new IntentIntegrator(PrimerNivelWelcomeDestajo.this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Lector QR Personal");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(true);
+        integrator.setBarcodeImageEnabled(true);
+        integrator.initiateScan();
     }
 
     @Override
@@ -282,12 +284,33 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
         if (intentResult != null){
-            if (intentResult.getContents() == null){
+            String scanFormat = intentResult.getFormatName();
+
+            if (!TextUtils.isEmpty(scanFormat)) {
+                if (scanFormat.equals("QR_CODE") || scanFormat.equals("CODE_39")) {
+                    if (intentResult.getContents() == null) {
+                        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayInfo);
+                        lvJarras.setAdapter(adapter);
+                    }else{
+                        Toast.makeText(this, intentResult.getContents(), Toast.LENGTH_SHORT).show();
+                        arrayInfo.add(intentResult.getContents());
+                        arrayJarras.add(intentResult.getContents());
+                        arrayHoras.add(obtenerHoraActual("GMT-5"));
+                        iniciarScan();
+                    }
+                }else{
+                    Toast.makeText(this, "Formato de lectura no admitida", Toast.LENGTH_SHORT).show();
+                }
+            }else{
                 ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayInfo);
                 lvJarras.setAdapter(adapter);
-            }else{
+            }
 
-                /*JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/productividad/"+intentResult.getContents(), null, new Response.Listener<JSONObject>() {
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
+        /*JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/productividad/"+intentResult.getContents(), null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -309,15 +332,47 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
                 RequestQueue requestQueue = Volley.newRequestQueue(PrimerNivelWelcomeDestajo.this);
                 requestQueue.add(jsonObjectRequest);*/
-
-                arrayInfo.add(intentResult.getContents().concat(" - HORA: ").concat(obtenerHoraActual("GMT-5")));
-                arrayJarras.add(intentResult.getContents());
-                arrayHoras.add(obtenerHoraActual("GMT-5"));
-                iniciarScan();
-            }
-        }else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
+    public void limpiezaPeriodica(){
+        SQLiteDatabase database = conn.getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_DESTAJO_NIVEL1 + " WHERE " + Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1 + "=" + "'1'", null);
+        if (cursor != null){
+
+            if (cursor.moveToFirst()){
+                do{
+                    fechaActual = obtenerFechaActual("AMERICA/Lima");
+                    fechaBDAntigua = cursor.getString(1);
+                }while (cursor.moveToNext());
+            }
+
+        }
+        cursor.close();
+    }
+
+    public void limpiarBDSQLite(){
+        SQLiteDatabase database = this.conn.getWritableDatabase();
+        String t1 = "DELETE FROM "+Utilidades.TABLA_DESTAJO_NIVEL1;
+        database.execSQL(t1);
+        database.close();
+    }
+
+    public void validarConexionInternet(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()){
+            verificarRegistros();
+            if (validarEstado == 1){
+                registrarDatos();
+                actualizarEstadoSincronizacion();
+                Toast.makeText(this, "Datos Sincronizados", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(this, "Necesitas conexión a internet.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }

@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -34,9 +37,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class SegundoNivelWelcome extends AppCompatActivity {
 
@@ -47,6 +54,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     ArrayList<E_Grupos> arrayGruposList;
 
     ConexionSQLiteHelper conn;
+    SharedPreferences preferences;
 
     String zona = "";
     String fundo = "";
@@ -85,12 +93,13 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     ArrayList<String> arrayListNivelTresLabor = new ArrayList<>();
     ArrayList<String> arrayListNivelTresPersonal = new ArrayList<>();
     ArrayList<String> arrayListNivelTresSupervisor = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresJarraUno = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresJarraDos = new ArrayList<>();
     ArrayList<String> arrayListNivelTresFecha = new ArrayList<>();
     ArrayList<String> arrayListNivelTresHoraInicio = new ArrayList<>();
     ArrayList<String> arrayListNivelTresHoraFinal = new ArrayList<>();
     ArrayList<String> arrayListNivelTresEstado = new ArrayList<>();
+
+    String fechaActual = "";
+    String fechaBDAntigua = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +116,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         fabRegistrar = findViewById(R.id.fbAgregarTrabajoRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL);
         listView = findViewById(R.id.lvGruposTrabajoRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL);
 
-        SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
         dni = preferences.getString("dni","");
         zona = preferences.getString("zona","");
         fundo = preferences.getString("fundo","");
@@ -119,6 +128,28 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         listView.setAdapter(new AdaptadorListarGrupoTrabajo(this,arrayGruposList));
 
         fabRegistrar.setOnClickListener(view -> irRegistoGrupo());
+
+        limpiezaPeriodica();
+
+        if (!fechaBDAntigua.equals(fechaActual)){
+            limpiarBDSQLite();
+        }
+    }
+
+    public void limpiezaPeriodica(){
+        SQLiteDatabase database = conn.getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1 + " WHERE " + Utilidades.CAMPO_SINCRONIZADO_NIVEL1 + "=" + "'1'", null);
+        if (cursor != null){
+
+            if (cursor.moveToFirst()){
+                do{
+                    fechaActual = obtenerFechaActual("AMERICA/Lima");
+                    fechaBDAntigua = cursor.getString(5);
+                }while (cursor.moveToNext());
+            }
+
+        }
+        cursor.close();
     }
 
     public void obtenerIdGrupo(){
@@ -185,33 +216,98 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
             case R.id.menu_sincronizar_action:
 
-                arrayListNivelDosIdGrupo.clear();
-                arrayListNivelTresIdGrupo.clear();
+                validarConexionInternet();
 
-                obtenerDataRegistrada();
-                obtenerDataRegistradaNivelDos();
-                obtenerDataRegistradaNivelTres();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-                if (sincUP1.equals("1")){
-                    if (sincUP2.equals("2")){
-                        if (sincUP3.equals("3")){
-                            registrarDatos();
-                            actualizarEstadoSincronizacionNivelUno();
+    @SuppressLint("SimpleDateFormat")
+    public static String obtenerFechaConFormato(String formato, String zonaHoraria) {
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        SimpleDateFormat sdf;
+        sdf = new SimpleDateFormat(formato);
+        sdf.setTimeZone(TimeZone.getTimeZone(zonaHoraria));
+        return sdf.format(date);
+    }
 
+    public static String obtenerFechaActual(String zonaHoraria) {
+        String formato = "dd-MM-yyyy";
+        return obtenerFechaConFormato(formato, zonaHoraria);
+    }
+
+    public void limpiarBDSQLite(){
+        SQLiteDatabase database = this.conn.getWritableDatabase();
+        String t1 = "DELETE FROM "+Utilidades.TABLA_NIVEL1;
+        String t2 = "DELETE FROM "+Utilidades.TABLA_NIVEL1_5;
+        String t3 = "DELETE FROM "+Utilidades.TABLA_NIVEL2;
+        database.execSQL(t1);
+        database.execSQL(t2);
+        database.execSQL(t3);
+        database.close();
+
+        Intent intent = new Intent(SegundoNivelWelcome.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear().apply();
+    }
+    public void validarConexionInternet(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()){
+
+            arrayListNivelDosIdGrupo.clear();
+            arrayListNivelTresIdGrupo.clear();
+
+            obtenerDataRegistrada();
+            obtenerDataRegistradaNivelDos();
+            obtenerDataRegistradaNivelTres();
+
+            if (sincUP1.equals("1")){
+                if (sincUP2.equals("2")){
+                    if (sincUP3.equals("3")){
+                        registrarDatos();
+                        actualizarEstadoSincronizacionNivelUno();
+
+                        registrarDatosNivelDos();
+                        actualizarEstadoSincronizacionNivelDos();
+
+                        registrarDatosNivelTres();
+                        actualizarEstadoSincronizacionNivelTres();
+
+                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    if (sincUP3.equals("3")){
+                        registrarDatosNivelTres();
+                        actualizarEstadoSincronizacionNivelTres();
+
+                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }else{
+                if (sincUP2.equals("2")){
+                    if (sincUP3.equals("3")){
+                        registrarDatosNivelDos();
+                        actualizarEstadoSincronizacionNivelDos();
+
+                        registrarDatosNivelTres();
+                        actualizarEstadoSincronizacionNivelTres();
+
+                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if (sincUP2.equals("2")){
                             registrarDatosNivelDos();
                             actualizarEstadoSincronizacionNivelDos();
-
-                            registrarDatosNivelTres();
-                            actualizarEstadoSincronizacionNivelTres();
-
-                            Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        if (sincUP3.equals("3")){
-                            registrarDatosNivelTres();
-                            actualizarEstadoSincronizacionNivelTres();
 
                             Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                         }else{
@@ -219,40 +315,20 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                         }
                     }
                 }else{
-                    if (sincUP2.equals("2")){
-                        if (sincUP3.equals("3")){
-                            registrarDatosNivelDos();
-                            actualizarEstadoSincronizacionNivelDos();
+                    if (sincUP3.equals("3")){
+                        registrarDatosNivelTres();
+                        actualizarEstadoSincronizacionNivelTres();
 
-                            registrarDatosNivelTres();
-                            actualizarEstadoSincronizacionNivelTres();
-
-                            Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                        }else{
-                            if (sincUP2.equals("2")){
-                                registrarDatosNivelDos();
-                                actualizarEstadoSincronizacionNivelDos();
-
-                                Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                     }else{
-                        if (sincUP3.equals("3")){
-                            registrarDatosNivelTres();
-                            actualizarEstadoSincronizacionNivelTres();
-
-                            Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
                     }
                 }
-
-                break;
+            }
+        }else{
+            Toast.makeText(this, "Necesitas conexión a internet.", Toast.LENGTH_SHORT).show();
         }
-        return super.onOptionsItemSelected(item);
+
     }
 
     private void obtenerDataRegistrada(){
@@ -365,12 +441,10 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                     arrayListNivelTresLabor.add(cursorData.getString(5));
                     arrayListNivelTresPersonal.add(cursorData.getString(6));
                     arrayListNivelTresSupervisor.add(cursorData.getString(7));
-                    arrayListNivelTresJarraUno.add(cursorData.getString(8));
-                    arrayListNivelTresJarraDos.add(cursorData.getString(9));
-                    arrayListNivelTresFecha.add(cursorData.getString(10));
-                    arrayListNivelTresHoraInicio.add(cursorData.getString(11));
-                    arrayListNivelTresHoraFinal.add(cursorData.getString(12));
-                    arrayListNivelTresEstado.add(cursorData.getString(13));
+                    arrayListNivelTresFecha.add(cursorData.getString(8));
+                    arrayListNivelTresHoraInicio.add(cursorData.getString(9));
+                    arrayListNivelTresHoraFinal.add(cursorData.getString(10));
+                    arrayListNivelTresEstado.add(cursorData.getString(11));
 
                     sincUP3 = "3";
                 }while (cursorData.moveToNext());
@@ -389,8 +463,6 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 object.put("labor",arrayListNivelTresLabor.get(i));
                 object.put("personal",arrayListNivelTresPersonal.get(i));
                 object.put("anexo_supervisor",arrayListNivelTresSupervisor.get(i));
-                object.put("jarra_uno",arrayListNivelTresJarraUno.get(i));
-                object.put("jarra_dos",arrayListNivelTresJarraDos.get(i));
                 object.put("fecha",arrayListNivelTresFecha.get(i));
                 object.put("hora_inicio",arrayListNivelTresHoraInicio.get(i));
                 object.put("hora_final",arrayListNivelTresHoraFinal.get(i));

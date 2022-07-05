@@ -9,8 +9,6 @@ public class E_DetalleGrupoTrabajo {
     String labor = "";
     String personal = "";
     String supervisor = "";
-    String jarra_uno = "";
-    String jarra_dos = "";
     String fecha = "";
     String hora_inicio = "";
     String hora_final = "";
@@ -81,22 +79,6 @@ public class E_DetalleGrupoTrabajo {
 
     public void setSupervisor(String supervisor) {
         this.supervisor = supervisor;
-    }
-
-    public String getJarra_uno() {
-        return jarra_uno;
-    }
-
-    public void setJarra_uno(String jarra_uno) {
-        this.jarra_uno = jarra_uno;
-    }
-
-    public String getJarra_dos() {
-        return jarra_dos;
-    }
-
-    public void setJarra_dos(String jarra_dos) {
-        this.jarra_dos = jarra_dos;
     }
 
     public String getFecha() {

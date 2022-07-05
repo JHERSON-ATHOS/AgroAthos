@@ -98,18 +98,13 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     String BDestado = "";
 
     //AGREAR PERSONAL VARIABLES
-    int contadorJarras = 0;
     String valorPersonal = "";
-    String valorJarra1 = "";
-    String valorJarra2 = "";
 
     ArrayList<E_PersonalTrabajo> personalTrabajoArrayList = new ArrayList<>();
     AdaptadorListarPersonalTrabajo adaptadorListarPersonalTrabajo;
     int contador = 1;
 
     ArrayList<String> arrayPersonal = new ArrayList<>();
-    ArrayList<String> arrayJarras1 = new ArrayList<>();
-    ArrayList<String> arrayJarras2 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -699,12 +694,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     e_detalleGrupoTrabajo.setLabor(cursor.getString(5));
                     e_detalleGrupoTrabajo.setPersonal(cursor.getString(6));
                     e_detalleGrupoTrabajo.setSupervisor(cursor.getString(7));
-                    e_detalleGrupoTrabajo.setJarra_uno(cursor.getString(8));
-                    e_detalleGrupoTrabajo.setJarra_dos(cursor.getString(9));
-                    e_detalleGrupoTrabajo.setFecha(cursor.getString(10));
-                    e_detalleGrupoTrabajo.setHora_inicio(cursor.getString(11));
-                    e_detalleGrupoTrabajo.setHora_final(cursor.getString(12));
-                    e_detalleGrupoTrabajo.setEstado(cursor.getString(13));
+                    e_detalleGrupoTrabajo.setFecha(cursor.getString(8));
+                    e_detalleGrupoTrabajo.setHora_inicio(cursor.getString(9));
+                    e_detalleGrupoTrabajo.setHora_final(cursor.getString(10));
+                    e_detalleGrupoTrabajo.setEstado(cursor.getString(11));
                     arrayPersonalList.add(e_detalleGrupoTrabajo);
 
                     BDid_nivel2 = cursor.getString(0);
@@ -712,9 +705,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     BDmodulo = cursor.getString(3);
                     BDlote = cursor.getString(4);
                     BDlabor = cursor.getString(5);
-                    BDhoraInicio = cursor.getString(11);
-                    BDhoraFinal = cursor.getString(12);
-                    BDestado = cursor.getString(13);
+                    BDFecha = cursor.getString(8);
+                    BDhoraInicio = cursor.getString(9);
+                    BDhoraFinal = cursor.getString(10);
+                    BDestado = cursor.getString(11);
                 }while (cursor.moveToNext());//
             }
         }
@@ -724,7 +718,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         if (personalTrabajoArrayList.size()>0){
             SQLiteDatabase database = conn.getWritableDatabase();
             ContentValues valuesPersonal = new ContentValues();
-            for (int i=0; i<rvListadoPersonal.getChildCount(); i++){
+            for (int i=0; i<lvRegistrarPersonal.getCount(); i++){
                 valuesPersonal.put(Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2, idGrupo);
                 valuesPersonal.put(Utilidades.CAMPO_FUNDO_NIVEL2, BDfundo);
                 valuesPersonal.put(Utilidades.CAMPO_MODULO_NIVEL2, BDmodulo);
@@ -732,8 +726,6 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                 valuesPersonal.put(Utilidades.CAMPO_LABOR_NIVEL2, BDlabor);
                 valuesPersonal.put(Utilidades.CAMPO_PERSONAL_NIVEL2, arrayPersonal.get(i));
                 valuesPersonal.put(Utilidades.CAMPO_DNI_NIVEL2, dni);
-                valuesPersonal.put(Utilidades.CAMPO_JARRA1_NIVEL2, arrayJarras1.get(i));
-                valuesPersonal.put(Utilidades.CAMPO_JARRA2_NIVEL2, arrayJarras2.get(i));
                 valuesPersonal.put(Utilidades.CAMPO_FECHA_NIVEL2, BDFecha);
                 valuesPersonal.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, BDhoraInicio);
                 valuesPersonal.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, BDhoraFinal);
@@ -765,8 +757,6 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         ArrayList<String> arrayListLabores = new ArrayList<>();
         ArrayList<String> arrayListPersonales = new ArrayList<>();
         ArrayList<String> arrayListSupervisores = new ArrayList<>();
-        ArrayList<String> arrayListJarras1 = new ArrayList<>();
-        ArrayList<String> arrayListJarras2 = new ArrayList<>();
         ArrayList<String> arrayListFechas = new ArrayList<>();
         ArrayList<String> arrayListHorasInicio = new ArrayList<>();
         ArrayList<String> arrayListHorasFinal = new ArrayList<>();
@@ -782,12 +772,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                     arrayListLabores.add(cursorPersonal.getString(5));
                     arrayListPersonales.add(cursorPersonal.getString(6));
                     arrayListSupervisores.add(cursorPersonal.getString(7));
-                    arrayListJarras1.add(cursorPersonal.getString(8));
-                    arrayListJarras2.add(cursorPersonal.getString(9));
-                    arrayListFechas.add(cursorPersonal.getString(10));
-                    arrayListHorasInicio.add(cursorPersonal.getString(11));
-                    arrayListHorasFinal.add(cursorPersonal.getString(12));
-                    arrayListEstados.add(cursorPersonal.getString(13));
+                    arrayListFechas.add(cursorPersonal.getString(8));
+                    arrayListHorasInicio.add(cursorPersonal.getString(9));
+                    arrayListHorasFinal.add(cursorPersonal.getString(10));
+                    arrayListEstados.add(cursorPersonal.getString(11));
                     arrayListSinc.add("0");
                 }while (cursorPersonal.moveToNext());
             }
@@ -825,8 +813,6 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             valuesPersonalClonado.put(Utilidades.CAMPO_LABOR_NIVEL2, arrayListLabores.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_PERSONAL_NIVEL2, arrayListPersonales.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_DNI_NIVEL2, arrayListSupervisores.get(i));
-            valuesPersonalClonado.put(Utilidades.CAMPO_JARRA1_NIVEL2, arrayListJarras1.get(i));
-            valuesPersonalClonado.put(Utilidades.CAMPO_JARRA2_NIVEL2, arrayListJarras2.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_FECHA_NIVEL2, arrayListFechas.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_HORA_INICIO_NIVEL2, arrayListHorasInicio.get(i));
             valuesPersonalClonado.put(Utilidades.CAMPO_HORA_FIN_NIVEL2, arrayListHorasFinal.get(i));
@@ -853,30 +839,6 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         integrator.initiateScan();
     }
 
-    private void iniciarScanJarra(){
-        if (!valorPersonal.isEmpty()){
-            if (contadorJarras == 2){
-                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal, valorJarra1.concat(" - ").concat(valorJarra2)));
-                //arrayInformacion.add(valorPersonal.concat(" - ").concat(valorJarra1).concat(" - ").concat(valorJarra2));
-                iniciarScanPersonal();
-                valorPersonal = "";
-                valorJarra1 = "";
-                valorJarra2 = "";//
-                contadorJarras = 0;
-            }else{
-                IntentIntegrator integrator = new IntentIntegrator(TercerNivelConfiguracionGrupo.this);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                integrator.setPrompt("LECTOR QR JARRAS");
-                integrator.setCameraId(0);
-                integrator.setBeepEnabled(true);
-                integrator.setBarcodeImageEnabled(true);
-                integrator.initiateScan();
-            }
-        }else{
-            iniciarScanPersonal();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -889,7 +851,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                 if (scanFormat.equals("QR_CODE") || scanFormat.equals("CODE_39")) {
                     if (intentResult.getContents() == null){
 
-                        if (valorPersonal.isEmpty() && valorJarra1.isEmpty() && valorJarra2.isEmpty()){
+                        if (valorPersonal.isEmpty()){
+                            personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
+                            iniciarScanPersonal();
+                            valorPersonal = "";
                             Toast.makeText(this, "Listando los registros", Toast.LENGTH_SHORT).show();
                         }else{
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -900,10 +865,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    contadorJarras = 0;
                                     valorPersonal = "";
-                                    valorJarra1 = "";
-                                    valorJarra2 = "";
                                     arrayPersonal.clear();
                                     iniciarScanPersonal();
                                 }
@@ -914,113 +876,25 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                         lvRegistrarPersonal.setAdapter(adaptadorListarPersonalTrabajo);
                     }else{
                         if (valorPersonal.isEmpty()){
-                            if (intentResult.getContents().length()<5){
+                            if (arrayPersonal.contains(intentResult.getContents())){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                                 builder.setTitle("ERROR");
-                                builder.setMessage("Valor no aceptado");
+                                builder.setMessage("El personal ya se encuentra en la lista.");
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
-                                        iniciarScanJarra();
+                                        iniciarScanPersonal();
                                     }
                                 });
                                 builder.create().show();
                             }else{
-                                if (arrayPersonal.contains(intentResult.getContents())){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                    builder.setTitle("ERROR");
-                                    builder.setMessage("El personal ya se encuentra en la lista.");
-                                    builder.setCancelable(false);
-                                    builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            iniciarScanJarra();
-                                        }
-                                    });
-                                    builder.create().show();
-                                }else{
-                                    Toast.makeText(this, "Personal Registrado", Toast.LENGTH_SHORT).show();
-                                    arrayPersonal.add(intentResult.getContents());
-                                    valorPersonal = intentResult.getContents();
-                                    iniciarScanJarra();
-                                }
-                            }
-                        }else{
-                            if (valorJarra1.isEmpty()){
-                                if (arrayJarras1.contains(intentResult.getContents()) || arrayJarras2.contains(intentResult.getContents())){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                    builder.setTitle("ERROR");
-                                    builder.setMessage("La jarra ya se encuentra registrada.");
-                                    builder.setCancelable(false);
-                                    builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            iniciarScanJarra();
-                                        }
-                                    });
-                                    builder.create().show();
-                                }else{
-                                    if (intentResult.getContents().length()>4){
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                        builder.setTitle("ERROR");
-                                        builder.setMessage("El límite de jarra es 9999.");
-                                        builder.setCancelable(false);
-                                        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                iniciarScanJarra();
-                                            }
-                                        });
-                                        builder.create().show();
-                                    }else{
-                                        contadorJarras += 1;
-                                        Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
-                                        arrayJarras1.add(intentResult.getContents());
-                                        valorJarra1 = intentResult.getContents();
-                                        iniciarScanJarra();
-                                    }
-                                }
-                            }else{
-                                if (arrayJarras1.contains(intentResult.getContents()) || arrayJarras2.contains(intentResult.getContents())){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                    builder.setTitle("ERROR");
-                                    builder.setMessage("La jarra ya se encuentra registrada.");
-                                    builder.setCancelable(false);
-                                    builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            iniciarScanJarra();
-                                        }
-                                    });
-                                    builder.create().show();
-                                }else{
-                                    if (intentResult.getContents().length()>4){
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                        builder.setTitle("ERROR");
-                                        builder.setMessage("El límite de jarra es 9999.");
-                                        builder.setCancelable(false);
-                                        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                iniciarScanJarra();
-                                            }
-                                        });
-                                        builder.create().show();
-                                    }else{
-                                        contadorJarras += 1;
-                                        Toast.makeText(this, "Jarra Registrada", Toast.LENGTH_SHORT).show();
-                                        arrayJarras2.add(intentResult.getContents());
-                                        valorJarra2 = intentResult.getContents();
-                                        iniciarScanJarra();
-                                    }
-                                }
+                                arrayPersonal.add(intentResult.getContents());
+                                valorPersonal = intentResult.getContents();
+                                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
+                                valorPersonal = "";
+                                iniciarScanPersonal();
                             }
                         }
                     }

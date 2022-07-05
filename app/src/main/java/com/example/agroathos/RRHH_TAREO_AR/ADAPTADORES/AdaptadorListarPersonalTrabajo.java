@@ -42,13 +42,11 @@ public class AdaptadorListarPersonalTrabajo extends ArrayAdapter<E_PersonalTraba
 
         TextView tvId = convertView.findViewById(R.id.tvIdListadoCONTENT_RRHH_TAREO_ARANDANO);
         TextView tvPersonal = convertView.findViewById(R.id.tvPersonalListadoCONTENT_RRHH_TAREO_ARANDANO);
-        TextView tvJarras = convertView.findViewById(R.id.tvJarrasListadoCONTENT_RRHH_TAREO_ARANDANO);
 
         E_PersonalTrabajo e_personalTrabajo = getItem(position);
 
         tvId.setText(e_personalTrabajo.getId());
         tvPersonal.setText(e_personalTrabajo.getNombre());
-        tvJarras.setText(e_personalTrabajo.getJarras());
 
         return convertView;
     }
@@ -60,11 +58,9 @@ public class AdaptadorListarPersonalTrabajo extends ArrayAdapter<E_PersonalTraba
 
         TextView tvId = convertView.findViewById(R.id.tvIdListadoCONTENT_RRHH_TAREO_ARANDANO);
         TextView tvPersonal = convertView.findViewById(R.id.tvPersonalListadoCONTENT_RRHH_TAREO_ARANDANO);
-        TextView tvJarras = convertView.findViewById(R.id.tvJarrasListadoCONTENT_RRHH_TAREO_ARANDANO);
 
         tvId.setText(e_personalTrabajo.getId());
         tvPersonal.setText(e_personalTrabajo.getNombre());
-        tvJarras.setText(e_personalTrabajo.getJarras());
 
         return convertView;
     }

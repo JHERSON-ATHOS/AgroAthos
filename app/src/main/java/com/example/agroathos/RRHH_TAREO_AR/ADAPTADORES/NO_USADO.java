@@ -35,7 +35,6 @@ public class NO_USADO extends RecyclerView.Adapter<NO_USADO.ListaPersonalTrabajo
     public void onBindViewHolder(@NonNull ListaPersonalTrabajoViewHolder holder, int position) {
         holder.tvId.setText(listaPersonalTrabajo.get(position).getId());
         holder.tvPersonal.setText(listaPersonalTrabajo.get(position).getNombre());
-        holder.tvJarras.setText(listaPersonalTrabajo.get(position).getJarras());
     }
 
     @Override
@@ -52,7 +51,6 @@ public class NO_USADO extends RecyclerView.Adapter<NO_USADO.ListaPersonalTrabajo
 
             tvId = itemView.findViewById(R.id.tvIdListadoCONTENT_RRHH_TAREO_ARANDANO);
             tvPersonal = itemView.findViewById(R.id.tvPersonalListadoCONTENT_RRHH_TAREO_ARANDANO);
-            tvJarras = itemView.findViewById(R.id.tvJarrasListadoCONTENT_RRHH_TAREO_ARANDANO);
         }
     }
 }

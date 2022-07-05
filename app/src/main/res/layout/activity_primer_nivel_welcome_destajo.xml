@@ -29,15 +29,15 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarPRIMER_NIVEL_LISTAR_REGISTROS_GARITA" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPRIMER_NIVEL_PRODUCTIVIDAD" />
 
     <ListView
         android:id="@+id/lvJarrasRRHH_DESTAJO_AR"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"

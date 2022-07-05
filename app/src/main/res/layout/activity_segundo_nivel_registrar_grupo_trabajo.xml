@@ -87,7 +87,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:textColor="@color/black"
             android:textStyle="bold|italic"
             android:textSize="20sp"
@@ -102,16 +101,6 @@
             android:textSize="20sp"
             android:gravity="center"
             android:text="DNI - Personal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:textStyle="bold|italic"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="Jarras" />
 
     </LinearLayout>
 

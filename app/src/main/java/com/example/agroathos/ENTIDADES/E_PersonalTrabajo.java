@@ -3,12 +3,10 @@ package com.example.agroathos.ENTIDADES;
 public class E_PersonalTrabajo {
     String id;
     String nombre;
-    String jarras;
 
-    public E_PersonalTrabajo(String id, String nombre, String jarras) {
+    public E_PersonalTrabajo(String id, String nombre) {
         this.id = id;
         this.nombre = nombre;
-        this.jarras = jarras;
     }
 
     public String getId() {
@@ -25,14 +23,6 @@ public class E_PersonalTrabajo {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getJarras() {
-        return jarras;
-    }
-
-    public void setJarras(String jarras) {
-        this.jarras = jarras;
     }
 
 }

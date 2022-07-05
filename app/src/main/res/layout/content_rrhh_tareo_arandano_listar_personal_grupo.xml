@@ -27,7 +27,6 @@
                 android:id="@+id/tvIdListadoCONTENT_RRHH_TAREO_ARANDANO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:text="ID" />
@@ -41,16 +40,6 @@
                 android:textSize="15sp"
                 android:gravity="center"
                 android:text="DNI - Personal" />
-
-            <TextView
-                android:id="@+id/tvJarrasListadoCONTENT_RRHH_TAREO_ARANDANO"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:gravity="center"
-                android:text="Jarras" />
 
         </LinearLayout>
 

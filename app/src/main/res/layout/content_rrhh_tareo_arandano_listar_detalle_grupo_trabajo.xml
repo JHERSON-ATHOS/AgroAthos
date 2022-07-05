@@ -48,18 +48,6 @@
                     android:text="21545236 - JUANITO PEREZ" />
 
                 <TextView
-                    android:id="@+id/tvJarra1PersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Jarra 1" />
-
-                <TextView
-                    android:id="@+id/tvJarra2PersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Jarra 2" />
-
-                <TextView
                     android:id="@+id/tvEstadoPersonalDetalleGrupoTrabajoRRHH_TAREO_AR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

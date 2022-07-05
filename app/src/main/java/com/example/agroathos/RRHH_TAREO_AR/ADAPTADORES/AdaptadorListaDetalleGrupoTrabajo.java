@@ -54,8 +54,6 @@ public class AdaptadorListaDetalleGrupoTrabajo extends RecyclerView.Adapter<Adap
     public void onBindViewHolder(@NonNull DetalleGrupoTrabajoViewHolder holder, int position) {
         holder.tvid.setText(listaDetalleGrupo.get(position).getId());
         holder.tvnombre.setText(listaDetalleGrupo.get(position).getPersonal());
-        holder.tvjarra1.setText("1ra JARRA: ".concat(listaDetalleGrupo.get(position).getJarra_uno()));
-        holder.tvjarra2.setText("2da JARRA: ".concat(listaDetalleGrupo.get(position).getJarra_dos()));
         holder.tvestado.setText(listaDetalleGrupo.get(position).getEstado());
 
         holder.btnEditar.setOnClickListener(view -> {
@@ -78,8 +76,6 @@ public class AdaptadorListaDetalleGrupoTrabajo extends RecyclerView.Adapter<Adap
 
             tvid = itemView.findViewById(R.id.tvIdPersonalDetalleGrupoTrabajoRRHH_TAREO_AR);
             tvnombre = itemView.findViewById(R.id.tvDatosPersonalDetalleGrupoTrabajoRRHH_TAREO_AR);
-            tvjarra1 = itemView.findViewById(R.id.tvJarra1PersonalDetalleGrupoTrabajoRRHH_TAREO_AR);
-            tvjarra2 = itemView.findViewById(R.id.tvJarra2PersonalDetalleGrupoTrabajoRRHH_TAREO_AR);
             tvestado = itemView.findViewById(R.id.tvEstadoPersonalDetalleGrupoTrabajoRRHH_TAREO_AR);
             btnEditar = itemView.findViewById(R.id.btnEditarPersonalDetalleGrupoTrabajoRRHH_TAREO_AR);
         }
@@ -134,10 +130,10 @@ public class AdaptadorListaDetalleGrupoTrabajo extends RecyclerView.Adapter<Adap
             });
 
             if (cursor.moveToFirst()){
-                tvHoraInicio.setText(cursor.getString(11));
-                tvHoraFinal.setText(cursor.getString(12));
+                tvHoraInicio.setText(cursor.getString(9));
+                tvHoraFinal.setText(cursor.getString(10));
 
-                if (cursor.getString(13).equals("ABIERTO")){
+                if (cursor.getString(11).equals("ABIERTO")){
                     rbAbierto.setChecked(true);
                 }else{
                     rbCerrado.setChecked(true);
