@@ -5,6 +5,7 @@ public class E_Grupos {
     String id_grupo;
     String anexo_supervisor;
     String contadorGrupo;
+    String estado;
 
     public E_Grupos() {
     }
@@ -39,5 +40,13 @@ public class E_Grupos {
 
     public void setContadorGrupo(String contadorGrupo) {
         this.contadorGrupo = contadorGrupo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

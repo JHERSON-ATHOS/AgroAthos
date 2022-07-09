@@ -69,6 +69,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     String idNivel3 = "";
 
     //DATOS PARA SUBIDA
+    String idNivel1UP = "";
     String zonaUP = "";
     String fundoUP = "";
     String cultivoUP = "";
@@ -81,6 +82,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     //NIVEL 2
     ArrayList<String> arrayListNivelDosIdGrupo = new ArrayList<>();
+    ArrayList<String> arrayListNivelDosIdNivel1 = new ArrayList<>();
     ArrayList<String> arrayListNivelDosContador = new ArrayList<>();
     ArrayList<String> arrayListNivelDosAnexoSupervisor = new ArrayList<>();
     ArrayList<String> arrayListNivelDosEstado = new ArrayList<>();
@@ -177,9 +179,10 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 e_grupos = new E_Grupos();
                 e_grupos.setId(cursor.getString(0));
-                e_grupos.setId_grupo(cursor.getString(1));
-                e_grupos.setContadorGrupo(cursor.getString(2));
-                e_grupos.setAnexo_supervisor(cursor.getString(3));
+                e_grupos.setId_grupo(cursor.getString(2));
+                e_grupos.setContadorGrupo(cursor.getString(3));
+                e_grupos.setAnexo_supervisor(cursor.getString(4));
+                e_grupos.setEstado(cursor.getString(6));
                 arrayGruposList.add(e_grupos);
             }
             cursor.close();
@@ -282,7 +285,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                         Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     if (sincUP3.equals("3")){
@@ -291,7 +294,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                         Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
                     }
                 }
             }else{
@@ -311,7 +314,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                             Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }else{
@@ -321,7 +324,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                         Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(this, "La data ya se migró", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -337,13 +340,13 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    zonaUP = cursorData.getString(1);
-                    fundoUP = cursorData.getString(2);
-                    cultivoUP = cursorData.getString(3);
-                    dni_supervisorUP = cursorData.getString(4);
-                    fechaUP = cursorData.getString(5);
-                    horaUP = cursorData.getString(6);
-
+                    idNivel1UP = cursorData.getString(1);
+                    zonaUP = cursorData.getString(2);
+                    fundoUP = cursorData.getString(3);
+                    cultivoUP = cursorData.getString(4);
+                    dni_supervisorUP = cursorData.getString(5);
+                    fechaUP = cursorData.getString(6);
+                    horaUP = cursorData.getString(7);
                     sincUP1 = "1";
 
                 }while (cursorData.moveToNext());
@@ -354,6 +357,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     private void registrarDatos(){
         JSONObject object = new JSONObject();
         try {
+            object.put("id_nivel_uno",idNivel1UP);
             object.put("zona",zonaUP);
             object.put("fundo",fundoUP);
             object.put("cultivo",cultivoUP);
@@ -365,7 +369,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/nivel_uno", object, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_uno", object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
@@ -387,11 +391,11 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    arrayListNivelDosIdGrupo.add(cursorData.getString(1));
-                    arrayListNivelDosContador.add(cursorData.getString(2));
-                    arrayListNivelDosAnexoSupervisor.add(cursorData.getString(3));
-                    arrayListNivelDosEstado.add(cursorData.getString(4));
-
+                    arrayListNivelDosIdNivel1.add(cursorData.getString(1));
+                    arrayListNivelDosIdGrupo.add(cursorData.getString(2));
+                    arrayListNivelDosContador.add(cursorData.getString(3));
+                    arrayListNivelDosAnexoSupervisor.add(cursorData.getString(4));
+                    arrayListNivelDosEstado.add(cursorData.getString(5));
                     sincUP2 = "2";
                 }while (cursorData.moveToNext());
             }
@@ -402,6 +406,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         for (int i=0; i<arrayListNivelDosIdGrupo.size(); i++){
             JSONObject object = new JSONObject();
             try {
+                object.put("anexo_nivel1",arrayListNivelDosIdNivel1.get(i));
                 object.put("id_grupo",arrayListNivelDosIdGrupo.get(i));
                 object.put("contador",arrayListNivelDosContador.get(i));
                 object.put("anexo_supervisor",arrayListNivelDosAnexoSupervisor.get(i));
@@ -411,7 +416,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/nivel_dos", object, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_dos", object, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
@@ -472,7 +477,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/nivel_tres", object, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_tres", object, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();

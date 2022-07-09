@@ -60,36 +60,48 @@ public class AdaptadorListarGrupoTrabajo extends BaseAdapter {
         tvidgrupo.setText(e_grupos.getId_grupo());
         tvdni.setText("SUPERVISOR: ".concat(e_grupos.getAnexo_supervisor()));
 
-        btnEditar.setOnClickListener(view->{
-            Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
-            Bundle bundle= new Bundle();
-            bundle.putInt("valor", 1);
-            bundle.putString("idGrupo", e_grupos.getId_grupo());
-            bundle.putString("dni", e_grupos.getAnexo_supervisor());
-            intent.putExtras(bundle);
-            vista.getContext().startActivity(intent);
-        });
-
-        btnDuplicar.setOnClickListener(view -> {
-            Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
-            Bundle bundle= new Bundle();
-            bundle.putInt("valor", 2);
-            bundle.putString("idGrupo", e_grupos.getId_grupo());
-            bundle.putString("dni", e_grupos.getAnexo_supervisor());
-            intent.putExtras(bundle);
-            vista.getContext().startActivity(intent);
-        });
-
-        btnConfigurar.setOnClickListener(view -> {
-            Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
-            Bundle bundle= new Bundle();
-            bundle.putInt("valor", 3);
-            bundle.putString("tvNombreGrupo", tvid.getText().toString());
-            bundle.putString("idGrupo", e_grupos.getId_grupo());
-            bundle.putString("dni", e_grupos.getAnexo_supervisor());
-            intent.putExtras(bundle);
-            vista.getContext().startActivity(intent);
-        });
+        if (e_grupos.getEstado().equals("1")){
+            btnEditar.setOnClickListener(view->{
+                Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
+                Bundle bundle= new Bundle();
+                bundle.putInt("validacion", 1);
+                bundle.putInt("valor", 1);
+                bundle.putString("idGrupo", e_grupos.getId_grupo());
+                bundle.putString("dni", e_grupos.getAnexo_supervisor());
+                intent.putExtras(bundle);
+                vista.getContext().startActivity(intent);
+            });
+            btnConfigurar.setEnabled(false);
+        }else{
+            btnEditar.setOnClickListener(view->{
+                Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
+                Bundle bundle= new Bundle();
+                bundle.putInt("valor", 1);
+                bundle.putString("idGrupo", e_grupos.getId_grupo());
+                bundle.putString("dni", e_grupos.getAnexo_supervisor());
+                intent.putExtras(bundle);
+                vista.getContext().startActivity(intent);
+            });
+            btnDuplicar.setOnClickListener(view -> {
+                Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
+                Bundle bundle= new Bundle();
+                bundle.putInt("valor", 2);
+                bundle.putString("idGrupo", e_grupos.getId_grupo());
+                bundle.putString("dni", e_grupos.getAnexo_supervisor());
+                intent.putExtras(bundle);
+                vista.getContext().startActivity(intent);
+            });
+            btnConfigurar.setOnClickListener(view -> {
+                Intent intent = new Intent(vista.getContext(), TercerNivelConfiguracionGrupo.class);
+                Bundle bundle= new Bundle();
+                bundle.putInt("valor", 3);
+                bundle.putString("tvNombreGrupo", tvid.getText().toString());
+                bundle.putString("idGrupo", e_grupos.getId_grupo());
+                bundle.putString("dni", e_grupos.getAnexo_supervisor());
+                intent.putExtras(bundle);
+                vista.getContext().startActivity(intent);
+            });
+        }
 
         return vista;
     }

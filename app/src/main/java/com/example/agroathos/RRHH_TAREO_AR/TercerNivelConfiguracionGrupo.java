@@ -85,6 +85,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     String idGrupo = "";
     String dni = "";
     int valor = 0;
+    int validacion = 0;
 
     /*VALORES OBTENIDOS BD*/
     String BDid_nivel2 = "";
@@ -118,6 +119,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         idGrupo = bundle.getString("idGrupo");
         dni = bundle.getString("dni");
         valor = bundle.getInt("valor");
+        validacion = bundle.getInt("validacion");
 
         consultarGruposTrabajo();
 
@@ -125,6 +127,11 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             iniciarLayoutPrincipal();
             clPrincipal.setVisibility(View.VISIBLE);
             btnEditarPersona.setVisibility(View.VISIBLE);
+
+            if (validacion == 1){
+                fbAgregarPersonal.setEnabled(false);
+            }
+
         }
 
         if (valor == 2){
@@ -839,6 +846,21 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         integrator.initiateScan();
     }
 
+    private void verificarSincronizados(String idGrupo){
+        SQLiteDatabase database = conn.getReadableDatabase();
+
+        arrayPersonalList = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_GARITA_SINCRONIZADO_NIVEL1_5 + "=" + "'1'", null);
+
+        if (cursor != null){
+            if (cursor.moveToFirst()){
+                do {
+
+                }while (cursor.moveToNext());
+            }
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

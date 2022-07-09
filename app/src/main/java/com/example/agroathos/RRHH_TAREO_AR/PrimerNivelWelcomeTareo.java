@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class PrimerNivelWelcomeTareo extends AppCompatActivity {
 
@@ -292,7 +293,10 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
 
         SQLiteDatabase database = conn.getWritableDatabase();
 
+        String id_nivel_uno = UUID.randomUUID().toString();
+
         ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_IDNIVEL1_NIVEL1, id_nivel_uno);
         values.put(Utilidades.CAMPO_ZONA_NIVEL1, zona);
         values.put(Utilidades.CAMPO_FUNDO_NIVEL1, fundo);
         values.put(Utilidades.CAMPO_CULTIVO_NIVEL1, cultivo);
@@ -310,6 +314,7 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("dniSupervisor", etDNI.getText().toString());
             editor.putString("dni", etDNI.getText().toString());
+            editor.putString("idNivel1", id_nivel_uno);
             editor.putString("zona", zona);
             editor.putString("fundo", fundo);
             editor.putString("cultivo", cultivo);
@@ -329,15 +334,17 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
 
         if (cursor != null){
             if (cursor.moveToFirst()){
-                String zonaBD = cursor.getString(1);
-                String fundoBD = cursor.getString(2);
-                String cultivoBD = cursor.getString(3);
-                String dniBD = cursor.getString(4);
+                String idNivel1BD = cursor.getString(1);
+                String zonaBD = cursor.getString(2);
+                String fundoBD = cursor.getString(3);
+                String cultivoBD = cursor.getString(4);
+                String dniBD = cursor.getString(5);
 
                 Intent intent = new Intent(PrimerNivelWelcomeTareo.this, SegundoNivelWelcome.class);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("dniSupervisor", etDNI.getText().toString());
                 editor.putString("dni", dniBD);
+                editor.putString("idNivel1", idNivel1BD);
                 editor.putString("zona", zonaBD);
                 editor.putString("fundo", fundoBD);
                 editor.putString("cultivo", cultivoBD);

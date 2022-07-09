@@ -36,6 +36,7 @@ import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.MainActivity;
 import com.example.agroathos.R;
+import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
 import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
 import com.example.agroathos.TRANSPORTE_GARITA.PrimerNivelWelcomeGarita;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -132,7 +133,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     private void listarDatos(){
         arrayListDataLocal.clear();
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0' OR "+ Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'1' AND "+Utilidades.CAMPO_DESTAJO_FECHA_NIVEL1+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0' OR "+ Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'1' AND "+Utilidades.CAMPO_DESTAJO_FECHA_NIVEL1+"="+"'"+obtenerFechaActual("AMERICA/Lima")+"' GROUP BY Jarra HAVING COUNT(*)>=1", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
@@ -157,7 +158,6 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
             values.put(Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1, "0");
 
             database.insert(Utilidades.TABLA_DESTAJO_NIVEL1, Utilidades.CAMPO_DESTAJO_ID_NIVEL1, values);
-
         }
 
         Toast.makeText(this, "Registro Exitoso!", Toast.LENGTH_SHORT).show();
@@ -264,6 +264,14 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
             case R.id.menu_sincronizar_action:
                 validarConexionInternet();
                 break;
+            case R.id.menu_cerrar_sesion_action:
+                Intent intent = new Intent(PrimerNivelWelcomeDestajo.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -367,6 +375,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                 registrarDatos();
                 actualizarEstadoSincronizacion();
                 Toast.makeText(this, "Datos Sincronizados", Toast.LENGTH_SHORT).show();
+                validarEstado = 0;
             }else{
                 Toast.makeText(this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
             }

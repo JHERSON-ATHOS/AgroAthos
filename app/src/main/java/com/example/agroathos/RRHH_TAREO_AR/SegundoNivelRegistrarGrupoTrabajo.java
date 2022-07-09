@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,8 +55,6 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     TextView tvHoraInicio, tvHoraFinal;
 
     ArrayList<String> arrayPersonal = new ArrayList<>();
-    ArrayList<String> arrayJarras1 = new ArrayList<>();
-    ArrayList<String> arrayJarras2 = new ArrayList<>();
 
     AdaptadorModulos adaptadorModulos;
     AdaptadorLotes adaptadorLotes;
@@ -68,6 +67,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     AdaptadorListarPersonalTrabajo adaptadorListarPersonalTrabajo;
     int contador = 1;
 
+    String idNivel1 = "";
     String zona = "";
     String fundo = "";
     String modulo = "";
@@ -83,6 +83,8 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
     ContentValues valuesPersonal = new ContentValues();
 
     private int hora, minutos;
+
+    boolean estado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +137,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
         dni = preferences.getString("dni","");
         fundo = preferences.getString("fundo","");
         zona = preferences.getString("zona","");
+        idNivel1 = preferences.getString("idNivel1","");
 
         recibirFundo();
         cargarModulo();
@@ -648,12 +651,14 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
         idGrupo = UUID.randomUUID().toString();
 
         if (cursor.getCount()<0){
+            valuesGrupo.put(Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5, idNivel1);
             valuesGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idGrupo);
             valuesGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, 1);
             valuesGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
             valuesGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL1_5, "ABIERTO");
             valuesGrupo.put(Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5, "0");
         }else{
+            valuesGrupo.put(Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5, idNivel1);
             valuesGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idGrupo);
             valuesGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, cursor.getCount()+1);
             valuesGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
@@ -661,7 +666,7 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
             valuesGrupo.put(Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5, "0");
         }
 
-        database.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_DNI_NIVEL1_5, valuesGrupo);
+        database.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_ID_NIVEL1_5, valuesGrupo);
 
         for (int i=0; i<lvPersonal.getCount(); i++){
             valuesPersonal.put(Utilidades.CAMPO_ANEXO_GRUPO_NIVEL2, idGrupo);
@@ -781,7 +786,40 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SegundoNivelRegistrarGrupoTrabajo.this, SegundoNivelWelcome.class);
-        startActivity(intent);
+        /*if (!estado) {
+            estado = true;
+            Toast.makeText(this, "Pulsa denuevo para salir", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    estado = false;
+                }
+            }, 2000);
+        } else {
+            super.onBackPressed();
+        }*/
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Salir");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SegundoNivelRegistrarGrupoTrabajo.super.onBackPressed();
+            }
+        });
+
+        builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+
     }
 }
