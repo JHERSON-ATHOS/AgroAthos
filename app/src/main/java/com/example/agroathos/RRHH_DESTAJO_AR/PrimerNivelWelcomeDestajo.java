@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
@@ -80,12 +82,23 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     String fechaActual = "";
     String fechaBDAntigua = "";
 
+    TextToSpeech voz;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primer_nivel_welcome_destajo);
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
+
+        voz = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voz.setLanguage(new Locale("es", "pe"));
+                }
+            }
+        });
 
         toolbar = findViewById(R.id.toolbarPRIMER_NIVEL_PRODUCTIVIDAD);
         setSupportActionBar(toolbar);
@@ -300,7 +313,8 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayInfo);
                         lvJarras.setAdapter(adapter);
                     }else{
-                        Toast.makeText(this, intentResult.getContents(), Toast.LENGTH_SHORT).show();
+                        String dato = intentResult.getContents().substring(11);
+                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
                         arrayInfo.add(intentResult.getContents());
                         arrayJarras.add(intentResult.getContents());
                         arrayHoras.add(obtenerHoraActual("GMT-5"));

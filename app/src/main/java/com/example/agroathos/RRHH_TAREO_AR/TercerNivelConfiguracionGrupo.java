@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,6 +50,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.UUID;
 
 public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
@@ -111,12 +113,23 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     SharedPreferences preferences;
     String idNivel1Capa1 = "";
 
+    TextToSpeech voz;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tercer_nivel_configuracion_grupos);
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
+
+        voz = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voz.setLanguage(new Locale("es", "pe"));
+                }
+            }
+        });
 
         preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
         idNivel1Capa1 = preferences.getString("idNivel1","");
@@ -922,6 +935,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                                 });
                                 builder.create().show();
                             }else{
+                                String dato = intentResult.getContents().substring(11);
+                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
                                 arrayPersonal.add(intentResult.getContents());
                                 valorPersonal = intentResult.getContents();
                                 personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));

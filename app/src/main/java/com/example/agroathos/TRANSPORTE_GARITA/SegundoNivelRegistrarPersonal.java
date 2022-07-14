@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -58,12 +60,23 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
     ContentValues values = new ContentValues();
     ContentValues valuesIntermedio = new ContentValues();
 
+    TextToSpeech voz;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segundo_nivel_registrar_personal);
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
+
+        voz = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voz.setLanguage(new Locale("es", "pe"));
+                }
+            }
+        });
 
         tvFecha = findViewById(R.id.tvFechaBusGARITA);
         etPlaca = findViewById(R.id.etPlacaBusGARITA);
@@ -353,6 +366,8 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
                                                 iniciarScanPersonal();
                                             }else{
+                                                String dato = intentResult.getContents().substring(11);
+                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
                                                 //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                                 arrayDataPersonal.add(intentResult.getContents());
 
@@ -363,6 +378,8 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 iniciarScanPersonal();
                                             }
                                         }else{
+                                            String dato = intentResult.getContents().substring(11);
+                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
                                             //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                             arrayDataPersonal.add(intentResult.getContents());
 
@@ -379,6 +396,8 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
                                                 iniciarScanPersonal();
                                             }else{
+                                                String dato = intentResult.getContents().substring(11);
+                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
                                                 //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                                 arrayDataPersonal.add(intentResult.getContents());
 
@@ -389,6 +408,8 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 iniciarScanPersonal();
                                             }
                                         }else{
+                                            String dato = intentResult.getContents().substring(11);
+                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
                                             //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                             arrayDataPersonal.add(intentResult.getContents());
 

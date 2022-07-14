@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         pedirPermisos();
         preferences = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
         dni_preferences = preferences.getString("dni", "");

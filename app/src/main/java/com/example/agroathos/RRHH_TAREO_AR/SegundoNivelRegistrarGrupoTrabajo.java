@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -84,14 +86,23 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
 
     private int hora, minutos;
 
-    boolean estado = false;
+    TextToSpeech voz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segundo_nivel_registrar_grupo_trabajo);
 
-        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
+        conn = new ConexionSQLiteHelper(this, "athos0", null, Utilidades.VERSION_APP);
+
+        voz = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voz.setLanguage(new Locale("es", "pe"));
+                }
+            }
+        });
 
         spModulo = findViewById(R.id.spModuloRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
         spLote = findViewById(R.id.spLoteRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL_REGISTRAR_GRUPO_TRABAJO);
@@ -765,6 +776,8 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                                 });
                                 builder.create().show();
                             }else{
+                                String dato = intentResult.getContents().substring(11);
+                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
                                 arrayPersonal.add(intentResult.getContents());
                                 valorPersonal = intentResult.getContents();
                                 personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
