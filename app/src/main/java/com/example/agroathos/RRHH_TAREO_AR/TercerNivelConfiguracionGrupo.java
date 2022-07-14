@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -106,6 +108,8 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
     int contador = 1;
 
     ArrayList<String> arrayPersonal = new ArrayList<>();
+    SharedPreferences preferences;
+    String idNivel1Capa1 = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +117,9 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         setContentView(R.layout.activity_tercer_nivel_configuracion_grupos);
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
+
+        preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        idNivel1Capa1 = preferences.getString("idNivel1","");
 
         Bundle bundle = getIntent().getExtras();
         nombreGrupo = bundle.getString("tvNombreGrupo");
@@ -792,14 +799,17 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
         Cursor cursorGrupo = databaseGrupo.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1_5 + " WHERE " + Utilidades.CAMPO_DNI_NIVEL1_5 + "=" + "'"+dni+"'", null);
 
         String idNewGrupo = UUID.randomUUID().toString();
+        String idAnexoGrupo1 = UUID.randomUUID().toString();
 
         if (cursorGrupo.getCount()<0){
+            valuesAgregarGrupo.put(Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5, idAnexoGrupo1);
             valuesAgregarGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idNewGrupo);
             valuesAgregarGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, 1);
             valuesAgregarGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
             valuesAgregarGrupo.put(Utilidades.CAMPO_ESTADO_NIVEL1_5, "ABIERTO");
             valuesAgregarGrupo.put(Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5, "0");
         }else{
+            valuesAgregarGrupo.put(Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5, idNivel1Capa1);
             valuesAgregarGrupo.put(Utilidades.CAMPO_ID_GRUPO_NIVEL1_5, idNewGrupo);
             valuesAgregarGrupo.put(Utilidades.CAMPO_CONTADOR_GRUPO_NIVEL1_5, cursorGrupo.getCount()+1);
             valuesAgregarGrupo.put(Utilidades.CAMPO_DNI_NIVEL1_5, dni);
@@ -807,7 +817,7 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
             valuesAgregarGrupo.put(Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5, "0");
         }
 
-        databaseGrupo.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_DNI_NIVEL1_5, valuesAgregarGrupo);
+        databaseGrupo.insert(Utilidades.TABLA_NIVEL1_5, Utilidades.CAMPO_ID_NIVEL1_5, valuesAgregarGrupo);
 
         for (int i=0; i<arrayListSupervisores.size(); i++){
             SQLiteDatabase database = conn.getWritableDatabase();

@@ -56,6 +56,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     ConexionSQLiteHelper conn;
     SharedPreferences preferences;
 
+    String idNivel1Capa1 = "";
     String zona = "";
     String fundo = "";
     String cultivo = "";
@@ -119,15 +120,15 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         listView = findViewById(R.id.lvGruposTrabajoRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL);
 
         preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        idNivel1Capa1 = preferences.getString("idNivel1","");
         dni = preferences.getString("dni","");
         zona = preferences.getString("zona","");
         fundo = preferences.getString("fundo","");
         cultivo = preferences.getString("cultivo","");
 
         obtenerIdGrupo();
-        consultarGruposTrabajo();
 
-        listView.setAdapter(new AdaptadorListarGrupoTrabajo(this,arrayGruposList));
+        validarDatosNivel1(idNivel1Capa1);
 
         fabRegistrar.setOnClickListener(view -> irRegistoGrupo());
 
@@ -168,12 +169,26 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         cursor.close();
     }
 
-    public void consultarGruposTrabajo(){
+    public void validarDatosNivel1(String idNive1){
+        SQLiteDatabase database = conn.getReadableDatabase();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5+"="+ "'"+idNive1+"'", null);
+
+        if (cursor != null){
+            if (cursor.moveToNext()){
+                consultarGruposTrabajo(cursor.getString(1));
+                listView.setAdapter(new AdaptadorListarGrupoTrabajo(this,arrayGruposList));
+                cursor.close();
+            }
+        }
+
+    }
+    public void consultarGruposTrabajo(String idAnexo){
         SQLiteDatabase database = conn.getReadableDatabase();
 
         E_Grupos e_grupos = null;
         arrayGruposList = new ArrayList<E_Grupos>();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1_5 + " WHERE " + Utilidades.CAMPO_DNI_NIVEL1_5 + "=" + "'"+idSupervisor+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1_5 + " WHERE " + Utilidades.CAMPO_DNI_NIVEL1_5 + "=" + "'"+idSupervisor+"' AND "+ Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5 + "=" + "'"+idAnexo+"' ", null);
 
         if (cursor != null){
             while (cursor.moveToNext()) {
@@ -200,7 +215,6 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_principal, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -235,7 +249,6 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         sdf.setTimeZone(TimeZone.getTimeZone(zonaHoraria));
         return sdf.format(date);
     }
-
     public static String obtenerFechaActual(String zonaHoraria) {
         String formato = "dd-MM-yyyy";
         return obtenerFechaConFormato(formato, zonaHoraria);
@@ -532,7 +545,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                 ContentValues contentValuesActSincronizacion = new ContentValues();
                 contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_NIVEL1_5, contentValuesActSincronizacion, Utilidades.CAMPO_ID_GRUPO_NIVEL1_5+"=?", parametro);
+                database.update(Utilidades.TABLA_NIVEL1_5, contentValuesActSincronizacion, Utilidades.CAMPO_ID_NIVEL1_5+"=?", parametro);
                 cursorData.close();
             }
         }

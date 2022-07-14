@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             timer.schedule(timerTask, 2000, 100);*/
         }
 
-        /*AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
 
         // Returns an intent object that you use to check for an update.
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        });*/
+        });
 
     }
 
@@ -300,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void iniciarActividad(Class aClass){
         Intent intent = new Intent(MainActivity.this, aClass);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

@@ -64,6 +64,8 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences preferencesLogin;
 
+    String id_nivel_uno = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -293,7 +295,7 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
 
         SQLiteDatabase database = conn.getWritableDatabase();
 
-        String id_nivel_uno = UUID.randomUUID().toString();
+        id_nivel_uno = UUID.randomUUID().toString();
 
         ContentValues values = new ContentValues();
         values.put(Utilidades.CAMPO_IDNIVEL1_NIVEL1, id_nivel_uno);
@@ -333,7 +335,7 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
                 +"'"+cultivo+"' AND "+Utilidades.CAMPO_DNI_NIVEL1+"="+"'"+dni+"'", null);
 
         if (cursor != null){
-            if (cursor.moveToFirst()){
+            if (cursor.moveToNext()){
                 String idNivel1BD = cursor.getString(1);
                 String zonaBD = cursor.getString(2);
                 String fundoBD = cursor.getString(3);
@@ -350,8 +352,8 @@ public class PrimerNivelWelcomeTareo extends AppCompatActivity {
                 editor.putString("cultivo", cultivoBD);
                 editor.commit();
 
+                cursor.close();
                 startActivity(intent);
-
             }else{
                 enviarDatos();
             }
