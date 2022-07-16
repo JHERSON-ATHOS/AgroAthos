@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -18,47 +18,55 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        >
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".RRHH_TAREO_AR_PLANTA.TercerNivelWelcomeTareoPlanta"
+            android:exported="false" />
+        <activity
+            android:name=".RRHH_TAREO_AR_PLANTA.SegundoNivelWelcomeTareoPlanta"
+            android:exported="false" />
+        <activity
+            android:name=".RRHH_TAREO_AR_PLANTA.PrimerNivelWelcomeTareoPlanta"
+            android:exported="false" />
         <activity
             android:name=".TRANSPORTE_GARITA.TercerNivelListarRegistrosGarita"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RRHH_TAREO_AR.TercerNivelConfiguracionGrupo"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TRANSPORTE_GARITA.SegundoNivelRegistrarPersonal"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TRANSPORTE_GARITA.PrimerNivelWelcomeGarita"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RRHH_TAREO_AR.SegundoNivelRegistrarGrupoTrabajo"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RRHH_TAREO_AR.SegundoNivelWelcome"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RRHH_TAREO_AR.PrimerNivelWelcomeTareo"
             android:exported="false"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

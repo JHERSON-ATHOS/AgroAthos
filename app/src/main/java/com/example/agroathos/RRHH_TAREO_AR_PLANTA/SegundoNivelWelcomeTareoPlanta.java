@@ -1,4 +1,4 @@
-package com.example.agroathos.RRHH_TAREO_AR;
+package com.example.agroathos.RRHH_TAREO_AR_PLANTA;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,25 +14,28 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.android.volley.AuthFailureError;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
+import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.ENTIDADES.E_Grupos;
+import com.example.agroathos.ENTIDADES.E_GruposPlanta;
 import com.example.agroathos.MainActivity;
 import com.example.agroathos.R;
 import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListarGrupoTrabajo;
-import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
+import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
+import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelRegistrarGrupoTrabajo;
+import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
+import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorListarGrupoTrabajoPlanta;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
@@ -41,25 +44,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
-public class SegundoNivelWelcome extends AppCompatActivity {
+public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
 
     FloatingActionButton fabRegistrar;
     ListView listView;
     Toolbar toolbar;
 
-    ArrayList<E_Grupos> arrayGruposList;
-
     ConexionSQLiteHelper conn;
     SharedPreferences preferences;
 
+    ArrayList<E_GruposPlanta> arrayListGruposPlanta;
+
     String idNivel1Capa1 = "";
-    String zona = "";
-    String fundo = "";
-    String cultivo = "";
+    String nave = "";
+    String linea = "";
+    String turno = "";
     String dni = "";
 
     //DATOS DE LA BD
@@ -71,15 +72,12 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     //DATOS PARA SUBIDA
     String idNivel1UP = "";
-    String zonaUP = "";
-    String fundoUP = "";
-    String cultivoUP = "";
-    String dni_supervisorUP = "";
+    String naveUP = "";
+    String lineaUP = "";
+    String turnoUP = "";
+    String dniUP = "";
     String horaUP = "";
     String fechaUP = "";
-    String sincUP1 = "";
-    String sincUP2 = "";
-    String sincUP3 = "";
 
     //NIVEL 2
     ArrayList<String> arrayListNivelDosIdGrupo = new ArrayList<>();
@@ -90,16 +88,18 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     //NIVEL 3
     ArrayList<String> arrayListNivelTresIdGrupo = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresFundo = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresModulo = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresLote = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresProceso = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresActividad = new ArrayList<>();
     ArrayList<String> arrayListNivelTresLabor = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresPersonal = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresMesa = new ArrayList<>();
     ArrayList<String> arrayListNivelTresSupervisor = new ArrayList<>();
     ArrayList<String> arrayListNivelTresFecha = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresHoraInicio = new ArrayList<>();
-    ArrayList<String> arrayListNivelTresHoraFinal = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresHora = new ArrayList<>();
     ArrayList<String> arrayListNivelTresEstado = new ArrayList<>();
+
+    String sincUP1 = "";
+    String sincUP2 = "";
+    String sincUP3 = "";
 
     String fechaActual = "";
     String fechaBDAntigua = "";
@@ -107,24 +107,24 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_segundo_nivel_welcome);
+        setContentView(R.layout.activity_segundo_nivel_welcome_tareo_planta);
 
-        toolbar = findViewById(R.id.toolbarSEGUNDO_NIVEL_WELCOME_RRHH_TAREO_AR);
+        toolbar = findViewById(R.id.toolbarSEGUNDO_NIVEL_WELCOME_RRHH_TAREO_AR_PLANTA);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.white));
 
-        conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
+        conn = new ConexionSQLiteHelper(this,"athos0",null, Utilidades.VERSION_APP);
 
-        fabRegistrar = findViewById(R.id.fbAgregarTrabajoRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL);
-        listView = findViewById(R.id.lvGruposTrabajoRRHH_TAREO_ARANDANO_SEGUNDO_NIVEL);
+        fabRegistrar = findViewById(R.id.fbAgregarTrabajoRRHH_TAREO_ARANDANO_PLANTA_SEGUNDO_NIVEL);
+        listView = findViewById(R.id.lvGruposTrabajoRRHH_TAREO_ARANDANO_PLANTA_SEGUNDO_NIVEL);
 
-        preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
         idNivel1Capa1 = preferences.getString("idNivel1","");
         dni = preferences.getString("dni","");
-        zona = preferences.getString("zona","");
-        fundo = preferences.getString("fundo","");
-        cultivo = preferences.getString("cultivo","");
+        nave = preferences.getString("nave","");
+        linea = preferences.getString("linea","");
+        turno = preferences.getString("turno","");
 
         obtenerIdGrupo();
 
@@ -141,7 +141,8 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     public void limpiezaPeriodica(){
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1 + " WHERE " + Utilidades.CAMPO_SINCRONIZADO_NIVEL1 + "=" + "'1'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_TAREO_PLANTA_NIVEL1 + " WHERE "
+                + Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL1 + "=" + "'1'", null);
         if (cursor != null){
 
             if (cursor.moveToFirst()){
@@ -157,7 +158,8 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     public void obtenerIdGrupo(){
         SQLiteDatabase database = conn.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL2 + " WHERE " + Utilidades.CAMPO_DNI_NIVEL2 + "=" + "'"+dni+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_TAREO_PLANTA_NIVEL3 + " WHERE "
+                + Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL3 + "=" + "'"+dni+"'", null);
         if (cursor != null){
             if (cursor.moveToFirst()){
                 do{
@@ -172,41 +174,43 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     public void validarDatosNivel1(String idNive1){
         SQLiteDatabase database = conn.getReadableDatabase();
 
-        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5+"="+ "'"+idNive1+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL2+" WHERE "
+                +Utilidades.CAMPO_ANEXONIVEL1_TAREO_PLANTA_NIVEL2+"="+ "'"+idNive1+"'", null);
 
         if (cursor != null){
             if (cursor.moveToNext()){
                 consultarGruposTrabajo(cursor.getString(1));
-                listView.setAdapter(new AdaptadorListarGrupoTrabajo(this,arrayGruposList));
+                listView.setAdapter(new AdaptadorListarGrupoTrabajoPlanta(this,arrayListGruposPlanta));
                 cursor.close();
             }
         }
-
     }
+
     public void consultarGruposTrabajo(String idAnexo){
         SQLiteDatabase database = conn.getReadableDatabase();
 
-        E_Grupos e_grupos = null;
-        arrayGruposList = new ArrayList<E_Grupos>();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_NIVEL1_5 + " WHERE " + Utilidades.CAMPO_DNI_NIVEL1_5 + "=" + "'"+idSupervisor+"' AND "+ Utilidades.CAMPO_ANEXONIVEL1_NIVEL1_5 + "=" + "'"+idAnexo+"' ", null);
+        E_GruposPlanta e_grupos = null;
+        arrayListGruposPlanta = new ArrayList<E_GruposPlanta>();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_TAREO_PLANTA_NIVEL2 + " WHERE "
+                + Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL2 + "=" + "'"+idSupervisor+"' AND "
+                + Utilidades.CAMPO_ANEXONIVEL1_TAREO_PLANTA_NIVEL2 + "=" + "'"+idAnexo+"' ", null);
 
         if (cursor != null){
             while (cursor.moveToNext()) {
-                e_grupos = new E_Grupos();
+                e_grupos = new E_GruposPlanta();
                 e_grupos.setId(cursor.getString(0));
                 e_grupos.setId_grupo(cursor.getString(2));
                 e_grupos.setContadorGrupo(cursor.getString(3));
                 e_grupos.setAnexo_supervisor(cursor.getString(4));
                 e_grupos.setEstado(cursor.getString(6));
-                arrayGruposList.add(e_grupos);
+                arrayListGruposPlanta.add(e_grupos);
             }
             cursor.close();
         }
-
     }
 
     private void irRegistoGrupo(){
-        Intent intent = new Intent(SegundoNivelWelcome.this, SegundoNivelRegistrarGrupoTrabajo.class);
+        Intent intent = new Intent(SegundoNivelWelcomeTareoPlanta.this, TercerNivelWelcomeTareoPlanta.class);
         startActivity(intent);
     }
 
@@ -219,10 +223,10 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_cerrar_sesion_action:
-                SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
                 preferences.edit().clear().commit();
 
-                Intent intent = new Intent(SegundoNivelWelcome.this, PrimerNivelWelcomeTareo.class);
+                Intent intent = new Intent(SegundoNivelWelcomeTareoPlanta.this, PrimerNivelWelcomeTareoPlanta.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
@@ -256,21 +260,22 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
     public void limpiarBDSQLite(){
         SQLiteDatabase database = this.conn.getWritableDatabase();
-        String t1 = "DELETE FROM "+Utilidades.TABLA_NIVEL1;
-        String t2 = "DELETE FROM "+Utilidades.TABLA_NIVEL1_5;
-        String t3 = "DELETE FROM "+Utilidades.TABLA_NIVEL2;
+        String t1 = "DELETE FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL1;
+        String t2 = "DELETE FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL2;
+        String t3 = "DELETE FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL3;
         database.execSQL(t1);
         database.execSQL(t2);
         database.execSQL(t3);
         database.close();
 
-        Intent intent = new Intent(SegundoNivelWelcome.this, MainActivity.class);
+        Intent intent = new Intent(SegundoNivelWelcomeTareoPlanta.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear().apply();
     }
+
     public void validarConexionInternet(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -344,20 +349,21 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Necesitas conexión a internet.", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void obtenerDataRegistrada(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL1+" WHERE "
+                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL1+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1+
+                "="+"'0'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
                     idNivel1UP = cursorData.getString(1);
-                    zonaUP = cursorData.getString(2);
-                    fundoUP = cursorData.getString(3);
-                    cultivoUP = cursorData.getString(4);
-                    dni_supervisorUP = cursorData.getString(5);
+                    naveUP = cursorData.getString(2);
+                    lineaUP = cursorData.getString(3);
+                    turnoUP = cursorData.getString(4);
+                    dniUP = cursorData.getString(5);
                     fechaUP = cursorData.getString(6);
                     horaUP = cursorData.getString(7);
                     sincUP1 = "1";
@@ -367,14 +373,15 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         }
         cursorData.close();
     }
+
     private void registrarDatos(){
         JSONObject object = new JSONObject();
         try {
             object.put("id_nivel_uno",idNivel1UP);
-            object.put("zona",zonaUP);
-            object.put("fundo",fundoUP);
-            object.put("cultivo",cultivoUP);
-            object.put("dni_supervisor",dni_supervisorUP);
+            object.put("nave",naveUP);
+            object.put("linea",lineaUP);
+            object.put("turno",turnoUP);
+            object.put("dni",dniUP);
             object.put("fecha",fechaUP);
             object.put("hora",horaUP);
             object.put("sinc","1");
@@ -382,7 +389,8 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_uno", object, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_uno",
+                object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
@@ -394,13 +402,15 @@ public class SegundoNivelWelcome extends AppCompatActivity {
             }
         });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcomeTareoPlanta.this);
         requestQueue.add(jsonObjectRequest);
     }
 
     private void obtenerDataRegistradaNivelDos(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1_5+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL2+" WHERE "
+                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL2+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL2+
+                "="+"'0'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
@@ -415,6 +425,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         }
         cursorData.close();
     }
+
     private void registrarDatosNivelDos(){
         for (int i=0; i<arrayListNivelDosIdGrupo.size(); i++){
             JSONObject object = new JSONObject();
@@ -429,7 +440,8 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_dos", object, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_dos",
+                    object, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
@@ -441,28 +453,28 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 }
             });
 
-            RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
+            RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcomeTareoPlanta.this);
             requestQueue.add(jsonObjectRequest);
         }
     }
 
     private void obtenerDataRegistradaNivelTres(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL2+" WHERE "+Utilidades.CAMPO_DNI_NIVEL2+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL2+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL3+" WHERE "
+                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL3+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL3
+                +"="+"'0'", null);
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
                     arrayListNivelTresIdGrupo.add(cursorData.getString(1));
-                    arrayListNivelTresFundo.add(cursorData.getString(2));
-                    arrayListNivelTresModulo.add(cursorData.getString(3));
-                    arrayListNivelTresLote.add(cursorData.getString(4));
-                    arrayListNivelTresLabor.add(cursorData.getString(5));
-                    arrayListNivelTresPersonal.add(cursorData.getString(6));
-                    arrayListNivelTresSupervisor.add(cursorData.getString(7));
-                    arrayListNivelTresFecha.add(cursorData.getString(8));
-                    arrayListNivelTresHoraInicio.add(cursorData.getString(9));
-                    arrayListNivelTresHoraFinal.add(cursorData.getString(10));
-                    arrayListNivelTresEstado.add(cursorData.getString(11));
+                    arrayListNivelTresProceso.add(cursorData.getString(2));
+                    arrayListNivelTresActividad.add(cursorData.getString(3));
+                    arrayListNivelTresLabor.add(cursorData.getString(4));
+                    arrayListNivelTresMesa.add(cursorData.getString(5));
+                    arrayListNivelTresSupervisor.add(cursorData.getString(6));
+                    arrayListNivelTresFecha.add(cursorData.getString(7));
+                    arrayListNivelTresHora.add(cursorData.getString(8));
+                    arrayListNivelTresEstado.add(cursorData.getString(9));
 
                     sincUP3 = "3";
                 }while (cursorData.moveToNext());
@@ -470,27 +482,26 @@ public class SegundoNivelWelcome extends AppCompatActivity {
         }
         cursorData.close();
     }
+
     private void registrarDatosNivelTres(){
         for (int i=0; i<arrayListNivelTresIdGrupo.size(); i++){
             JSONObject object = new JSONObject();
             try {
                 object.put("anexo_grupo",arrayListNivelTresIdGrupo.get(i));
-                object.put("fundo",arrayListNivelTresFundo.get(i));
-                object.put("modulo",arrayListNivelTresModulo.get(i));
-                object.put("lote",arrayListNivelTresLote.get(i));
+                object.put("proceso",arrayListNivelTresProceso.get(i));
+                object.put("actividad",arrayListNivelTresActividad.get(i));
                 object.put("labor",arrayListNivelTresLabor.get(i));
-                object.put("personal",arrayListNivelTresPersonal.get(i));
                 object.put("anexo_supervisor",arrayListNivelTresSupervisor.get(i));
                 object.put("fecha",arrayListNivelTresFecha.get(i));
-                object.put("hora_inicio",arrayListNivelTresHoraInicio.get(i));
-                object.put("hora_final",arrayListNivelTresHoraFinal.get(i));
+                object.put("hora",arrayListNivelTresHora.get(i));
                 object.put("estado",arrayListNivelTresEstado.get(i));
                 object.put("sinc","1");
             }catch (Exception e){
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_tres", object, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_tres",
+                    object, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
@@ -502,7 +513,7 @@ public class SegundoNivelWelcome extends AppCompatActivity {
                 }
             });
 
-            RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcome.this);
+            RequestQueue requestQueue = Volley.newRequestQueue(SegundoNivelWelcomeTareoPlanta.this);
             requestQueue.add(jsonObjectRequest);
         }
     }
@@ -510,7 +521,9 @@ public class SegundoNivelWelcome extends AppCompatActivity {
     private void actualizarEstadoSincronizacionNivelUno(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         SQLiteDatabase database = conn.getWritableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL1+" WHERE "
+                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL1+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL1
+                +"="+"'0'", null);
 
         if (cursorData != null){
             if (cursorData.moveToFirst()){
@@ -523,16 +536,19 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                 ContentValues contentValuesActSincronizacion = new ContentValues();
                 contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_NIVEL1, contentValuesActSincronizacion, Utilidades.CAMPO_ID_NIVEL1+"=?", parametro);
+                database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL1, contentValuesActSincronizacion,
+                        Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL1+"=?", parametro);
                 cursorData.close();
             }
         }
-
     }
+
     private void actualizarEstadoSincronizacionNivelDos(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         SQLiteDatabase database = conn.getWritableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL1_5+" WHERE "+Utilidades.CAMPO_DNI_NIVEL1_5+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL1_5+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL2+" WHERE "
+                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL2+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL2
+                +"="+"'0'", null);
 
         if (cursorData != null){
             if (cursorData.moveToFirst()){
@@ -545,16 +561,19 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                 ContentValues contentValuesActSincronizacion = new ContentValues();
                 contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_NIVEL1_5, contentValuesActSincronizacion, Utilidades.CAMPO_ID_NIVEL1_5+"=?", parametro);
+                database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL2, contentValuesActSincronizacion,
+                        Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL2+"=?", parametro);
                 cursorData.close();
             }
         }
-
     }
+
     private void actualizarEstadoSincronizacionNivelTres(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         SQLiteDatabase database = conn.getWritableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_NIVEL2+" WHERE "+Utilidades.CAMPO_DNI_NIVEL2+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL2+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL3+" WHERE "
+                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL3+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_NIVEL2
+                +"="+"'0'", null);
 
         if (cursorData != null){
             if (cursorData.moveToFirst()){
@@ -567,16 +586,16 @@ public class SegundoNivelWelcome extends AppCompatActivity {
 
                 ContentValues contentValuesActSincronizacion = new ContentValues();
                 contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_NIVEL2, contentValuesActSincronizacion, Utilidades.CAMPO_ID_NIVEL2+"=?", parametro);
+                database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL3, contentValuesActSincronizacion,
+                        Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL3+"=?", parametro);
                 cursorData.close();
             }
         }
-
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SegundoNivelWelcome.this, MainActivity.class);
+        Intent intent = new Intent(SegundoNivelWelcomeTareoPlanta.this, MainActivity.class);
         startActivity(intent);
     }
 }

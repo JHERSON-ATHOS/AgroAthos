@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -128,6 +130,14 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
             listarDatos();
         });
 
+        lvDatosProd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String nombre = lvDatosProd.getItemAtPosition(position).toString();
+                contarTrabajadores(nombre);
+            }
+        });
+
         btnRegistrar.setOnClickListener(view -> {
             if (lvJarras.getCount()>0){
                 registrarJarras();
@@ -141,6 +151,17 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         if (!fechaBDAntigua.equals(fechaActual)){
             limpiarBDSQLite();
         }
+    }
+
+    public void contarTrabajadores(String nombre){
+        SQLiteDatabase dataObtenida = conn.getReadableDatabase();
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_JARRA_NIVEL1+"="+"'"+nombre+"'", null);
+        if (cursorData != null){
+            if (cursorData.moveToNext()){
+                Toast.makeText(this, "Hay "+cursorData.getCount()+" registros.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        cursorData.close();
     }
 
     private void listarDatos(){
@@ -175,6 +196,8 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
         Toast.makeText(this, "Registro Exitoso!", Toast.LENGTH_SHORT).show();
         lvJarras.setAdapter(null);
+        arrayInfo.clear();
+        arrayJarras.clear();
     }
     private void verificarRegistros() {
         SQLiteDatabase database = conn.getReadableDatabase();
@@ -313,8 +336,10 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayInfo);
                         lvJarras.setAdapter(adapter);
                     }else{
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
                         String dato = intentResult.getContents().substring(11);
-                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
+                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle, null);
                         arrayInfo.add(intentResult.getContents());
                         arrayJarras.add(intentResult.getContents());
                         arrayHoras.add(obtenerHoraActual("GMT-5"));

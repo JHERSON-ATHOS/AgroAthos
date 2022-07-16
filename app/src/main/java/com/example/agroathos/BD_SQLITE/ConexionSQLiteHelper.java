@@ -24,6 +24,9 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_GARITA_TABLA_NIVEL1_5);
         db.execSQL(Utilidades.CREAR_GARITA_TABLA_NIVEL2);
         db.execSQL(Utilidades.CREAR_GARITA_TABLA_NIVEL3);
+        db.execSQL(Utilidades.CREAR_TABLA_TAREO_PLANTA_NIVEL1);
+        db.execSQL(Utilidades.CREAR_TABLA_TAREO_PLANTA_NIVEL2);
+        db.execSQL(Utilidades.CREAR_TABLA_TAREO_PLANTA_NIVEL3);
     }
 
     @Override
@@ -36,6 +39,9 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS TRANSPORTE_GARITA_BUS_PLACA");
         db.execSQL("DROP TABLE IF EXISTS TRANSPORTE_GARITA_PERSONAL");
         db.execSQL("DROP TABLE IF EXISTS TRANSPORTE_GARITA_UNIDAD");
+        db.execSQL("DROP TABLE IF EXISTS RRHH_TAREO_PLANTA_NIVEL1");
+        db.execSQL("DROP TABLE IF EXISTS RRHH_TAREO_PLANTA_NIVEL2");
+        db.execSQL("DROP TABLE IF EXISTS RRHH_TAREO_PLANTA_NIVEL3");
         onCreate(db);
     }
 }

@@ -28,6 +28,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.agroathos.RRHH_DESTAJO_AR.PrimerNivelWelcomeDestajo;
 import com.example.agroathos.RRHH_TAREO_AR.PrimerNivelWelcomeTareo;
+import com.example.agroathos.RRHH_TAREO_AR_PLANTA.PrimerNivelWelcomeTareoPlanta;
 import com.example.agroathos.TRANSPORTE_GARITA.PrimerNivelWelcomeGarita;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -41,11 +42,11 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnGarita, btnTareo, btnDestajo;
-    Button btnGaritaUsuarioGarita, btnTareoUsuarioAuxiliar, btnDestajoUsuarioProductividad;
-    TextView tvUsuario;
+    Button btnGarita, btnTareo, btnDestajo, btnPlanta;
+    Button btnGaritaUsuarioGarita, btnTareoUsuarioAuxiliar, btnDestajoUsuarioProductividad, btnPlantaUsuarioPlanta;
+    TextView tvUsuario, tvVersion;
     ConstraintLayout layout;
-    LinearLayout layoutAdministrador, layoutGarita, layoutAuxiliar, layoutProductividad;
+    LinearLayout layoutAdministrador, layoutGarita, layoutAuxiliar, layoutProductividad, layoutPlanta;
 
     SharedPreferences preferences;
     String dni_login = "";
@@ -75,54 +76,33 @@ public class MainActivity extends AppCompatActivity {
         layoutGarita = findViewById(R.id.llVistaGaritaMAINACTIVITY);
         layoutAuxiliar = findViewById(R.id.llVistaAuxiliarMAINACTIVITY);
         layoutProductividad = findViewById(R.id.llVistaProductividadMAINACTIVITY);
+        layoutPlanta = findViewById(R.id.llVistaPlantaMAINACTIVITY);
         tvUsuario = findViewById(R.id.tvNombreUsuarioLogueadoACTIVITYMAIN);
+        tvVersion = findViewById(R.id.tvVersion);
         btnGarita = findViewById(R.id.btnLauncherGarita);
         btnTareo = findViewById(R.id.btnLauncherTareo);
+        btnPlanta = findViewById(R.id.btnLauncherPlanta);
         btnDestajo = findViewById(R.id.btnLauncherDestajos);
         btnGaritaUsuarioGarita = findViewById(R.id.btnLauncherGaritaUsuarioGaritaMAINACTIVITY);
         btnTareoUsuarioAuxiliar = findViewById(R.id.btnLauncherTareoUsuarioAxuliarMAINACTIVITY);
+        btnPlantaUsuarioPlanta = findViewById(R.id.btnLauncherPlantaUsuarioPlantaMAINACTIVITY);
         btnDestajoUsuarioProductividad = findViewById(R.id.btnLauncherDestajosUsuarioProductividadMAINACTIVITY);
 
         btnGarita.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeGarita.class));
         btnTareo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareo.class));
+        btnPlanta.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareoPlanta.class));
         btnDestajo.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeDestajo.class));
         btnGaritaUsuarioGarita.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeGarita.class));
         btnTareoUsuarioAuxiliar.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareo.class));
+        btnPlantaUsuarioPlanta.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeTareoPlanta.class));
         btnDestajoUsuarioProductividad.setOnClickListener(view -> iniciarActividad(PrimerNivelWelcomeDestajo.class));
+
+        obtenerVersionApp();
 
         if (dni_preferences.isEmpty()){
             solicitarAcceso();
         }else{
             validarAccesoSecundario();
-
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-
-            final View view = getLayoutInflater().inflate(R.layout.load_transporte_garita_clonacion_grupos, null, false);
-            ProgressBar progressBar = view.findViewById(R.id.progressBarClonandoGrupoTRANSPORTE_GARITA);
-            TextView tvTitulo = view.findViewById(R.id.tvTituloProgressBar);
-
-            tvTitulo.setText("Estamos configurando tu entorno");
-
-            builder.setView(view).create();
-            AlertDialog dialog = builder.show();
-
-            Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    currentProgress = currentProgress + 10;
-                    progressBar.setProgress(currentProgress);
-                    progressBar.setMax(100);
-
-                    if (currentProgress == 100){
-                        timer.cancel();
-                        dialog.dismiss();
-                    }
-
-                }
-            };
-            timer.schedule(timerTask, 2000, 100);*/
         }
 
         AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
@@ -147,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                             this,
                             // Include a request code to later monitor this update request.
                             200);
-                    Toast.makeText(this, "Actualización disponible", Toast.LENGTH_SHORT).show();
                 } catch (IntentSender.SendIntentException e) {
                     e.printStackTrace();
                 }
@@ -161,8 +140,7 @@ public class MainActivity extends AppCompatActivity {
             PackageInfo paquete = this.getPackageManager().getPackageInfo(getPackageName(), 0);
             String versionDeAplicacion = paquete.versionName;
 
-            Toast.makeText(this, versionDeAplicacion, Toast.LENGTH_SHORT).show();
-            return versionDeAplicacion;
+            tvVersion.setText("V ".concat(versionDeAplicacion));
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -192,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void validarAcceso(String dni){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/login/"+dni, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://agroathos.com/api/login/"+dni,
+                null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -287,6 +266,9 @@ public class MainActivity extends AppCompatActivity {
                 case "4":
                     layoutProductividad.setVisibility(View.VISIBLE);
                     break;
+                case "5":
+                    layoutPlanta.setVisibility(View.VISIBLE);
+                    break;
             }
         }
     }
@@ -301,6 +283,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, aClass);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200) {
+            if (resultCode != RESULT_OK) {
+                Toast.makeText(this, "Necesitas actualizar la versión", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

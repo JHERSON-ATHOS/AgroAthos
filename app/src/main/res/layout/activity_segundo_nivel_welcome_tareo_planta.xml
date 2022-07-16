@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RRHH_TAREO_AR_PLANTA.SegundoNivelWelcomeTareoPlanta">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarSEGUNDO_NIVEL_WELCOME_RRHH_TAREO_AR_PLANTA"
+        app:menu="@menu/menu_principal"
+        android:layout_width="match_parent"
+        app:titleTextColor="@color/black"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarSEGUNDO_NIVEL_WELCOME_RRHH_TAREO_AR_PLANTA">
+
+        <ListView
+            android:id="@+id/lvGruposTrabajoRRHH_TAREO_ARANDANO_PLANTA_SEGUNDO_NIVEL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:cacheColorHint="#00000000"
+            android:divider="@android:color/transparent"
+            android:drawSelectorOnTop="true"
+            android:smoothScrollbar="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbAgregarTrabajoRRHH_TAREO_ARANDANO_PLANTA_SEGUNDO_NIVEL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/black"
+            android:scaleType="center"
+            app:borderWidth="0dp"
+            app:maxImageSize="46dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.954"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_welcome_segundo_nivel_agregar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

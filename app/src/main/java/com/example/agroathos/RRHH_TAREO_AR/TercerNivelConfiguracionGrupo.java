@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
@@ -935,8 +936,10 @@ public class TercerNivelConfiguracionGrupo extends AppCompatActivity {
                                 });
                                 builder.create().show();
                             }else{
+                                Bundle bundle = new Bundle();
+                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
                                 String dato = intentResult.getContents().substring(11);
-                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
+                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle, null);
                                 arrayPersonal.add(intentResult.getContents());
                                 valorPersonal = intentResult.getContents();
                                 personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));

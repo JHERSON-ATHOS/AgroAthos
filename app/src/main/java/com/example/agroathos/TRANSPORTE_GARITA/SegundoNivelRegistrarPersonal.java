@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
@@ -366,8 +367,10 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
                                                 iniciarScanPersonal();
                                             }else{
+                                                Bundle bundle = new Bundle();
+                                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
                                                 String dato = intentResult.getContents().substring(11);
-                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
+                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
                                                 //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                                 arrayDataPersonal.add(intentResult.getContents());
 
@@ -378,8 +381,10 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 iniciarScanPersonal();
                                             }
                                         }else{
+                                            Bundle bundle = new Bundle();
+                                            bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
                                             String dato = intentResult.getContents().substring(11);
-                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
+                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
                                             //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                             arrayDataPersonal.add(intentResult.getContents());
 
@@ -396,8 +401,10 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
                                                 iniciarScanPersonal();
                                             }else{
+                                                Bundle bundle = new Bundle();
+                                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
                                                 String dato = intentResult.getContents().substring(11);
-                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
+                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
                                                 //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                                 arrayDataPersonal.add(intentResult.getContents());
 
@@ -408,8 +415,10 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 iniciarScanPersonal();
                                             }
                                         }else{
+                                            Bundle bundle = new Bundle();
+                                            bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
                                             String dato = intentResult.getContents().substring(11);
-                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, null);
+                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
                                             //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
                                             arrayDataPersonal.add(intentResult.getContents());
 
