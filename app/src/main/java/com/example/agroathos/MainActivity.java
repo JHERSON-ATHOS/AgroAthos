@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     String dni_preferences = "";
     String usuario_preferences = "";
     String tipo_usuario_preferences = "";
-//
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
