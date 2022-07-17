@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
     String usuario_access = "";
     String tipo_usuario_access = "";
 
-    private int currentProgress = 0;
-
     String dni_preferences = "";
     String usuario_preferences = "";
     String tipo_usuario_preferences = "";
