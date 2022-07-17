@@ -99,7 +99,7 @@ public class PrimerNivelWelcomeTareoPlanta extends AppCompatActivity {
                         lineasArrayList.add(new E_Lineas("-- Selecciona una Nave --"));
                         lineasArrayList.add(new E_Lineas("FGR01 - GRANADA"));
                         lineasArrayList.add(new E_Lineas("FAR01 - ARANDANO"));
-                        lineasArrayList.add(new E_Lineas("IND - INDIRECTOS"));
+                        lineasArrayList.add(new E_Lineas("IND - INDIRECTO"));
                         break;
                     case "NPF02 - GUADALUPE":
                         lineasArrayList.clear();
@@ -107,20 +107,20 @@ public class PrimerNivelWelcomeTareoPlanta extends AppCompatActivity {
                         lineasArrayList.add(new E_Lineas("FEV02 - ESPARRAGO"));
                         lineasArrayList.add(new E_Lineas("FDB02 - DATIL"));
                         lineasArrayList.add(new E_Lineas("FHG02 - HIGO"));
-                        lineasArrayList.add(new E_Lineas("IND - INDIRECTOS"));
+                        lineasArrayList.add(new E_Lineas("IND - INDIRECTO"));
                         break;
                     case "NPF05 - NEPEÑA":
                         lineasArrayList.clear();
                         lineasArrayList.add(new E_Lineas("-- Selecciona una Nave --"));
                         lineasArrayList.add(new E_Lineas("FHF05 - HIGO"));
                         lineasArrayList.add(new E_Lineas("FAR05 - ARANDANO"));
-                        lineasArrayList.add(new E_Lineas("IND - INDIRECTOS"));
+                        lineasArrayList.add(new E_Lineas("IND - INDIRECTO"));
                         break;
                     case "NPF07 - CARAZ":
                         lineasArrayList.clear();
                         lineasArrayList.add(new E_Lineas("-- Selecciona una Nave --"));
                         lineasArrayList.add(new E_Lineas("FAR07 - ARANDANO"));
-                        lineasArrayList.add(new E_Lineas("IND - INDIRECTOS"));
+                        lineasArrayList.add(new E_Lineas("IND - INDIRECTO"));
                         break;
                 }
 
@@ -214,6 +214,7 @@ public class PrimerNivelWelcomeTareoPlanta extends AppCompatActivity {
         values.put(Utilidades.CAMPO_NAVE_TAREO_PLANTA_NIVEL1, nave);
         values.put(Utilidades.CAMPO_LINEA_TAREO_PLANTA_NIVEL1, linea);
         values.put(Utilidades.CAMPO_TURNO_TAREO_PLANTA_NIVEL1, turno);
+        values.put(Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL1, dniSupervisor);
         values.put(Utilidades.CAMPO_FECHA_TAREO_PLANTA_NIVEL1, obtenerFechaActual("AMERICA/Lima"));
         values.put(Utilidades.CAMPO_HORA_TAREO_PLANTA_NIVEL1, obtenerHoraActual("GMT-5"));
         values.put(Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL1, "0");

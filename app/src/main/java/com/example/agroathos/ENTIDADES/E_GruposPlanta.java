@@ -2,9 +2,8 @@ package com.example.agroathos.ENTIDADES;
 
 public class E_GruposPlanta {
     String id;
+    String anexoNivel1;
     String id_grupo;
-    String anexo_supervisor;
-    String contadorGrupo;
     String estado;
 
     public E_GruposPlanta() {
@@ -26,20 +25,12 @@ public class E_GruposPlanta {
         this.id_grupo = id_grupo;
     }
 
-    public String getAnexo_supervisor() {
-        return anexo_supervisor;
+    public String getAnexoNivel1() {
+        return anexoNivel1;
     }
 
-    public void setAnexo_supervisor(String anexo_supervisor) {
-        this.anexo_supervisor = anexo_supervisor;
-    }
-
-    public String getContadorGrupo() {
-        return contadorGrupo;
-    }
-
-    public void setContadorGrupo(String contadorGrupo) {
-        this.contadorGrupo = contadorGrupo;
+    public void setAnexoNivel1(String anexoNivel1) {
+        this.anexoNivel1 = anexoNivel1;
     }
 
     public String getEstado() {

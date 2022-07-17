@@ -14,30 +14,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
 import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.ENTIDADES.E_Actividades;
 import com.example.agroathos.ENTIDADES.E_Labores_Planta;
-import com.example.agroathos.ENTIDADES.E_Lineas;
-import com.example.agroathos.ENTIDADES.E_Lotes;
 import com.example.agroathos.ENTIDADES.E_Mesas;
-import com.example.agroathos.ENTIDADES.E_Modulos;
 import com.example.agroathos.ENTIDADES.E_Procesos;
 import com.example.agroathos.R;
-import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelRegistrarGrupoTrabajo;
-import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelWelcome;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorActividades;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorLaboresPlanta;
-import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorLineas;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorMesas;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorProcesos;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,8 +50,6 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
     AdaptadorActividades adaptadorActividades;
     AdaptadorLaboresPlanta adaptadorLaboresPlanta;
     AdaptadorMesas adaptadorMesas;
-
-    int contador = 1;
 
     //DATOS A REGISTRAR
     String proceso = "";
@@ -203,14 +191,14 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "CLAS - SELECCIÓN Y CLASIFICACION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                         break;
                                     case "EMPP - EMPAQUE Y PALETIZADO":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -220,14 +208,14 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "CLAS - SELECCIÓN Y CLASIFICACION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                         break;
                                     case "EMPP - EMPAQUE Y PALETIZADO":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -237,14 +225,14 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "CLAS - SELECCIÓN Y CLASIFICACION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                         break;
                                     case "EMPP - EMPAQUE Y PALETIZADO":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -254,14 +242,14 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "CLAS - SELECCIÓN Y CLASIFICACION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                         break;
                                     case "EMPP - EMPAQUE Y PALETIZADO":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -272,19 +260,19 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "ALMA - ALMACEN Y DESPACHO PPTT":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Despacho"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Cámara"));
                                         break;
                                     case "RECE - RECEPCION Y ACOPIO":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Pesador"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Acopio"));
                                         break;
                                     case "REEM - REEMPAQUE":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Reempaque"));
                                         break;
                                 }
@@ -297,14 +285,14 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "CLAS - SELECCIÓN Y CLASIFICACION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                         break;
                                     case "EMPP - EMPAQUE Y PALETIZADO":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -315,14 +303,14 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "ALMA - ALMACEN Y DESPACHO PPTT":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Despacho"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Cámara"));
                                         break;
                                     case "RECE - RECEPCION Y ACOPIO":
                                     case "REEM - REEMPAQUE":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Pesador"));
                                         arrayLabores.add(new E_Labores_Planta("PMODI1 - Acopio"));
                                         break;
@@ -336,7 +324,7 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "AUXPRD - AUXILIAR DE PRODUCCION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("AUXPRD - Empaque"));
                                         arrayLabores.add(new E_Labores_Planta("AUXPRD - Cámara"));
                                         break;
@@ -346,7 +334,7 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "AUXCAL - AUXILIAR DE CALIDAD":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("AUXCAL - Recepción"));
                                         arrayLabores.add(new E_Labores_Planta("AUXCAL - Trazabilidad"));
                                         arrayLabores.add(new E_Labores_Planta("AUXCAL - Paletizado"));
@@ -357,12 +345,12 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "CHF001 - CHOFERES":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("CHF001 - Choferes"));
                                         break;
                                     case "AUXPRD - AUXILIAR DE PRODUCCION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("AUXPRD - Acopio"));
                                         break;
                                 }
@@ -371,12 +359,12 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "AUXPRD - AUXILIAR DE PRODUCCION":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("AUXPRD - Saneamiento"));
                                         break;
                                     case "LIMPLT - LIMPIEZA PLANTA":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("LIMPLT - Limpieza Planta"));
                                         break;
                                 }
@@ -385,17 +373,17 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                 switch (actividad){
                                     case "ALM001 - ALMACEN":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("ALM001 - Almacén"));
                                         break;
                                     case "MNT001 - MANTENIMIENTO":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("MNT001 - Mantenimiento"));
                                         break;
                                     case "VIG001 - VIGILANTES":
                                         arrayLabores.clear();
-                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Actividad --"));
+                                        arrayLabores.add(new E_Labores_Planta("-- Selecciona una Labor --"));
                                         arrayLabores.add(new E_Labores_Planta("VIG001 - Vigilantes"));
                                         break;
                                 }
@@ -764,6 +752,8 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
 
             }
         });
+
+        btnRegistrar.setOnClickListener(view -> registrarDatos());
     }
 
     public void recibirLinea(){

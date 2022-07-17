@@ -104,6 +104,10 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
     String fechaActual = "";
     String fechaBDAntigua = "";
 
+    //DATOS PARA SUBIR MASIVO
+    ArrayList<String> idNivel1ArrayList = new ArrayList<>();
+    ArrayList<String> idNivel2ArrayList = new ArrayList<>();
+    ArrayList<String> idNivel3ArrayList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +152,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
             if (cursor.moveToFirst()){
                 do{
                     fechaActual = obtenerFechaActual("AMERICA/Lima");
-                    fechaBDAntigua = cursor.getString(5);
+                    fechaBDAntigua = cursor.getString(6);
                 }while (cursor.moveToNext());
             }
 
@@ -164,7 +168,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
             if (cursor.moveToFirst()){
                 do{
                     idGrupo = cursor.getString(1);
-                    idSupervisor = cursor.getString(7);
+                    idSupervisor = cursor.getString(6);
                 }while (cursor.moveToNext());
             }
         }
@@ -179,33 +183,32 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
 
         if (cursor != null){
             if (cursor.moveToNext()){
-                consultarGruposTrabajo(cursor.getString(1));
+                consultarGruposTrabajo(cursor.getString(1),cursor.getString(2));
                 listView.setAdapter(new AdaptadorListarGrupoTrabajoPlanta(this,arrayListGruposPlanta));
                 cursor.close();
             }
         }
     }
 
-    public void consultarGruposTrabajo(String idAnexo){
+    public void consultarGruposTrabajo(String idAnexo, String idAnexo2){
         SQLiteDatabase database = conn.getReadableDatabase();
 
         E_GruposPlanta e_grupos = null;
         arrayListGruposPlanta = new ArrayList<E_GruposPlanta>();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_TAREO_PLANTA_NIVEL2 + " WHERE "
-                + Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL2 + "=" + "'"+idSupervisor+"' AND "
-                + Utilidades.CAMPO_ANEXONIVEL1_TAREO_PLANTA_NIVEL2 + "=" + "'"+idAnexo+"' ", null);
+        Cursor cursor2 = database.rawQuery("SELECT * FROM " + Utilidades.TABLA_TAREO_PLANTA_NIVEL2 + " WHERE "
+                + Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL2 + "=" + "'"+idSupervisor+"' AND "+
+                Utilidades.CAMPO_ANEXONIVEL1_TAREO_PLANTA_NIVEL2 + "=" + "'"+idAnexo+"' ", null);
 
-        if (cursor != null){
-            while (cursor.moveToNext()) {
+        if (cursor2 != null){
+            while (cursor2.moveToNext()) {
                 e_grupos = new E_GruposPlanta();
-                e_grupos.setId(cursor.getString(0));
-                e_grupos.setId_grupo(cursor.getString(2));
-                e_grupos.setContadorGrupo(cursor.getString(3));
-                e_grupos.setAnexo_supervisor(cursor.getString(4));
-                e_grupos.setEstado(cursor.getString(6));
+                e_grupos.setId(cursor2.getString(0));
+                e_grupos.setAnexoNivel1(cursor2.getString(1));
+                e_grupos.setId_grupo(cursor2.getString(2));
+                e_grupos.setEstado(cursor2.getString(6));
                 arrayListGruposPlanta.add(e_grupos);
             }
-            cursor.close();
+            cursor2.close();
         }
     }
 
@@ -289,63 +292,39 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
             obtenerDataRegistradaNivelDos();
             obtenerDataRegistradaNivelTres();
 
-            if (sincUP1.equals("1")){
-                if (sincUP2.equals("2")){
-                    if (sincUP3.equals("3")){
-                        registrarDatos();
-                        actualizarEstadoSincronizacionNivelUno();
+            Toast.makeText(this, sincUP1.concat("-").concat(sincUP2).concat("-").concat(sincUP3), Toast.LENGTH_SHORT).show();
 
-                        registrarDatosNivelDos();
-                        actualizarEstadoSincronizacionNivelDos();
+            if (sincUP1.equals("1") && sincUP2.equals("2") && sincUP3.equals("3")){
+                registrarDatos();
+                actualizarEstadoSincronizacionNivelUno();
 
-                        registrarDatosNivelTres();
-                        actualizarEstadoSincronizacionNivelTres();
+                registrarDatosNivelDos();
+                actualizarEstadoSincronizacionNivelDos();
 
-                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    if (sincUP3.equals("3")){
-                        registrarDatosNivelTres();
-                        actualizarEstadoSincronizacionNivelTres();
+                registrarDatosNivelTres();
+                actualizarEstadoSincronizacionNivelTres();
 
-                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
             }else{
-                if (sincUP2.equals("2")){
-                    if (sincUP3.equals("3")){
+                if (sincUP1.equals("1")){
+                    registrarDatos();
+                    actualizarEstadoSincronizacionNivelUno();
+                }else{
+                    if (sincUP2.equals("2")){
                         registrarDatosNivelDos();
                         actualizarEstadoSincronizacionNivelDos();
-
-                        registrarDatosNivelTres();
-                        actualizarEstadoSincronizacionNivelTres();
-
-                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                     }else{
-                        if (sincUP2.equals("2")){
-                            registrarDatosNivelDos();
-                            actualizarEstadoSincronizacionNivelDos();
-
+                        if (sincUP3.equals("3")){
+                            registrarDatosNivelTres();
+                            actualizarEstadoSincronizacionNivelTres();
                             Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }else{
-                    if (sincUP3.equals("3")){
-                        registrarDatosNivelTres();
-                        actualizarEstadoSincronizacionNivelTres();
-
-                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(this, "ERROR: La data ya se migró", Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
+
         }else{
             Toast.makeText(this, "Necesitas conexión a internet.", Toast.LENGTH_SHORT).show();
         }
@@ -373,7 +352,6 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
         }
         cursorData.close();
     }
-
     private void registrarDatos(){
         JSONObject object = new JSONObject();
         try {
@@ -389,7 +367,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_uno",
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_planta_nivel_uno",
                 object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -425,22 +403,21 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
         }
         cursorData.close();
     }
-
     private void registrarDatosNivelDos(){
-        for (int i=0; i<arrayListNivelDosIdGrupo.size(); i++){
+        for (int i=0; i<arrayListNivelDosIdNivel1.size(); i++){
             JSONObject object = new JSONObject();
             try {
                 object.put("anexo_nivel1",arrayListNivelDosIdNivel1.get(i));
                 object.put("id_grupo",arrayListNivelDosIdGrupo.get(i));
                 object.put("contador",arrayListNivelDosContador.get(i));
-                object.put("anexo_supervisor",arrayListNivelDosAnexoSupervisor.get(i));
+                object.put("dni",arrayListNivelDosAnexoSupervisor.get(i));
                 object.put("estado",arrayListNivelDosEstado.get(i));
                 object.put("sinc","1");
             }catch (Exception e){
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_dos",
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_planta_nivel_dos",
                     object, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -482,7 +459,6 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
         }
         cursorData.close();
     }
-
     private void registrarDatosNivelTres(){
         for (int i=0; i<arrayListNivelTresIdGrupo.size(); i++){
             JSONObject object = new JSONObject();
@@ -491,7 +467,8 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
                 object.put("proceso",arrayListNivelTresProceso.get(i));
                 object.put("actividad",arrayListNivelTresActividad.get(i));
                 object.put("labor",arrayListNivelTresLabor.get(i));
-                object.put("anexo_supervisor",arrayListNivelTresSupervisor.get(i));
+                object.put("mesa",arrayListNivelTresMesa.get(i));
+                object.put("dni",arrayListNivelTresSupervisor.get(i));
                 object.put("fecha",arrayListNivelTresFecha.get(i));
                 object.put("hora",arrayListNivelTresHora.get(i));
                 object.put("estado",arrayListNivelTresEstado.get(i));
@@ -500,7 +477,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_nivel_tres",
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/tareo_planta_nivel_tres",
                     object, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -522,52 +499,55 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         SQLiteDatabase database = conn.getWritableDatabase();
         Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL1+" WHERE "
-                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL1+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL1
+                +Utilidades.CAMPO_IDNIVEL1_TAREO_PLANTA_NIVEL1+"="+"'"+idNivel1Capa1+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL1
                 +"="+"'0'", null);
 
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    idNivel1 = cursorData.getString(0);
+                    idNivel1ArrayList.add(cursorData.getString(0));
                     sincUP1 = "";
                 }while (cursorData.moveToNext());
 
-                String [] parametro = {idNivel1};
+                for (int i=0; i<idNivel1ArrayList.size() ;i++){
+                    String [] parametro = {idNivel1ArrayList.get(i)};
 
-                ContentValues contentValuesActSincronizacion = new ContentValues();
-                contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL1, contentValuesActSincronizacion,
-                        Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL1+"=?", parametro);
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado","1");
+                    database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL1, contentValuesActSincronizacion,
+                            Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL1+"=?", parametro);
+                }
+
                 cursorData.close();
             }
         }
     }
-
     private void actualizarEstadoSincronizacionNivelDos(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         SQLiteDatabase database = conn.getWritableDatabase();
         Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_TAREO_PLANTA_NIVEL2+" WHERE "
-                +Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL2+"="+"'"+dni+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL2
+                +Utilidades.CAMPO_ANEXONIVEL1_TAREO_PLANTA_NIVEL2+"="+"'"+idNivel1Capa1+"' AND "+Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL2
                 +"="+"'0'", null);
 
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    idNivel2 = cursorData.getString(1);
+                    idNivel2ArrayList.add(cursorData.getString(0));
                     sincUP2 = "";
                 }while (cursorData.moveToNext());
 
-                String [] parametro = {idNivel2};
+                for (int i=0; i<idNivel2ArrayList.size() ;i++) {
+                    String[] parametro = {idNivel2ArrayList.get(i)};
 
-                ContentValues contentValuesActSincronizacion = new ContentValues();
-                contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL2, contentValuesActSincronizacion,
-                        Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL2+"=?", parametro);
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado", "1");
+                    database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL2, contentValuesActSincronizacion,
+                            Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL2 + "=?", parametro);
+                }
                 cursorData.close();
             }
         }
     }
-
     private void actualizarEstadoSincronizacionNivelTres(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         SQLiteDatabase database = conn.getWritableDatabase();
@@ -578,16 +558,18 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
         if (cursorData != null){
             if (cursorData.moveToFirst()){
                 do {
-                    idNivel3 = cursorData.getString(1);
+                    idNivel3ArrayList.add(cursorData.getString(0));
                     sincUP3 = "";
                 }while (cursorData.moveToNext());
 
-                String [] parametro = {idNivel3};
+                for (int i=0; i<idNivel3ArrayList.size() ;i++) {
+                    String[] parametro = {idNivel3ArrayList.get(i)};
 
-                ContentValues contentValuesActSincronizacion = new ContentValues();
-                contentValuesActSincronizacion.put("sincronizado","1");
-                database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL3, contentValuesActSincronizacion,
-                        Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL3+"=?", parametro);
+                    ContentValues contentValuesActSincronizacion = new ContentValues();
+                    contentValuesActSincronizacion.put("sincronizado", "1");
+                    database.update(Utilidades.TABLA_TAREO_PLANTA_NIVEL3, contentValuesActSincronizacion,
+                            Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL3 + "=?", parametro);
+                }
                 cursorData.close();
             }
         }
