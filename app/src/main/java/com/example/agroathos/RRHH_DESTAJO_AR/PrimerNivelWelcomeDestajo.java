@@ -69,6 +69,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     ArrayList<String> arrayInfo = new ArrayList<>();
 
     ConexionSQLiteHelper conn;
+    SharedPreferences preferences;
 
     ArrayList<String> arrayListDataLocal = new ArrayList<>();
 
@@ -83,6 +84,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
     String fechaActual = "";
     String fechaBDAntigua = "";
+    String dni = "";
 
     TextToSpeech voz;
 
@@ -92,6 +94,8 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         setContentView(R.layout.activity_primer_nivel_welcome_destajo);
 
         conn = new ConexionSQLiteHelper(this,"athos0",null,Utilidades.VERSION_APP);
+        preferences = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
+        dni = preferences.getString("dni", "");
 
         voz = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -187,6 +191,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
         for (int i=0; i<lvJarras.getAdapter().getCount(); i++){
             ContentValues values = new ContentValues();
             values.put(Utilidades.CAMPO_DESTAJO_JARRA_NIVEL1, arrayJarras.get(i));
+            values.put(Utilidades.CAMPO_DESTAJO_DNI_NIVEL1, dni);
             values.put(Utilidades.CAMPO_DESTAJO_FECHA_NIVEL1, tvFecha.getText().toString());
             values.put(Utilidades.CAMPO_DESTAJO_HORA_NIVEL1, arrayHoras.get(i));
             values.put(Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1, "0");
@@ -210,7 +215,7 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                 arrayListFechaBD.add(cursor.getString(1));
                 arrayListHoraBD.add(cursor.getString(2));
                 arrayListJarraBD.add(cursor.getString(3));
-                arrayListSincBD.add(cursor.getString(4));
+                arrayListSincBD.add(cursor.getString(5));
             }
         }else{
             validarEstado = 0;
@@ -224,12 +229,14 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                 object.put("fecha",arrayListFechaBD.get(i));
                 object.put("hora",arrayListHoraBD.get(i));
                 object.put("dni_personal",arrayListJarraBD.get(i));
+                object.put("dni",dni);
                 object.put("sinc","1");
             }catch (Exception e){
                 e.printStackTrace();
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/productividad", object, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://agroathos.com/api/productividad",
+                    object, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     //Toast.makeText(SegundoNivelWelcome.this, "success", Toast.LENGTH_SHORT).show();
@@ -248,7 +255,8 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
     private void actualizarEstadoSincronizacion(){
         SQLiteDatabase dataObtenida = conn.getReadableDatabase();
         SQLiteDatabase database = conn.getWritableDatabase();
-        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "+Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
+        Cursor cursorData = dataObtenida.rawQuery("SELECT * FROM "+Utilidades.TABLA_DESTAJO_NIVEL1+" WHERE "
+                +Utilidades.CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+"="+"'0'", null);
 
         if (cursorData != null){
             if (cursorData.moveToFirst()){
@@ -262,7 +270,8 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
 
                     ContentValues contentValuesActSincronizacion = new ContentValues();
                     contentValuesActSincronizacion.put("sincronizado","1");
-                    database.update(Utilidades.TABLA_DESTAJO_NIVEL1, contentValuesActSincronizacion, Utilidades.CAMPO_DESTAJO_ID_NIVEL1+"=?", parametro);
+                    database.update(Utilidades.TABLA_DESTAJO_NIVEL1, contentValuesActSincronizacion,
+                            Utilidades.CAMPO_DESTAJO_ID_NIVEL1+"=?", parametro);
                 }
                 cursorData.close();
             }
@@ -336,14 +345,28 @@ public class PrimerNivelWelcomeDestajo extends AppCompatActivity {
                         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayInfo);
                         lvJarras.setAdapter(adapter);
                     }else{
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
-                        String dato = intentResult.getContents().substring(11);
-                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle, null);
-                        arrayInfo.add(intentResult.getContents());
-                        arrayJarras.add(intentResult.getContents());
-                        arrayHoras.add(obtenerHoraActual("GMT-5"));
-                        iniciarScan();
+                        try {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
+
+                            if (intentResult.getContents().length() > 8){
+                                String dato = intentResult.getContents().substring(11);
+                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle, null);
+                                arrayInfo.add(intentResult.getContents());
+                                arrayJarras.add(intentResult.getContents());
+                                arrayHoras.add(obtenerHoraActual("GMT-5"));
+                                iniciarScan();
+                            }else{
+                                voz.speak("REGISTRADO", TextToSpeech.QUEUE_FLUSH, bundle, null);
+                                arrayInfo.add(intentResult.getContents());
+                                arrayJarras.add(intentResult.getContents());
+                                arrayHoras.add(obtenerHoraActual("GMT-5"));
+                                iniciarScan();
+                            }
+
+                        }catch (Exception e){
+                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }else{
                     Toast.makeText(this, "Formato de lectura no admitida", Toast.LENGTH_SHORT).show();

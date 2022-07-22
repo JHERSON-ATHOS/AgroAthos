@@ -96,14 +96,14 @@ public class PrimerNivelWelcomeTareoPlanta extends AppCompatActivity {
                 switch (nave){
                     case "NPF01 - ICA":
                         lineasArrayList.clear();
-                        lineasArrayList.add(new E_Lineas("-- Selecciona una Nave --"));
+                        lineasArrayList.add(new E_Lineas("-- Selecciona una Linea --"));
                         lineasArrayList.add(new E_Lineas("FGR01 - GRANADA"));
                         lineasArrayList.add(new E_Lineas("FAR01 - ARANDANO"));
                         lineasArrayList.add(new E_Lineas("IND - INDIRECTO"));
                         break;
                     case "NPF02 - GUADALUPE":
                         lineasArrayList.clear();
-                        lineasArrayList.add(new E_Lineas("-- Selecciona una Nave --"));
+                        lineasArrayList.add(new E_Lineas("-- Selecciona una Linea --"));
                         lineasArrayList.add(new E_Lineas("FEV02 - ESPARRAGO"));
                         lineasArrayList.add(new E_Lineas("FDB02 - DATIL"));
                         lineasArrayList.add(new E_Lineas("FHG02 - HIGO"));
@@ -111,14 +111,14 @@ public class PrimerNivelWelcomeTareoPlanta extends AppCompatActivity {
                         break;
                     case "NPF05 - NEPEÑA":
                         lineasArrayList.clear();
-                        lineasArrayList.add(new E_Lineas("-- Selecciona una Nave --"));
+                        lineasArrayList.add(new E_Lineas("-- Selecciona una Linea --"));
                         lineasArrayList.add(new E_Lineas("FHF05 - HIGO"));
                         lineasArrayList.add(new E_Lineas("FAR05 - ARANDANO"));
                         lineasArrayList.add(new E_Lineas("IND - INDIRECTO"));
                         break;
                     case "NPF07 - CARAZ":
                         lineasArrayList.clear();
-                        lineasArrayList.add(new E_Lineas("-- Selecciona una Nave --"));
+                        lineasArrayList.add(new E_Lineas("-- Selecciona una Linea --"));
                         lineasArrayList.add(new E_Lineas("FAR07 - ARANDANO"));
                         lineasArrayList.add(new E_Lineas("IND - INDIRECTO"));
                         break;

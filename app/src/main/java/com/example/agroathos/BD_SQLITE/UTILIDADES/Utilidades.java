@@ -2,7 +2,7 @@ package com.example.agroathos.BD_SQLITE.UTILIDADES;
 
 public class Utilidades {
 
-    public static final int VERSION_APP = 6;
+    public static final int VERSION_APP = 7;
 
     //DATOS NIVEL1
     public static final String TABLA_NIVEL1 = "RRHH_NIVEL1";
@@ -62,10 +62,12 @@ public class Utilidades {
     public static final String CAMPO_DESTAJO_FECHA_NIVEL1 = "fecha";
     public static final String CAMPO_DESTAJO_HORA_NIVEL1 = "hora";
     public static final String CAMPO_DESTAJO_JARRA_NIVEL1 = "Jarra";
+    public static final String CAMPO_DESTAJO_DNI_NIVEL1 = "Dni";
     public static final String CAMPO_DESTAJO_SINCRONIZADO_NIVEL1 = "sincronizado";
     public static final String CREAR_DESTAJO_TABLA_NIVEL1 = "CREATE TABLE "+TABLA_DESTAJO_NIVEL1+"" +
             " ("+CAMPO_DESTAJO_ID_NIVEL1+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CAMPO_DESTAJO_FECHA_NIVEL1+" " +
-            "TEXT, "+CAMPO_DESTAJO_HORA_NIVEL1+" TEXT, "+CAMPO_DESTAJO_JARRA_NIVEL1+" TEXT, "+CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+" TEXT)";
+            "TEXT, "+CAMPO_DESTAJO_HORA_NIVEL1+" TEXT, "+CAMPO_DESTAJO_JARRA_NIVEL1+" TEXT, "+CAMPO_DESTAJO_DNI_NIVEL1+" TEXT, "+
+            CAMPO_DESTAJO_SINCRONIZADO_NIVEL1+" TEXT)";
 
     //DATOS DE GARITA BUS
     public static final String TABLA_GARITA_NIVEL1 = "TRANSPORTE_GARITA_BUS";
@@ -164,6 +166,7 @@ public class Utilidades {
     public static final String CAMPO_LABOR_TAREO_PLANTA_NIVEL3 = "labor";
     public static final String CAMPO_MESA_TAREO_PLANTA_NIVEL3 = "mesa";
     public static final String CAMPO_DNI_TAREO_PLANTA_NIVEL3 = "dni";
+    public static final String CAMPO_QRPERSONAL_TAREO_PLANTA_NIVEL3 = "qr_personal";
     public static final String CAMPO_FECHA_TAREO_PLANTA_NIVEL3 = "fecha";
     public static final String CAMPO_HORA_TAREO_PLANTA_NIVEL3 = "hora";
     public static final String CAMPO_ESTADO_TAREO_PLANTA_NIVEL3 = "estado";
@@ -171,7 +174,7 @@ public class Utilidades {
     public static final String CREAR_TABLA_TAREO_PLANTA_NIVEL3 = "CREATE TABLE "+TABLA_TAREO_PLANTA_NIVEL3+" " +
             "("+CAMPO_ID_TAREO_PLANTA_NIVEL3+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CAMPO_ANEXO_GRUPO_TAREO_PLANTA_NIVEL3+" TEXT,"
             +CAMPO_PROCESO_TAREO_PLANTA_NIVEL3+" TEXT, "+CAMPO_ACTIVIDAD_TAREO_PLANTA_NIVEL3 +" TEXT, "+CAMPO_LABOR_TAREO_PLANTA_NIVEL3+
-            " TEXT, " +CAMPO_MESA_TAREO_PLANTA_NIVEL3+" TEXT, "+CAMPO_DNI_TAREO_PLANTA_NIVEL3+" TEXT, "+CAMPO_FECHA_TAREO_PLANTA_NIVEL3+
-            " TEXT, " +CAMPO_HORA_TAREO_PLANTA_NIVEL3+" TEXT, "+CAMPO_ESTADO_TAREO_PLANTA_NIVEL3+" TEXT, "
-            +CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL3+" TEXT)";
+            " TEXT, "+CAMPO_MESA_TAREO_PLANTA_NIVEL3+" TEXT, "+CAMPO_DNI_TAREO_PLANTA_NIVEL3+" TEXT, "+CAMPO_QRPERSONAL_TAREO_PLANTA_NIVEL3
+            +" TEXT, "+CAMPO_FECHA_TAREO_PLANTA_NIVEL3+ " TEXT, " +CAMPO_HORA_TAREO_PLANTA_NIVEL3+" TEXT, "+CAMPO_ESTADO_TAREO_PLANTA_NIVEL3
+            +" TEXT, "+CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL3+" TEXT)";
 }

@@ -367,32 +367,64 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
                                                 iniciarScanPersonal();
                                             }else{
-                                                Bundle bundle = new Bundle();
-                                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
-                                                String dato = intentResult.getContents().substring(11);
-                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
-                                                //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                                arrayDataPersonal.add(intentResult.getContents());
+                                                try {
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
 
-                                                arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                                adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                                lvData.setAdapter(adapter);
+                                                    if (intentResult.getContents().length() > 8){
+                                                        String dato = intentResult.getContents().substring(11);
+                                                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                        arrayDataPersonal.add(intentResult.getContents());
 
-                                                iniciarScanPersonal();
+                                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                        lvData.setAdapter(adapter);
+
+                                                        iniciarScanPersonal();
+                                                    }else{
+                                                        voz.speak("REGISTRADO", TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                        arrayDataPersonal.add(intentResult.getContents());
+
+                                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                        lvData.setAdapter(adapter);
+
+                                                        iniciarScanPersonal();
+                                                    }
+
+                                                }catch (Exception e){
+                                                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                         }else{
-                                            Bundle bundle = new Bundle();
-                                            bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
-                                            String dato = intentResult.getContents().substring(11);
-                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
-                                            //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                            arrayDataPersonal.add(intentResult.getContents());
+                                            try {
+                                                Bundle bundle = new Bundle();
+                                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
 
-                                            arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                            lvData.setAdapter(adapter);
+                                                if (intentResult.getContents().length() > 8){
+                                                    String dato = intentResult.getContents().substring(11);
+                                                    voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                    arrayDataPersonal.add(intentResult.getContents());
 
-                                            iniciarScanPersonal();
+                                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                    lvData.setAdapter(adapter);
+
+                                                    iniciarScanPersonal();
+                                                }else{
+                                                    voz.speak("REGISTRADO", TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                    arrayDataPersonal.add(intentResult.getContents());
+
+                                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                    lvData.setAdapter(adapter);
+
+                                                    iniciarScanPersonal();
+                                                }
+
+                                            }catch (Exception e){
+                                                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                         break;
                                     case 2:
@@ -401,32 +433,65 @@ public class SegundoNivelRegistrarPersonal extends AppCompatActivity {
                                                 //Toast.makeText(this, "PERSONAL YA INGRESADO", Toast.LENGTH_SHORT).show();
                                                 iniciarScanPersonal();
                                             }else{
-                                                Bundle bundle = new Bundle();
-                                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
-                                                String dato = intentResult.getContents().substring(11);
-                                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
-                                                //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                                arrayDataPersonal.add(intentResult.getContents());
+                                                try {
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
 
-                                                arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                                adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                                lvData.setAdapter(adapter);
+                                                    if (intentResult.getContents().length() > 8){
+                                                        String dato = intentResult.getContents().substring(11);
+                                                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                        //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
+                                                        arrayDataPersonal.add(intentResult.getContents());
 
-                                                iniciarScanPersonal();
+                                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                        lvData.setAdapter(adapter);
+
+                                                        iniciarScanPersonal();
+                                                    }else{
+                                                        voz.speak("REGISTRADO", TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                        arrayDataPersonal.add(intentResult.getContents());
+
+                                                        arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                        lvData.setAdapter(adapter);
+
+                                                        iniciarScanPersonal();
+                                                    }
+
+                                                }catch (Exception e){
+                                                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                         }else{
-                                            Bundle bundle = new Bundle();
-                                            bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
-                                            String dato = intentResult.getContents().substring(11);
-                                            voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
-                                            //Toast.makeText(this, "PERSONAL REGISTRADO", Toast.LENGTH_SHORT).show();
-                                            arrayDataPersonal.add(intentResult.getContents());
+                                            try {
+                                                Bundle bundle = new Bundle();
+                                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
 
-                                            arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
-                                            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
-                                            lvData.setAdapter(adapter);
+                                                if (intentResult.getContents().length() > 8){
+                                                    String dato = intentResult.getContents().substring(11);
+                                                    voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                    arrayDataPersonal.add(intentResult.getContents());
 
-                                            iniciarScanPersonal();
+                                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                    lvData.setAdapter(adapter);
+
+                                                    iniciarScanPersonal();
+                                                }else{
+                                                    voz.speak("REGISTRADO", TextToSpeech.QUEUE_FLUSH, bundle,null);
+                                                    arrayDataPersonal.add(intentResult.getContents());
+
+                                                    arrayHorasPersonal.add(obtenerHoraActual("GMT-5"));
+                                                    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayDataPersonal);
+                                                    lvData.setAdapter(adapter);
+
+                                                    iniciarScanPersonal();
+                                                }
+
+                                            }catch (Exception e){
+                                                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                         break;
                                     case 3:

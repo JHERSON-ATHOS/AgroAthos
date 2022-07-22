@@ -1,19 +1,25 @@
 package com.example.agroathos.RRHH_TAREO_AR_PLANTA;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.agroathos.BD_SQLITE.ConexionSQLiteHelper;
@@ -21,17 +27,26 @@ import com.example.agroathos.BD_SQLITE.UTILIDADES.Utilidades;
 import com.example.agroathos.ENTIDADES.E_Actividades;
 import com.example.agroathos.ENTIDADES.E_Labores_Planta;
 import com.example.agroathos.ENTIDADES.E_Mesas;
+import com.example.agroathos.ENTIDADES.E_PersonalTrabajo;
 import com.example.agroathos.ENTIDADES.E_Procesos;
 import com.example.agroathos.R;
+import com.example.agroathos.RRHH_TAREO_AR.ADAPTADORES.AdaptadorListarPersonalTrabajo;
+import com.example.agroathos.RRHH_TAREO_AR.SegundoNivelRegistrarGrupoTrabajo;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorActividades;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorLaboresPlanta;
+import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorListarPersonalTrabajoPlanta;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorMesas;
 import com.example.agroathos.RRHH_TAREO_AR_PLANTA.ADAPTADORES.AdaptadorProcesos;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -39,6 +54,8 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
 
     Spinner spProceso, spActividad, spLabor, spMesa;
     Button btnRegistrar;
+    ListView lvPersonal;
+    FloatingActionButton fabCamara;
     ConstraintLayout layout;
 
     ArrayList<E_Procesos> arrayProcesos = new ArrayList<>();
@@ -69,6 +86,13 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
     ContentValues valuesGrupo = new ContentValues();
     ContentValues valuesProceso = new ContentValues();
 
+    ArrayList<E_PersonalTrabajo> personalTrabajoArrayList = new ArrayList<>();
+    AdaptadorListarPersonalTrabajoPlanta adaptadorListarPersonalTrabajo;
+    ArrayList<String> arrayPersonal = new ArrayList<>();
+    String valorPersonal = "";
+    TextToSpeech voz;
+    int contador = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,11 +105,22 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
         linea = preferences.getString("linea","");
         idNivel1 = preferences.getString("idNivel1","");
 
+        voz = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    voz.setLanguage(new Locale("es", "pe"));
+                }
+            }
+        });
+
         spProceso = findViewById(R.id.spProcesoRRHH_TAREO_ARANDANO_PLANTA_TERCER_NIVEL);
         spActividad = findViewById(R.id.spActividadRRHH_TAREO_ARANDANO_PLANTA_TERCER_NIVEL);
         spLabor = findViewById(R.id.spLaborRRHH_TAREO_ARANDANO_PLANTA_TERCER_NIVEL);
         spMesa = findViewById(R.id.spMesaRRHH_TAREO_ARANDANO_PLANTA_TERCER_NIVEL);
         btnRegistrar = findViewById(R.id.btnRegistrarRRHH_TAREO_ARANDANO_PLANTA_TERCER_NIVEL);
+        lvPersonal = findViewById(R.id.lvPersonalRRHH_TAREO_ARANDANO_PLANTA);
+        fabCamara = findViewById(R.id.fabCamaraRRHH_TAREO_ARPLANTA);
         layout = findViewById(R.id.clPrincipalRRHH_TAREO_AR_PLANTA_TERCER_NIVEL);
 
         recibirLinea();
@@ -430,6 +465,15 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                                 arrayMesas.clear();
                                                 arrayMesas.add(new E_Mesas("-- Selecciona una Mesa --"));
                                                 arrayMesas.add(new E_Mesas("MESA 01"));
+                                                arrayMesas.add(new E_Mesas("MESA 02"));
+                                                arrayMesas.add(new E_Mesas("MESA 03"));
+                                                arrayMesas.add(new E_Mesas("MESA 04"));
+                                                arrayMesas.add(new E_Mesas("MESA 05"));
+                                                arrayMesas.add(new E_Mesas("MESA 06"));
+                                                arrayMesas.add(new E_Mesas("MESA 07"));
+                                                arrayMesas.add(new E_Mesas("MESA 08"));
+                                                arrayMesas.add(new E_Mesas("MESA 09"));
+                                                arrayMesas.add(new E_Mesas("MESA 10"));
                                                 break;
                                             case "PMODI1 - Paletizado":
                                                 arrayMesas.clear();
@@ -459,6 +503,15 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                                 arrayMesas.clear();
                                                 arrayMesas.add(new E_Mesas("-- Selecciona una Mesa --"));
                                                 arrayMesas.add(new E_Mesas("MESA 01"));
+                                                arrayMesas.add(new E_Mesas("MESA 02"));
+                                                arrayMesas.add(new E_Mesas("MESA 03"));
+                                                arrayMesas.add(new E_Mesas("MESA 04"));
+                                                arrayMesas.add(new E_Mesas("MESA 05"));
+                                                arrayMesas.add(new E_Mesas("MESA 06"));
+                                                arrayMesas.add(new E_Mesas("MESA 07"));
+                                                arrayMesas.add(new E_Mesas("MESA 08"));
+                                                arrayMesas.add(new E_Mesas("MESA 09"));
+                                                arrayMesas.add(new E_Mesas("MESA 10"));
                                                 break;
                                             case "PMODI1 - Paletizado":
                                                 arrayMesas.clear();
@@ -488,6 +541,15 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                                 arrayMesas.clear();
                                                 arrayMesas.add(new E_Mesas("-- Selecciona una Mesa --"));
                                                 arrayMesas.add(new E_Mesas("MESA 01"));
+                                                arrayMesas.add(new E_Mesas("MESA 02"));
+                                                arrayMesas.add(new E_Mesas("MESA 03"));
+                                                arrayMesas.add(new E_Mesas("MESA 04"));
+                                                arrayMesas.add(new E_Mesas("MESA 05"));
+                                                arrayMesas.add(new E_Mesas("MESA 06"));
+                                                arrayMesas.add(new E_Mesas("MESA 07"));
+                                                arrayMesas.add(new E_Mesas("MESA 08"));
+                                                arrayMesas.add(new E_Mesas("MESA 09"));
+                                                arrayMesas.add(new E_Mesas("MESA 10"));
                                                 break;
                                             case "PMODI1 - Paletizado":
                                                 arrayMesas.clear();
@@ -517,6 +579,15 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                                 arrayMesas.clear();
                                                 arrayMesas.add(new E_Mesas("-- Selecciona una Mesa --"));
                                                 arrayMesas.add(new E_Mesas("MESA 01"));
+                                                arrayMesas.add(new E_Mesas("MESA 02"));
+                                                arrayMesas.add(new E_Mesas("MESA 03"));
+                                                arrayMesas.add(new E_Mesas("MESA 04"));
+                                                arrayMesas.add(new E_Mesas("MESA 05"));
+                                                arrayMesas.add(new E_Mesas("MESA 06"));
+                                                arrayMesas.add(new E_Mesas("MESA 07"));
+                                                arrayMesas.add(new E_Mesas("MESA 08"));
+                                                arrayMesas.add(new E_Mesas("MESA 09"));
+                                                arrayMesas.add(new E_Mesas("MESA 10"));
                                                 break;
                                             case "PMODI1 - Paletizado":
                                                 arrayMesas.clear();
@@ -584,6 +655,15 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                                                 arrayMesas.clear();
                                                 arrayMesas.add(new E_Mesas("-- Selecciona una Mesa --"));
                                                 arrayMesas.add(new E_Mesas("MESA 01"));
+                                                arrayMesas.add(new E_Mesas("MESA 02"));
+                                                arrayMesas.add(new E_Mesas("MESA 03"));
+                                                arrayMesas.add(new E_Mesas("MESA 04"));
+                                                arrayMesas.add(new E_Mesas("MESA 05"));
+                                                arrayMesas.add(new E_Mesas("MESA 06"));
+                                                arrayMesas.add(new E_Mesas("MESA 07"));
+                                                arrayMesas.add(new E_Mesas("MESA 08"));
+                                                arrayMesas.add(new E_Mesas("MESA 09"));
+                                                arrayMesas.add(new E_Mesas("MESA 10"));
                                                 break;
                                             case "PMODI1 - Paletizado":
                                                 arrayMesas.clear();
@@ -733,6 +813,16 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
 
                 adaptadorMesas = new AdaptadorMesas(TercerNivelWelcomeTareoPlanta.this, arrayMesas);
                 spMesa.setAdapter(adaptadorMesas);
+
+                if (actividad.equals("EMPP - EMPAQUE Y PALETIZADO")){
+                    if (labor.equals("PMODI1 - Empaque") || labor.equals("PMODI1 - Etiquetado")){
+                        spMesa.setVisibility(View.VISIBLE);
+                    }else{
+                        spMesa.setVisibility(View.GONE);
+                    }
+                }else{
+                    spMesa.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -754,6 +844,7 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
         });
 
         btnRegistrar.setOnClickListener(view -> registrarDatos());
+        fabCamara.setOnClickListener(view -> iniciarScan());
     }
 
     public void recibirLinea(){
@@ -790,6 +881,16 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
 
         adaptadorProcesos = new AdaptadorProcesos(TercerNivelWelcomeTareoPlanta.this, arrayProcesos);
         spProceso.setAdapter(adaptadorProcesos);
+    }
+
+    private void iniciarScan(){
+        IntentIntegrator integrator = new IntentIntegrator(TercerNivelWelcomeTareoPlanta.this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("LECTOR QR PERSONAL");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(true);
+        integrator.setBarcodeImageEnabled(true);
+        integrator.initiateScan();
     }
 
     private void registrarDatos(){
@@ -838,24 +939,28 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
 
         database.insert(Utilidades.TABLA_TAREO_PLANTA_NIVEL2, Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL2, valuesGrupo);
 
-        valuesProceso.put(Utilidades.CAMPO_ANEXO_GRUPO_TAREO_PLANTA_NIVEL3, idGrupo);
-        valuesProceso.put(Utilidades.CAMPO_PROCESO_TAREO_PLANTA_NIVEL3, proceso);
-        valuesProceso.put(Utilidades.CAMPO_ACTIVIDAD_TAREO_PLANTA_NIVEL3, actividad);
-        valuesProceso.put(Utilidades.CAMPO_LABOR_TAREO_PLANTA_NIVEL3, labor);
-        valuesProceso.put(Utilidades.CAMPO_MESA_TAREO_PLANTA_NIVEL3, mesa);
-        valuesProceso.put(Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL3, dni);
-        valuesProceso.put(Utilidades.CAMPO_FECHA_TAREO_PLANTA_NIVEL3, obtenerFechaActual("AMERICA/Lima"));
-        valuesProceso.put(Utilidades.CAMPO_HORA_TAREO_PLANTA_NIVEL3, obtenerHoraActual("GMT-5"));
-        valuesProceso.put(Utilidades.CAMPO_ESTADO_TAREO_PLANTA_NIVEL3, "ABIERTO");
-        valuesProceso.put(Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL3, "0");
-        Long idResultante = database.insert(Utilidades.TABLA_TAREO_PLANTA_NIVEL3, Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL3, valuesProceso);
+        for (int i=0; i<lvPersonal.getCount(); i++){
+            valuesProceso.put(Utilidades.CAMPO_ANEXO_GRUPO_TAREO_PLANTA_NIVEL3, idGrupo);
+            valuesProceso.put(Utilidades.CAMPO_PROCESO_TAREO_PLANTA_NIVEL3, proceso);
+            valuesProceso.put(Utilidades.CAMPO_ACTIVIDAD_TAREO_PLANTA_NIVEL3, actividad);
+            valuesProceso.put(Utilidades.CAMPO_LABOR_TAREO_PLANTA_NIVEL3, labor);
+            valuesProceso.put(Utilidades.CAMPO_MESA_TAREO_PLANTA_NIVEL3, mesa);
+            valuesProceso.put(Utilidades.CAMPO_DNI_TAREO_PLANTA_NIVEL3, dni);
+            valuesProceso.put(Utilidades.CAMPO_QRPERSONAL_TAREO_PLANTA_NIVEL3, arrayPersonal.get(i));
+            valuesProceso.put(Utilidades.CAMPO_FECHA_TAREO_PLANTA_NIVEL3, obtenerFechaActual("AMERICA/Lima"));
+            valuesProceso.put(Utilidades.CAMPO_HORA_TAREO_PLANTA_NIVEL3, obtenerHoraActual("GMT-5"));
+            valuesProceso.put(Utilidades.CAMPO_ESTADO_TAREO_PLANTA_NIVEL3, "ABIERTO");
+            valuesProceso.put(Utilidades.CAMPO_SINCRONIZADO_TAREO_PLANTA_NIVEL3, "0");
+            Long idResultante = database.insert(Utilidades.TABLA_TAREO_PLANTA_NIVEL3, Utilidades.CAMPO_ID_TAREO_PLANTA_NIVEL3, valuesProceso);
 
-        if (idResultante > 0){
-            Toast.makeText(this, "Datos Registrados!", Toast.LENGTH_SHORT).show();
+            if (idResultante > 0){
+                Toast.makeText(this, "Datos Registrados!", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(TercerNivelWelcomeTareoPlanta.this, SegundoNivelWelcomeTareoPlanta.class);
-            startActivity(intent);
+                Intent intent = new Intent(TercerNivelWelcomeTareoPlanta.this, SegundoNivelWelcomeTareoPlanta.class);
+                startActivity(intent);
+            }
         }
+
     }
 
     public static String obtenerHoraActual(String zonaHoraria) {
@@ -874,5 +979,117 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
         sdf = new SimpleDateFormat(formato);
         sdf.setTimeZone(TimeZone.getTimeZone(zonaHoraria));
         return sdf.format(date);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (intentResult != null){
+            String scanFormat = intentResult.getFormatName();
+
+            if (!TextUtils.isEmpty(scanFormat)){
+                if (scanFormat.equals("QR_CODE") || scanFormat.equals("CODE_39")){
+                    if (intentResult.getContents() == null){
+                        if (valorPersonal.isEmpty()){
+                            //Toast.makeText(SegundoNivelRegistrarGrupoTrabajo.this, "Listando los registros", Toast.LENGTH_SHORT).show();
+                        }else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(TercerNivelWelcomeTareoPlanta.this);
+                            builder.setTitle("ERROR");
+                            builder.setMessage("Te faltaron llenar datos.");
+                            builder.setCancelable(false);
+                            builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    valorPersonal = "";
+                                    arrayPersonal.clear();
+                                    iniciarScan();
+                                }
+                            });
+                            builder.create().show();
+                        }
+                        adaptadorListarPersonalTrabajo = new AdaptadorListarPersonalTrabajoPlanta(TercerNivelWelcomeTareoPlanta.this,
+                                personalTrabajoArrayList);
+                        lvPersonal.setAdapter(adaptadorListarPersonalTrabajo);
+
+                    }else{
+                        if (valorPersonal.isEmpty()){
+                            if (arrayPersonal.contains(intentResult.getContents())){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(TercerNivelWelcomeTareoPlanta.this);
+                                builder.setTitle("ERROR");
+                                builder.setMessage("El personal ya se encuentra en la lista.");
+                                builder.setCancelable(false);
+                                builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        iniciarScan();
+                                    }
+                                });
+                                builder.create().show();
+                            }else{
+                                try {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
+
+                                    if (intentResult.getContents().length() > 8){
+                                        String dato = intentResult.getContents().substring(11);
+                                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle, null);
+                                        arrayPersonal.add(intentResult.getContents());
+                                        valorPersonal = intentResult.getContents();
+                                        personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
+                                        valorPersonal = "";
+                                        iniciarScan();
+                                    }else{
+                                        voz.speak("REGISTRADO", TextToSpeech.QUEUE_FLUSH, bundle, null);
+                                        arrayPersonal.add(intentResult.getContents());
+                                        valorPersonal = intentResult.getContents();
+                                        personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
+                                        valorPersonal = "";
+                                        iniciarScan();
+                                    }
+
+                                }catch (Exception e){
+                                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                adaptadorListarPersonalTrabajo = new AdaptadorListarPersonalTrabajoPlanta(TercerNivelWelcomeTareoPlanta.this,
+                        personalTrabajoArrayList);
+                lvPersonal.setAdapter(adaptadorListarPersonalTrabajo);
+            }
+
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Salir");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TercerNivelWelcomeTareoPlanta.super.onBackPressed();
+            }
+        });
+
+        builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+
     }
 }

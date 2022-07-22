@@ -777,15 +777,30 @@ public class SegundoNivelRegistrarGrupoTrabajo extends AppCompatActivity {
                                 });
                                 builder.create().show();
                             }else{
-                                Bundle bundle = new Bundle();
-                                bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
-                                String dato = intentResult.getContents().substring(11);
-                                voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle, null);
-                                arrayPersonal.add(intentResult.getContents());
-                                valorPersonal = intentResult.getContents();
-                                personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
-                                valorPersonal = "";
-                                iniciarScanPersonal();
+                                try {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
+
+                                    if (intentResult.getContents().length() > 8){
+                                        String dato = intentResult.getContents().substring(11);
+                                        voz.speak(dato, TextToSpeech.QUEUE_FLUSH, bundle, null);
+                                        arrayPersonal.add(intentResult.getContents());
+                                        valorPersonal = intentResult.getContents();
+                                        personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
+                                        valorPersonal = "";
+                                        iniciarScanPersonal();
+                                    }else{
+                                        voz.speak("REGISTRADO", TextToSpeech.QUEUE_FLUSH, bundle, null);
+                                        arrayPersonal.add(intentResult.getContents());
+                                        valorPersonal = intentResult.getContents();
+                                        personalTrabajoArrayList.add(new E_PersonalTrabajo(String.valueOf(contador++), valorPersonal));
+                                        valorPersonal = "";
+                                        iniciarScanPersonal();
+                                    }
+
+                                }catch (Exception e){
+                                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     }

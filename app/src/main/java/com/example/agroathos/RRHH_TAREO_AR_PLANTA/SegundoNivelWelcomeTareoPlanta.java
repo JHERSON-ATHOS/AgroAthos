@@ -1,12 +1,14 @@
 package com.example.agroathos.RRHH_TAREO_AR_PLANTA;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -93,6 +95,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
     ArrayList<String> arrayListNivelTresLabor = new ArrayList<>();
     ArrayList<String> arrayListNivelTresMesa = new ArrayList<>();
     ArrayList<String> arrayListNivelTresSupervisor = new ArrayList<>();
+    ArrayList<String> arrayListNivelTresPersonal = new ArrayList<>();
     ArrayList<String> arrayListNivelTresFecha = new ArrayList<>();
     ArrayList<String> arrayListNivelTresHora = new ArrayList<>();
     ArrayList<String> arrayListNivelTresEstado = new ArrayList<>();
@@ -226,7 +229,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_cerrar_sesion_action:
-                SharedPreferences preferences = getSharedPreferences("Acceso", Context.MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
                 preferences.edit().clear().commit();
 
                 Intent intent = new Intent(SegundoNivelWelcomeTareoPlanta.this, PrimerNivelWelcomeTareoPlanta.class);
@@ -449,9 +452,10 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
                     arrayListNivelTresLabor.add(cursorData.getString(4));
                     arrayListNivelTresMesa.add(cursorData.getString(5));
                     arrayListNivelTresSupervisor.add(cursorData.getString(6));
-                    arrayListNivelTresFecha.add(cursorData.getString(7));
-                    arrayListNivelTresHora.add(cursorData.getString(8));
-                    arrayListNivelTresEstado.add(cursorData.getString(9));
+                    arrayListNivelTresPersonal.add(cursorData.getString(7));
+                    arrayListNivelTresFecha.add(cursorData.getString(8));
+                    arrayListNivelTresHora.add(cursorData.getString(9));
+                    arrayListNivelTresEstado.add(cursorData.getString(10));
 
                     sincUP3 = "3";
                 }while (cursorData.moveToNext());
@@ -469,6 +473,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
                 object.put("labor",arrayListNivelTresLabor.get(i));
                 object.put("mesa",arrayListNivelTresMesa.get(i));
                 object.put("dni",arrayListNivelTresSupervisor.get(i));
+                object.put("qr_personal",arrayListNivelTresPersonal.get(i));
                 object.put("fecha",arrayListNivelTresFecha.get(i));
                 object.put("hora",arrayListNivelTresHora.get(i));
                 object.put("estado",arrayListNivelTresEstado.get(i));
@@ -577,7 +582,25 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SegundoNivelWelcomeTareoPlanta.this, MainActivity.class);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cerrar Aplicación");
+        builder.setMessage("¿Estas seguro de salir de la aplicación?");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SegundoNivelWelcomeTareoPlanta.super.onBackPressed();
+            }
+        });
+
+        builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
     }
 }
