@@ -56,7 +56,6 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
-        android:visibility="gone"
         android:background="@drawable/spinner_style_rrhhtareoar"
         android:paddingRight="30dp"
         app:layout_constraintEnd_toEndOf="parent"

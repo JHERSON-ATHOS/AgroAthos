@@ -295,8 +295,6 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
             obtenerDataRegistradaNivelDos();
             obtenerDataRegistradaNivelTres();
 
-            Toast.makeText(this, sincUP1.concat("-").concat(sincUP2).concat("-").concat(sincUP3), Toast.LENGTH_SHORT).show();
-
             if (sincUP1.equals("1") && sincUP2.equals("2") && sincUP3.equals("3")){
                 registrarDatos();
                 actualizarEstadoSincronizacionNivelUno();
@@ -308,14 +306,23 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
                 actualizarEstadoSincronizacionNivelTres();
 
                 Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(getIntent());
             }else{
                 if (sincUP1.equals("1")){
                     registrarDatos();
                     actualizarEstadoSincronizacionNivelUno();
                 }else{
-                    if (sincUP2.equals("2")){
+                    if (sincUP2.equals("2") && sincUP3.equals("3")){
                         registrarDatosNivelDos();
                         actualizarEstadoSincronizacionNivelDos();
+
+                        registrarDatosNivelTres();
+                        actualizarEstadoSincronizacionNivelTres();
+
+                        Toast.makeText(this, "Data Sincronizada!", Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(getIntent());
                     }else{
                         if (sincUP3.equals("3")){
                             registrarDatosNivelTres();
@@ -590,7 +597,7 @@ public class SegundoNivelWelcomeTareoPlanta extends AppCompatActivity {
         builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SegundoNivelWelcomeTareoPlanta.super.onBackPressed();
+                finishAffinity();
             }
         });
 

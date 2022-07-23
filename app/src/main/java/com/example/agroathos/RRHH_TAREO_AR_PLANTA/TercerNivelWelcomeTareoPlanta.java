@@ -818,9 +818,11 @@ public class TercerNivelWelcomeTareoPlanta extends AppCompatActivity {
                     if (labor.equals("PMODI1 - Empaque") || labor.equals("PMODI1 - Etiquetado")){
                         spMesa.setVisibility(View.VISIBLE);
                     }else{
+                        mesa = "No Aplica";
                         spMesa.setVisibility(View.GONE);
                     }
                 }else{
+                    mesa = "No Aplica";
                     spMesa.setVisibility(View.GONE);
                 }
             }

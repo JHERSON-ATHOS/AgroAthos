@@ -105,6 +105,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                             case "PROD - LINEA 03":
                             case "PROD - LINEA 04":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("CLAS - SELECCIÓN Y CLASIFICACION"));
                                 arrayActividades.add(new E_Actividades("EMPP - EMPAQUE Y PALETIZADO"));
                                 break;
@@ -120,11 +121,13 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (procesoACT){
                             case "PROD - LINEA 01":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("CLAS - SELECCIÓN Y CLASIFICACION"));
                                 arrayActividades.add(new E_Actividades("EMPP - EMPAQUE Y PALETIZADO"));
                                 break;
                             case "GENERAL":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("ALMA - ALMACEN Y DESPACHO PPTT"));
                                 arrayActividades.add(new E_Actividades("RECE - RECEPCION Y ACOPIO"));
                                 arrayActividades.add(new E_Actividades("REEM - REEMPAQUE"));
@@ -135,24 +138,29 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (procesoACT){
                             case "IND PRODUCCION":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("AUXPRD - AUXILIAR DE PRODUCCION"));
                                 break;
                             case "IND CALIDAD":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("AUXCAL - AUXILIAR DE CALIDAD"));
                                 break;
                             case "IND ACOPIO":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("CHF001 - CHOFERES"));
                                 arrayActividades.add(new E_Actividades("AUXPRD - AUXILIAR DE PRODUCCION"));
                                 break;
                             case "IND SANEAMIENTO":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("AUXPRD - AUXILIAR DE PRODUCCION"));
                                 arrayActividades.add(new E_Actividades("LIMPLT - LIMPIEZA PLANTA"));
                                 break;
                             case "IND SOPORTE":
                                 arrayActividades.clear();
+                                arrayActividades.add(new E_Actividades(actividad));
                                 arrayActividades.add(new E_Actividades("ALM001 - ALMACEN"));
                                 arrayActividades.add(new E_Actividades("MNT001 - MANTENIMIENTO"));
                                 arrayActividades.add(new E_Actividades("VIG001 - VIGILANTES"));
@@ -181,12 +189,14 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "CLAS - SELECCIÓN Y CLASIFICACION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                 break;
                             case "EMPP - EMPAQUE Y PALETIZADO":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -196,12 +206,14 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "CLAS - SELECCIÓN Y CLASIFICACION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                 break;
                             case "EMPP - EMPAQUE Y PALETIZADO":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -211,12 +223,14 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "CLAS - SELECCIÓN Y CLASIFICACION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                 break;
                             case "EMPP - EMPAQUE Y PALETIZADO":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -226,12 +240,14 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "CLAS - SELECCIÓN Y CLASIFICACION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                 break;
                             case "EMPP - EMPAQUE Y PALETIZADO":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -242,16 +258,19 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "ALMA - ALMACEN Y DESPACHO PPTT":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Despacho"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Cámara"));
                                 break;
                             case "RECE - RECEPCION Y ACOPIO":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Pesador"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Acopio"));
                                 break;
                             case "REEM - REEMPAQUE":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Reempaque"));
                                 break;
                         }
@@ -262,12 +281,14 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "CLAS - SELECCIÓN Y CLASIFICACION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Lanzado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Selección"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Clasificación"));
                                 break;
                             case "EMPP - EMPAQUE Y PALETIZADO":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Empaque"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Etiquetado"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Paletizado"));
@@ -278,12 +299,14 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "ALMA - ALMACEN Y DESPACHO PPTT":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Despacho"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Cámara"));
                                 break;
                             case "RECE - RECEPCION Y ACOPIO":
                             case "REEM - REEMPAQUE":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Pesador"));
                                 arrayLabores.add(new E_Labores_Planta("PMODI1 - Acopio"));
                                 break;
@@ -295,6 +318,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "AUXPRD - AUXILIAR DE PRODUCCION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("AUXPRD - Empaque"));
                                 arrayLabores.add(new E_Labores_Planta("AUXPRD - Cámara"));
                                 break;
@@ -304,6 +328,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "AUXCAL - AUXILIAR DE CALIDAD":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("AUXCAL - Recepción"));
                                 arrayLabores.add(new E_Labores_Planta("AUXCAL - Trazabilidad"));
                                 arrayLabores.add(new E_Labores_Planta("AUXCAL - Paletizado"));
@@ -314,10 +339,12 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "CHF001 - CHOFERES":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("CHF001 - Choferes"));
                                 break;
                             case "AUXPRD - AUXILIAR DE PRODUCCION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("AUXPRD - Acopio"));
                                 break;
                         }
@@ -326,10 +353,12 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "AUXPRD - AUXILIAR DE PRODUCCION":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("AUXPRD - Saneamiento"));
                                 break;
                             case "LIMPLT - LIMPIEZA PLANTA":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("LIMPLT - Limpieza Planta"));
                                 break;
                         }
@@ -338,14 +367,17 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                         switch (actividadACT){
                             case "ALM001 - ALMACEN":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("ALM001 - Almacén"));
                                 break;
                             case "MNT001 - MANTENIMIENTO":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("MNT001 - Mantenimiento"));
                                 break;
                             case "VIG001 - VIGILANTES":
                                 arrayLabores.clear();
+                                arrayLabores.add(new E_Labores_Planta(labor));
                                 arrayLabores.add(new E_Labores_Planta("VIG001 - Vigilantes"));
                                 break;
                         }
@@ -376,6 +408,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Selección":
                                     case "PMODI1 - Clasificación":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -385,10 +418,21 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Empaque":
                                     case "PMODI1 - Etiquetado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("MESA 01"));
+                                        arrayMesas.add(new E_Mesas("MESA 02"));
+                                        arrayMesas.add(new E_Mesas("MESA 03"));
+                                        arrayMesas.add(new E_Mesas("MESA 04"));
+                                        arrayMesas.add(new E_Mesas("MESA 05"));
+                                        arrayMesas.add(new E_Mesas("MESA 06"));
+                                        arrayMesas.add(new E_Mesas("MESA 07"));
+                                        arrayMesas.add(new E_Mesas("MESA 08"));
+                                        arrayMesas.add(new E_Mesas("MESA 09"));
+                                        arrayMesas.add(new E_Mesas("MESA 10"));
                                         break;
                                     case "PMODI1 - Paletizado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -402,6 +446,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Selección":
                                     case "PMODI1 - Clasificación":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -411,10 +456,21 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Empaque":
                                     case "PMODI1 - Etiquetado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("MESA 01"));
+                                        arrayMesas.add(new E_Mesas("MESA 02"));
+                                        arrayMesas.add(new E_Mesas("MESA 03"));
+                                        arrayMesas.add(new E_Mesas("MESA 04"));
+                                        arrayMesas.add(new E_Mesas("MESA 05"));
+                                        arrayMesas.add(new E_Mesas("MESA 06"));
+                                        arrayMesas.add(new E_Mesas("MESA 07"));
+                                        arrayMesas.add(new E_Mesas("MESA 08"));
+                                        arrayMesas.add(new E_Mesas("MESA 09"));
+                                        arrayMesas.add(new E_Mesas("MESA 10"));
                                         break;
                                     case "PMODI1 - Paletizado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -428,6 +484,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Selección":
                                     case "PMODI1 - Clasificación":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -437,10 +494,21 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Empaque":
                                     case "PMODI1 - Etiquetado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("MESA 01"));
+                                        arrayMesas.add(new E_Mesas("MESA 02"));
+                                        arrayMesas.add(new E_Mesas("MESA 03"));
+                                        arrayMesas.add(new E_Mesas("MESA 04"));
+                                        arrayMesas.add(new E_Mesas("MESA 05"));
+                                        arrayMesas.add(new E_Mesas("MESA 06"));
+                                        arrayMesas.add(new E_Mesas("MESA 07"));
+                                        arrayMesas.add(new E_Mesas("MESA 08"));
+                                        arrayMesas.add(new E_Mesas("MESA 09"));
+                                        arrayMesas.add(new E_Mesas("MESA 10"));
                                         break;
                                     case "PMODI1 - Paletizado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -454,6 +522,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Selección":
                                     case "PMODI1 - Clasificación":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -463,10 +532,21 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Empaque":
                                     case "PMODI1 - Etiquetado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("MESA 01"));
+                                        arrayMesas.add(new E_Mesas("MESA 02"));
+                                        arrayMesas.add(new E_Mesas("MESA 03"));
+                                        arrayMesas.add(new E_Mesas("MESA 04"));
+                                        arrayMesas.add(new E_Mesas("MESA 05"));
+                                        arrayMesas.add(new E_Mesas("MESA 06"));
+                                        arrayMesas.add(new E_Mesas("MESA 07"));
+                                        arrayMesas.add(new E_Mesas("MESA 08"));
+                                        arrayMesas.add(new E_Mesas("MESA 09"));
+                                        arrayMesas.add(new E_Mesas("MESA 10"));
                                         break;
                                     case "PMODI1 - Paletizado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -480,6 +560,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Despacho":
                                     case "PMODI1 - Cámara":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -489,6 +570,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Pesador":
                                     case "PMODI1 - Acopio":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -497,6 +579,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "PMODI1 - Reempaque":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -513,6 +596,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Selección":
                                     case "PMODI1 - Clasificación":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -522,10 +606,21 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Empaque":
                                     case "PMODI1 - Etiquetado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("MESA 01"));
+                                        arrayMesas.add(new E_Mesas("MESA 02"));
+                                        arrayMesas.add(new E_Mesas("MESA 03"));
+                                        arrayMesas.add(new E_Mesas("MESA 04"));
+                                        arrayMesas.add(new E_Mesas("MESA 05"));
+                                        arrayMesas.add(new E_Mesas("MESA 06"));
+                                        arrayMesas.add(new E_Mesas("MESA 07"));
+                                        arrayMesas.add(new E_Mesas("MESA 08"));
+                                        arrayMesas.add(new E_Mesas("MESA 09"));
+                                        arrayMesas.add(new E_Mesas("MESA 10"));
                                         break;
                                     case "PMODI1 - Paletizado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -539,6 +634,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Despacho":
                                     case "PMODI1 - Cámara":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -549,6 +645,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "PMODI1 - Pesador":
                                     case "PMODI1 - Acopio":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -564,6 +661,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "AUXPRD - Empaque":
                                     case "AUXPRD - Cámara":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -578,6 +676,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                     case "AUXCAL - Trazabilidad":
                                     case "AUXCAL - Paletizado":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -590,6 +689,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "CHF001 - Choferes":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -598,6 +698,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "AUXPRD - Acopio":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -610,6 +711,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "AUXPRD - Saneamiento":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -618,6 +720,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "LIMPLT - Limpieza Planta":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -630,6 +733,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "ALM001 - Almacén":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -638,6 +742,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "MNT001 - Mantenimiento":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -646,6 +751,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                                 switch (laborACT){
                                     case "VIG001 - Vigilantes":
                                         arrayMesas.clear();
+                                        arrayMesas.add(new E_Mesas(mesa));
                                         arrayMesas.add(new E_Mesas("No Aplica"));
                                         break;
                                 }
@@ -692,6 +798,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                 mesa = cursor.getString(5);
             }
             cursor.close();
+
         }
     }
     private void obtenerLinea(String grupo){
@@ -743,7 +850,7 @@ public class TercerNivelWelcomeTareoPlantaEdicion extends AppCompatActivity {
                 break;
             case "IND PRODUCCION":
                 arrayProcesos.clear();
-                arrayProcesos.add(new E_Procesos("IND - PRODUCCION"));
+                arrayProcesos.add(new E_Procesos("IND PRODUCCION"));
                 arrayProcesos.add(new E_Procesos("IND CALIDAD"));
                 arrayProcesos.add(new E_Procesos("IND ACOPIO"));
                 arrayProcesos.add(new E_Procesos("IND SANEAMIENTO"));

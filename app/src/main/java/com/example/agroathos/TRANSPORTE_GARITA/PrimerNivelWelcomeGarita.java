@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -269,6 +271,8 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
 
             }
         });
+
+        migrarDatos();
     }
 
     public void cargarZonas(){
@@ -323,39 +327,46 @@ public class PrimerNivelWelcomeGarita extends AppCompatActivity {
         builder.setNeutralButton("SINCRONIZAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                verificarRegistrosBus();
-                verificarRegistrosBusIntermedio();
-                verificarRegistrosPersonal();
-                verificarRegistrosUnidad();
-
-                if (validarBUS == 1 && validarBUSINTERMEDIO == 1){
-                    registrarDatosBUS();
-                    registrarDatosBUSINTERMEDIO();
-
-                    actualizarEstadoSincronizacionGaritaNivelUno();
-                    actualizarEstadoSincronizacionGaritaNivelDos();
-                }
-
-                if (validarPERSONAL == 1){
-                    registrarDatosPERSONAL();
-                    actualizarEstadoSincronizacionPersonalNivelUno();
-                }
-
-                if (validarUNIDAD == 1){
-                    registrarDatosUNIDAD();
-                    actualizarEstadoSincronizacionUnidadNivelUno();
-                }
-
-                if (validarBUS == 1 || validarBUSINTERMEDIO == 1 || validarPERSONAL == 1 || validarUNIDAD == 1){
-                    Toast.makeText(PrimerNivelWelcomeGarita.this, "Data Migrada", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(PrimerNivelWelcomeGarita.this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
-                }
-
+                migrarDatos();
             }
         });
         builder.create().show();
+    }
+
+    private void migrarDatos(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()){
+            verificarRegistrosBus();
+            verificarRegistrosBusIntermedio();
+            verificarRegistrosPersonal();
+            verificarRegistrosUnidad();
+
+            if (validarBUS == 1 && validarBUSINTERMEDIO == 1){
+                registrarDatosBUS();
+                registrarDatosBUSINTERMEDIO();
+
+                actualizarEstadoSincronizacionGaritaNivelUno();
+                actualizarEstadoSincronizacionGaritaNivelDos();
+            }
+
+            if (validarPERSONAL == 1){
+                registrarDatosPERSONAL();
+                actualizarEstadoSincronizacionPersonalNivelUno();
+            }
+
+            if (validarUNIDAD == 1){
+                registrarDatosUNIDAD();
+                actualizarEstadoSincronizacionUnidadNivelUno();
+            }
+
+            /*if (validarBUS == 1 || validarBUSINTERMEDIO == 1 || validarPERSONAL == 1 || validarUNIDAD == 1){
+                Toast.makeText(PrimerNivelWelcomeGarita.this, "Data Migrada", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(PrimerNivelWelcomeGarita.this, "Ya se migró la data", Toast.LENGTH_SHORT).show();
+            }*/
+        }
     }
 
     private void verificarRegistrosBus() {
